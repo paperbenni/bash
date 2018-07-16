@@ -40,3 +40,11 @@ filetype() {
                 return 1
         fi
 }
+
+yess() {
+        while :
+        do
+                echo "$1"
+                sleep 5
+        done
+}
