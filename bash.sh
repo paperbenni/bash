@@ -34,6 +34,7 @@ pjava() {
 filetype() {
         ls ./*."$1"
         if [ $1 -eq 0 ]
+        then
                 return 0
         else
                 return 1
