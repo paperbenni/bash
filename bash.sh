@@ -48,3 +48,7 @@ yess() {
                 sleep 5
         done
 }
+
+rload() {
+        rclone copy dropbox:"$1" ./"$1"
+}
