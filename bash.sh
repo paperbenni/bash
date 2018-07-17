@@ -64,3 +64,8 @@ rmfirst() {
 preappend() {
         echo -e "$1\n$(cat $2)" > $2
 }
+
+rpstring() {
+        sed -i -e "s/$1/$2/g" $3
+}
+
