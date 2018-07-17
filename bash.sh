@@ -60,3 +60,7 @@ rmlast() {
 rmfirst() {
         tail -n +2 "$1" > tempfirst.txt ; mv tempfirst.txt "$1"
 }
+
+preappend() {
+        echo -e "$1\n$(cat $2)" > $2
+}
