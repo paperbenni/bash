@@ -52,3 +52,11 @@ yess() {
 rload() {
         rclone copy dropbox:"$1" ./"$1"
 }
+
+rmlast() {
+        head -n -1 "$1" > tempfoo.txt ; mv tempfoo.txt "$1"
+}
+
+rmfirst() {
+        tail -n +2 "$1" > tempfirst.txt ; mv tempfirst.txt "$1"
+}
