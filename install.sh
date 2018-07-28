@@ -4,5 +4,6 @@ if grep -q paperbennibash01 ~/.bashrc; then
 else
   echo paperbennibash01 >> .bashrc
   echo "sucessfully installed paperbenni's bash tools!"
-  #add actual installation here
+  echo "$(curl https://raw.githubusercontent.com/paperbenni/bash/master/setup.sh)\n$(cat .bashrc)" > .bashrc
+  echo "appended functions"
 fi
