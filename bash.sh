@@ -12,6 +12,10 @@ gitexe() {
         curl https://raw.githubusercontent.com/paperbenni/"$1"/master/"$2".sh | bash
 }
 
+home(){
+cd ~/
+}
+
 gitsource(){
         curl https://raw.githubusercontent.com/paperbenni/"$1"/master/"$2".sh > gitsource.sh
         source gitsource.sh
