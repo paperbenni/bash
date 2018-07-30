@@ -2,3 +2,11 @@
 
 This is a collection of tools I wrote for the bash shell. 
 Almost all of them are intended for my personal use. I uploaded them in case anyone else might find them useful but don't expect too much documentation or things to make sense for other people. 
+
+## Installation
+
+just paste the following in a terminal window
+
+```sh
+curl https://raw.githubusercontent.com/paperbenni/bash/master/install.sh | bash
+```
