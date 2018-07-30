@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ -e .bashfunctions.sh ]
 then
   source .bashfunctions.sh
