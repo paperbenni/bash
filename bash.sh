@@ -35,6 +35,14 @@ hdd(){
 	cd /media/benjamin/hdddrive
 }
 
+paperbenni(){
+	if [ $1 == "update" ]
+	then
+		rm ~/.bashfunctions
+		echo "open up a new shell to finish the update!"
+	fi
+}
+
 pjava() {
         if [ -e ./"$1" ]
         then
