@@ -31,6 +31,10 @@ mkcd() {
         cd "$1" || echo "problem creating the dir"
 }
 
+hdd(){
+	cd /media/benjamin/hdddrive
+}
+
 pjava() {
         if [ -e ./"$1" ]
         then
