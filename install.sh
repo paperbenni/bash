@@ -3,6 +3,7 @@ install(){
   echo '#paperbennibash01' >> ~/.bashrc
   echo "sucessfully installed paperbenni's bash tools!"
   curl https://raw.githubusercontent.com/paperbenni/bash/master/setup.sh >> ~/.bashrc
+  mkdir .paperbenni
 }
 
 if [ -e ~/.bashrc ]

@@ -1,7 +1,20 @@
 #!/bin/bash
 
+pushd ~/
+
+gexit(){
+        echo $?
+}
+
 exe() {
         /lib64/ld-linux-x86-64.so.2 "$1"
+}
+
+cbatch(){
+        for $file in ./*
+        do
+                eval "$1"
+        done
 }
 
 savet() {
@@ -36,11 +49,19 @@ hdd(){
 }
 
 paperbenni(){
-	if [ $1 == "update" ]
-	then
-		rm ~/.bashfunctions
-		echo "open up a new shell to finish the update!"
-	fi
+        case $1 in
+        "update" )
+                rm ~/.bashfunctions
+		echo "open up a new shell to finish the update!" ;;
+        "enable" )
+                case $2 in
+                "resolve" )
+                        touch .paperbenni/resolve ;;
+                "rclone" )
+                        touch .paperbenni/rclone ;;
+                "reset" )
+                        rm ~/.bashrc
+                        cp /etc/skel/.bashrc ~/
 }
 
 pjava() {
@@ -90,4 +111,12 @@ preappend() {
 rpstring() {
         sed -i -e "s/$1/$2/g" $3
 }
+
+
+if [ -e .paperbenni/resolve ] {
+        gitsource davinciresolve c2r
+        gitsource davinciresolve sound
+}
+
+popd
 

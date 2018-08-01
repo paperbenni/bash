@@ -1,4 +1,5 @@
 #!/bin/bash
+pushd ~/
 if [ -e .bashfunctions.sh ]
 then
   source .bashfunctions.sh
@@ -7,3 +8,4 @@ else
   echo "paperbenni's bash tools successfully installed!"
   source .bashfunctions.sh
 fi
+popd
