@@ -55,13 +55,17 @@ paperbenni(){
 		echo "open up a new shell to finish the update!" ;;
         "enable" )
                 case $2 in
-                "resolve" )
-                        touch .paperbenni/resolve ;;
-                "rclone" )
-                        touch .paperbenni/rclone ;;
-                "reset" )
+                "resolve")
+                        touch .paperbenni/resolve
+                        ;;
+                "rclone")
+                        touch .paperbenni/rclone
+                        ;;
+                "reset")
                         rm ~/.bashrc
                         cp /etc/skel/.bashrc ~/
+                        ;;
+                esac
 }
 
 pjava() {
