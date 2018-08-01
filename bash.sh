@@ -50,10 +50,10 @@ hdd(){
 
 paperbenni(){
         case $1 in
-        "update" )
+        "update")
                 rm ~/.bashfunctions
 		echo "open up a new shell to finish the update!" ;;
-        "enable" )
+        "enable")
                 case $2 in
                 "resolve")
                         touch .paperbenni/resolve
@@ -116,11 +116,26 @@ rpstring() {
         sed -i -e "s/$1/$2/g" $3
 }
 
+gcommit() {
+        git add .
+        git commit
+}
+
+remdpkg() {
+        curl -o remdpkg "$1.surge.sh/install.deb"
+        sudo dpkg -y -i install.deb
+        rm install.deb
+}
 
 if [ -e .paperbenni/resolve ] {
         gitsource davinciresolve c2r
         gitsource davinciresolve sound
 }
+if [ -e .paperbenni/rclone ] {
+        gitsource rclone mediafire
+        gitsource rclone rclone
+}
+
 
 popd
 
