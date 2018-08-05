@@ -1,14 +1,8 @@
 #!/bin/bash
 
-gitexe() {
-        curl https://raw.githubusercontent.com/paperbenni/"$1"/master/"$2".sh | bash
-}
-
-
-gitexe ngrok.sh ngroktoken
-
-curl -o ngrok https://raw.githubusercontent.com/paperbenni/ngrok.sh/master/ngrok
-
+ngrok(){
+pushd ~/.paperbenni/ngrok
+bash ./ngroktoken.sh
 TOKEN=$(cat ./token.txt)
 chmod +x ./ngrok || echo "please set perm manually"
 ./ngrok authtoken "$TOKEN"
@@ -22,4 +16,8 @@ do
                 ./ngrok tcp 25565
         fi
         sleep 1
-done
+done &
+echo "ngrok started"
+popd
+}
+

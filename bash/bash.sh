@@ -1,7 +1,5 @@
 #!/bin/bash
 
-pushd ~/
-
 gexit(){
         echo $?
 }
@@ -11,7 +9,7 @@ exe() {
 }
 
 cbatch(){
-        for $file in ./*
+        for file in ./*
         do
                 eval "$1"
         done
@@ -48,25 +46,6 @@ hdd(){
 	cd /media/benjamin/hdddrive
 }
 
-paperbenni(){
-        case $1 in
-        "update")
-                rm ~/.bashfunctions
-		echo "open up a new shell to finish the update!" ;;
-        "enable")
-                case $2 in
-                "resolve")
-                        touch .paperbenni/resolve
-                        ;;
-                "rclone")
-                        touch .paperbenni/rclone
-                        ;;
-                "reset")
-                        rm ~/.bashrc
-                        cp /etc/skel/.bashrc ~/
-                        ;;
-                esac
-}
 
 pjava() {
         if [ -e ./"$1" ]
@@ -127,15 +106,4 @@ remdpkg() {
         rm install.deb
 }
 
-if [ -e .paperbenni/resolve ] {
-        gitsource davinciresolve c2r
-        gitsource davinciresolve sound
-}
-if [ -e .paperbenni/rclone ] {
-        gitsource rclone mediafire
-        gitsource rclone rclone
-}
-
-
-popd
 

@@ -1,4 +1,4 @@
-
+#!/bin/bash
 c2r(){
   if ffprobe "$1"
   then
@@ -34,7 +34,7 @@ c2rtime(){
 }
 
 batchc2r(){
-for $file in ./*
+for file in ./*
 do
   c2r $file
 done

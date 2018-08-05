@@ -1,4 +1,6 @@
 #!/bin/bash
-curl -o #code.deb link here
-sudo dpkg -y -i code.deb
-rm code.deb
+installcode() {
+  curl -o code.deb https://github.com/paperbenni/bash/raw/master/vscode/code.deb
+  sudo dpkg -y -i code.deb
+  rm code.deb
+}

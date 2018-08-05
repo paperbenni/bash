@@ -1,10 +1,11 @@
   #!/bin/bash
-  
-if [ -e player.txt ]
+mineuuid(){
+if [ -n $1 ]
 then
-    PLAYERNAME=$(cat player.txt)
-    echo "getting uuid for $PLAYERNAME"
-    curl https://api.mojang.com/users/profiles/minecraft/$PLAYERNAME | jq -r '.id' > uuid.txt
+    echo "getting uuid for $1"
+    curl https://api.mojang.com/users/profiles/minecraft/$PLAYERNAME | jq -r '.id'
 else
-  echo "player.txt not found"
+  echo "usage: muneuuid [playername]"
 fi  
+}
+

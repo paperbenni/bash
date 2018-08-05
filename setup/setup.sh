@@ -1,24 +1,20 @@
 #!/bin/bash
-sudo apt update
-sudo apt upgrade -y
-sudo apt update
-sudo apt install -y blender\
- krita\
- python\
- curl\
- vlc\
- ubuntu-restricted-extras\
- ffmpeg\
- git\
- gimp\
- arc-theme\
- gparted\
- clang\
- curl\
- neovim\
- openjdk-8-jdk openjdk-8-demo openjdk-8-doc openjdk-8-jre-headless openjdk-8-source\
- audacity\
- nvidia-cuda-dev nvidia-cuda-toolkit\
- steam\
- synaptic\
- papirus-icon-theme
+papersetup() {
+    pushd ~/
+    sudo apt update
+    sudo apt upgrade -y
+    sudo apt update
+    if [ -e .paperbenni/setup/programs.txt ]
+    then
+      echo "program list found"
+    else
+      echo "no list found"
+      exit 1
+    fi
+    
+    for THISPROGRAM in $(cat .paperbenni/setup/programs.txt)
+    do
+      sudo apt install -y $THISPROGRAM 
+    done
+    popd
+}
