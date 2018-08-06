@@ -36,6 +36,6 @@ c2rtime(){
 batchc2r(){
 for file in ./*
 do
-  c2r $file
+  c2r "$file"
 done
 }
