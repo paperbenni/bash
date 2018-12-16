@@ -20,3 +20,7 @@ rclonedl() {
 	RCLONEDIR=~/.paperbenni/rclone/rclone
 	export PATH="$RCLONEDIR:${PATH}"
 }
+
+rload() {
+        rclone copy dropbox:"$1" ./"$1"
+}

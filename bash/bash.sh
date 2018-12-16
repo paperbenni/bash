@@ -64,9 +64,6 @@ yess() {
         done
 }
 
-rload() {
-        rclone copy dropbox:"$1" ./"$1"
-}
 
 rmlast() {
         head -n -1 "$1" > tempfoo.txt ; mv tempfoo.txt "$1"
@@ -88,11 +85,3 @@ gcommit() {
         git add .
         git commit
 }
-
-remdpkg() {
-        curl -o remdpkg "$1.surge.sh/install.deb"
-        sudo dpkg -y -i install.deb
-        rm install.deb
-}
-
-
