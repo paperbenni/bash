@@ -5,9 +5,6 @@ curl "https://raw.githubusercontent.com/paperbenni/bash/master/bash.sh" > .bashf
 source .bashfunctions.sh
 
 #setup ix.io account
-echo "machine ix.io" > .netrc
-echo "    login $ACCOUNTNAME" >> .netrc
-echo "    password $ACCOUNTPASSWORD" >> .netrc
 
 mkdir .ngrok2
 

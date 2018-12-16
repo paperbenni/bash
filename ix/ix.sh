@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# this is the ix function from ix.io
 ix() {
 	local opts
 	local OPTIND
@@ -32,6 +33,15 @@ ix() {
 		echo "^C to cancel, ^D to send."
 	}
 	curl $opts -F f:1='<-' $* ix.io/$id
+}
+
+#usage: ixlogin {username} {password}
+ixlogin() {
+	pushd $HOME
+	echo "machine ix.io" >.netrc
+	echo "    login $1" >>.netrc
+	echo "    password $2" >>.netrc
+	popd
 }
 
 ixsetup() {

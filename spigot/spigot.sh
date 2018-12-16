@@ -1,6 +1,6 @@
 #!/bin/bash
 
-paperspigot(){
+spigotdl(){
   if [ -e spigot.jar ]
   then
     echo "spigot already existing!"
@@ -22,6 +22,7 @@ paperspigot(){
   echo "eula=true" > eula.txt #accept eula
 }
 
+# usage: spigexe {ammount of memory}
 spigexe(){
   if [ -e spigot.jar ]
   then

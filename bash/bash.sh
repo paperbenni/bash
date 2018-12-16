@@ -8,24 +8,13 @@ exe() {
         /lib64/ld-linux-x86-64.so.2 "$1"
 }
 
-cbatch(){
+filebatch(){
         for file in ./*
         do
                 eval "$1"
         done
 }
 
-savet() {
-        echo "$1" > "$2".txt
-}
-
-gitexe() {
-        curl https://raw.githubusercontent.com/paperbenni/"$1"/master/"$2".sh | bash
-}
-
-home(){
-cd ~/
-}
 
 gitsource(){
         curl https://raw.githubusercontent.com/paperbenni/"$1"/master/"$2".sh > gitsource.sh

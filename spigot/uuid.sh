@@ -1,4 +1,6 @@
   #!/bin/bash
+
+#usage: mineuuid {playername}
 mineuuid(){
 if [ -n $1 ]
 then
@@ -8,4 +10,3 @@ else
   echo "usage: muneuuid [playername]"
 fi  
 }
-
