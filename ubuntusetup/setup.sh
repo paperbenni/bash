@@ -11,10 +11,10 @@ papersetup() {
       echo "no list found"
       exit 1
     fi
-    
+
     for THISPROGRAM in $(cat .paperbenni/setup/programs.txt)
     do
-      sudo apt install -y $THISPROGRAM 
+      sudo apt install -y $THISPROGRAM
     done
     popd
 }

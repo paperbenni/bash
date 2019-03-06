@@ -1,26 +1,42 @@
-#!/bin/bash
-#this sets up rclone without installing it via package management
-
-rdropbox() {
-	pushd $HOME
-	mkdir -p .config/rclone
-  echo "[dropbox]
-        type = dropbox
-        token = {\"access_token\":\"$1\",\"token_type\":\"bearer\",\"expiry\":\"0001-01-01T00:00:00Z\"}" >> rclone.conf
-  popd
+#!/usr/bin/env bash
+rdl() {
+    if [ -z "$2" ]; then
+        rclone copy "$RCLOUD":"$RNAME"/"$1"
+    else
+        rclone copy "$RCLOUD":"$RNAME"/"$1" ./"$2"
+    fi
 }
 
-rclonedl() {
-	pushd $HOME
-	mkdir rclone
-	cd rclone
-	wget https://github.com/paperbenni/bash/blob/master/rclone/rclone/rclone
-	chmod +x rclone
-	popd
-	RCLONEDIR=~/.paperbenni/rclone/rclone
-	export PATH="$RCLONEDIR:${PATH}"
+rupl() {
+    if [ -z "$2" ]; then
+        rclone copy "$1" "$RCLOUD":"$RNAME"/"$1"
+    else
+        rclone copy "$1" "$RCLOUD":"$RNAME"/"$2"/"$1"
+    fi
 }
 
-rload() {
-        rclone copy dropbox:"$1" ./"$1"
+rappend() {
+    if ! [ -e "$HOME"/.config/rclone/rclone.conf ]; then
+        mkdir -p "$HOME/.config/rclone"
+    fi
+    pushd "$HOME/.config/rclone" || exit 1
+    echo "$1" >>rclone.conf
+}
+
+rmega() {
+    if [ -z "$3" ]; then
+        APPENDCLOUD="mega"
+    else
+        APPENDCLOUD="$3"
+    fi
+
+    if (cat "$HOME/.config/rclone/rclone.conf" | grep "$1"); then
+        echo "remote name already existing"
+        exit
+    fi
+    rappend "[$APPENDCLOUD]"
+    rappend "type = mega"
+    rappend "user = $1"
+    rappend "pass = $2"
+
 }

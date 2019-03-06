@@ -1,15 +1,24 @@
 #!/bin/bash
 
-surgesh(){
-  echo "running surge.sh"
-  if [ -f surge.txt ]
-  then
-        SURGEADRESS=$(cat ./surge.txt)
-        surge . "$SURGEADRESS".surge.sh || \
-                (sudo npm install -g surge && surge . "$SURGEADRESS".surge.sh) || \
-                (sudo apt update && sudo apt upgrade -y && sudo apt install nodejs && sudo npm install -g surge && surge . "$SURGEADRESS".surge.sh)
-  else
-        echo "surge.txt missing!"
-  fi
+#upload the current folder to a surge.sh site
+surgesh() {
+    echo "running surge.sh"
+    if [ -z "$1" ]; then
+        if ! [ -e surge.txt ]; then
+            echo "surge.txt not found"
+            exit
+        else
+            SURGE=$(cat surge.txt)
+        fi
+    else
+        SURGE="$1"
+    fi
 
+    if ! surge --version; then
+        curl https://raw.githubusercontent.com/paperbenni/bash/master/bash/install/install.sh >temp.sh
+        source temp.sh
+        rm temp.sh
+        pinstall npm nodejs
+    fi
+    surge . "$SURGE".surge.sh
 }
