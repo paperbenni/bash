@@ -1,25 +1,34 @@
 #!/bin/bash
 
-ngrok() {
-    mkdir -p ~/.ngrok2
-    if ! ~/ngrok/ngrok --version; then
-        mkdir -p ~/ngrok
-        pushd ngrok
-        wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
-        chmod +x ngrok
-        if ! ./ngrok --version; then
-            echo "failed"
-            exit 1
+exegrok() {
+    if ngrok --version; then
+        ngrok "$@"
+    else
+        if ! ~/ngrok/ngrok --version; then
+            mkdir -p ~/ngrok
+            pushd ngrok
+            wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+            chmod +x ngrok
+            if ! ./ngrok --version; then
+                echo "failed"
+                exit 1
+            fi
+            popd
         fi
-        popd
+        ~/ngrok/ngrok "$@"
     fi
-    
+}
+
+rungrok() {
+
+    mkdir -p ~/.ngrok2
+
     while true; do
         curl "https://raw.githubusercontent.com/paperbenni/ngrok-docker/master/tokens.txt" >./ngroktokens.txt
-        ~/ngrok/ngrok authtoken $(shuf -n 1 ./ngroktokens.txt)
+        exegrok authtoken $(shuf -n 1 ./ngroktokens.txt)
         rm ./ngroktokens.txt
         sleep 5
-        ~/ngrok/ngrok "$@"
+        exegrok "$@"
         sleep 5
     done
 
