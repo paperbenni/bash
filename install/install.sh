@@ -10,11 +10,13 @@ pinstall() {
     if apt --version; then
         apt update && apt install -y "$@"
     fi
+
     if pacman --version; then
         pacman -S "$@"
     fi
+
     if apk --version; then
-        apk update && apt add "$@"
+        apk add --update "$@"
     fi
 
 }
