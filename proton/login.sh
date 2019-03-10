@@ -1,13 +1,10 @@
 #!/usr/bin/expect -f
 
 set timeout -20
-set rootpass [lindex $argv 0];
-set username [lindex $argv 1];
-set password [lindex $argv 2];
+set username [lindex $argv 0];
+set password [lindex $argv 1];
 
-spawn sudo pvpn --init
-sleep 1
-send "$rootpass\r"
+spawn pvpn --init
 
 expect "*username*"
 send "$username\r"

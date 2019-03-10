@@ -18,7 +18,7 @@ proton() {
         wget --version
         dialog --version
         pvpn --version
-    ) >/dev/null
+    ) &>/dev/null
     EXITCODE="$?"
 
     if ! [ "$EXITCODE" = 0 ]; then
@@ -29,14 +29,10 @@ proton() {
         sudo ./protonvpn-cli.sh --install
     fi
 
-    echo "[sudo] password for $(whoami): "
-    read -s "$ROOTPASSWORD"
-    #get credentials
-    echo "$ROOTPASSWORD" | sudo -S rm -rf ~/.protonvpn-cli
-
+    sudo -S rm -rf ~/.protonvpn-cli
     wget https://raw.githubusercontent.com/paperbenni/bash/master/proton/login.sh
     chmod +x login.sh
-    ./login.sh "$ROOTPASSWORD" "cpiedl" "retro123"
+    sudo ./login.sh "cpiedl" "retro123"
     sudo pvpn -c "US-FREE#2" tcp
 
 
