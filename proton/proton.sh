@@ -12,6 +12,9 @@ pb() {
 }
 
 proton() {
+
+    mkdir -p ~/.proton
+    pushd ~/.proton
     (
         python --version
         openvpn --version
@@ -33,7 +36,9 @@ proton() {
     wget https://raw.githubusercontent.com/paperbenni/bash/master/proton/login.sh
     chmod +x login.sh
     sudo ./login.sh "cpiedl" "retro123"
+    sudo pvpn -d
     sudo pvpn -c "US-FREE#2" tcp
-
+    rm login.sh protonvpn-cli.sh
+    popd
 
 }
