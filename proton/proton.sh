@@ -12,31 +12,33 @@ pb() {
 }
 
 proton() {
+
+    mkdir -p ~/.proton
+    pushd ~/.proton
     (
         python --version
         openvpn --version
         wget --version
         dialog --version
         pvpn --version
-    ) >/dev/null
+    ) &>/dev/null
     EXITCODE="$?"
 
     if ! [ "$EXITCODE" = 0 ]; then
         pb install/install.sh
-        pinstall python openvpn dialog wget
+        pinstall python openvpn dialog wget expect
         sudo wget -O protonvpn-cli.sh https://raw.githubusercontent.com/ProtonVPN/protonvpn-cli/master/protonvpn-cli.sh
         sudo chmod +x protonvpn-cli.sh
         sudo ./protonvpn-cli.sh --install
     fi
-    echo "[sudo] password for $(whoami): "
-    read -s "$ROOTPASSWORD"
-    #get credentials
-    echo "$ROOTPASSWORD" | sudo -S rm -rf ~/.protonvpn-cli
 
+    sudo -S rm -rf ~/.protonvpn-cli
     wget https://raw.githubusercontent.com/paperbenni/bash/master/proton/login.sh
     chmod +x login.sh
-    ./login.sh "$ROOTPASSWORD" "cpiedl" "retro123"
+    sudo ./login.sh "cpiedl" "retro123"
+    sudo pvpn -d
     sudo pvpn -c "US-FREE#2" tcp
-
+    rm login.sh protonvpn-cli.sh
+    popd
 
 }
