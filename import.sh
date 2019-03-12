@@ -5,6 +5,11 @@ pb() {
     clear)
         echo clearing the cache
         rm -rf ~/pb
+        return
+        ;;
+    help)
+        echo "usage: pb filelocationonmygithubbashrepo"
+        return
         ;;
     *)
         echo "importing $@"
