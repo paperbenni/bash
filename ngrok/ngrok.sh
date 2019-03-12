@@ -11,7 +11,7 @@ exegrok() {
             chmod +x ngrok
             if ! ./ngrok --version; then
                 echo "failed"
-                exit 1
+                return 1
             fi
             popd
         fi

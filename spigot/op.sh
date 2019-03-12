@@ -13,7 +13,7 @@ mcop() {
     if [ -z "$1" ]; then
         echo "usage:
     mcop username"
-        exit
-        UUID=$(mineuuid "$1")
+        return
     fi
+    UUID=$(mineuuid "$1")
 }

@@ -6,7 +6,7 @@ surgesh() {
     if [ -z "$1" ]; then
         if ! [ -e surge.txt ]; then
             echo "surge.txt not found"
-            exit
+            return 1
         else
             SURGE=$(cat surge.txt)
         fi

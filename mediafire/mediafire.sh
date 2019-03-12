@@ -12,17 +12,17 @@ mediafire() {
         sed --version
         grep --version
     )
-    
+
     LAST="$?"
     if ! [ "$LAST" = 0 ]; then
         echo "not all dependencies installed"
-        exit
+        return
     fi
 
     if [ -z "$1" ]; then
         echo "usage: ./mediafiredownload.sh mediafirelink"
         sleep 5
-        exit
+        return
     fi
 
     LINKLINE=$(curl "$1" | grep "http:\/\/download.*mediafire.com\/")

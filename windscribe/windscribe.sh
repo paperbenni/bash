@@ -17,7 +17,7 @@ wvpn() {
     if ! pgrep windscribe; then
         if ! windscribe --version; then
             echo "windscribe not working"
-            exit 1
+            return 1
         fi
         sudo windscribe start
     fi

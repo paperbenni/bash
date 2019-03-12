@@ -4,7 +4,7 @@ pinstall() {
 
     if [ -z "$1" ]; then
         echo "usage pinstall packages"
-        exit
+        return
     fi
 
     if apt --version &>/dev/null; then

@@ -4,19 +4,19 @@ rlogin() {
     USAGE="rlogin [remote name] username password"
     if ! rclone --version; then
         echo "please install rclone"
-        exit
+        return
     fi
 
     if [ -z "$1" ]; then
         RCLOUD="$1"
         if [ -z "$3" ]; then
-            exit
+            return
         fi
         RNAME="$2"
         RPASS="$3"
     else
         if [ -z "$2" ]; then
-            exit
+            return
         fi
         RCLOUD="mega"
         RNAME="$1"
@@ -29,11 +29,11 @@ rlogin() {
         if [ "$MEGAPASSWORD" = "$RPASS" ]; then
             echo "login sucessfull"
             sleep 1
-            exit 0
+            return 0
         else
             echo "wrong password"
             sleep 3
-            exit 1
+            return 1
         fi
     else
         echo "account not found, creating account"
@@ -42,7 +42,7 @@ rlogin() {
         rclone copy password.txt "$RCLOUD":"$RNAME"/
         rm password.txt
         echo "account created"
-        exit 0
+        return 0
     fi
 
 }

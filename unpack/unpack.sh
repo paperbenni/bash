@@ -3,7 +3,7 @@ unpack() {
     if [ -z "$@" ]; then
         echo "usage: unpack file
       automatically detects the archive type and extracts it"
-        exit
+        return
     fi
 
     if [ -f $1 ]; then

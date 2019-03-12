@@ -19,7 +19,7 @@ rappend() {
     if ! [ -e "$HOME"/.config/rclone/rclone.conf ]; then
         mkdir -p "$HOME/.config/rclone"
     fi
-    pushd "$HOME/.config/rclone" || exit 1
+    pushd "$HOME/.config/rclone" || return 1
     echo "$1" >>rclone.conf
 }
 
@@ -32,7 +32,7 @@ rmega() {
 
     if (cat "$HOME/.config/rclone/rclone.conf" | grep "$1"); then
         echo "remote name already existing"
-        exit
+        return
     fi
     rappend "[$APPENDCLOUD]"
     rappend "type = mega"
