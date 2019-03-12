@@ -7,10 +7,10 @@ urldecode() {
 mediafire() {
 
     (
-        wget --version
-        curl --version
-        sed --version
-        grep --version
+        wget --version > /dev/null
+        curl --version > /dev/null
+        sed --version > /dev/null
+        grep --version > /dev/null
     )
 
     LAST="$?"
