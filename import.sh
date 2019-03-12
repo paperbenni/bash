@@ -21,7 +21,7 @@ pb() {
                 FILEPATH=${FILE%/*}
                 mkdir -p ~/pb/"$FILEPATH"
             fi
-            curl "https://raw.githubusercontent.com/paperbenni/bash/master/$FILE" >~/pb/"$FILE"
+            curl -s "https://raw.githubusercontent.com/paperbenni/bash/master/$FILE" >~/pb/"$FILE"
         else
             echo "using $FILE from cache"
         fi

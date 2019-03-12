@@ -7,7 +7,7 @@ A collection of neat little bash functions.
 Add the following line to the top of your bash script to get started using my functions
 
 ```sh
-source <(curl https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
+source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
 ```
 
 Then do the following to import functions into your script
