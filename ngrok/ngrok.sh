@@ -1,13 +1,14 @@
 #!/bin/bash
 
 exegrok() {
-    if ngrok --version; then
+    if ngrok --version &>/dev/null; then
         ngrok "$@"
     else
         if ! ~/ngrok/ngrok --version; then
-            mkdir -p ~/ngrok
+            mkdir -p ~/ngrok &>/dev/null
             pushd ~/ngrok
-            wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+            echo "downloading ngrok"
+            wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
             unzip *.zip
             rm *.zip
             chmod +x ngrok
