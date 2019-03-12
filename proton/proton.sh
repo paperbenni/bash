@@ -1,15 +1,6 @@
 #!/usr/bin/env bash
 
-pb() {
-    if [ -z "$@" ]; then
-        echo "usage: pb bashfile"
-    fi
-    for FILE in "$@"; do
-        curl "https://raw.githubusercontent.com/paperbenni/bash/master/$1" >temp.sh
-        source temp.sh
-        rm temp.sh
-    done
-}
+source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
 
 proton() {
 
