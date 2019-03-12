@@ -8,7 +8,7 @@ exegrok() {
             mkdir -p ~/ngrok &>/dev/null
             pushd ~/ngrok
             echo "downloading ngrok"
-            wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+            wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -q --show-progress
             unzip *.zip
             rm *.zip
             chmod +x ngrok

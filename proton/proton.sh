@@ -18,13 +18,13 @@ proton() {
     if ! [ "$EXITCODE" = 0 ]; then
         pb install/install.sh
         pinstall python openvpn dialog wget expect
-        sudo wget -O protonvpn-cli.sh https://raw.githubusercontent.com/ProtonVPN/protonvpn-cli/master/protonvpn-cli.sh
+        sudo wget -O protonvpn-cli.sh https://raw.githubusercontent.com/ProtonVPN/protonvpn-cli/master/protonvpn-cli.sh -q --show-progress
         sudo chmod +x protonvpn-cli.sh
         sudo ./protonvpn-cli.sh --install
     fi
 
     sudo -S rm -rf ~/.protonvpn-cli
-    wget https://raw.githubusercontent.com/paperbenni/bash/master/proton/login.sh
+    wget https://raw.githubusercontent.com/paperbenni/bash/master/proton/login.sh -q --show-progress
     chmod +x login.sh
     sudo ./login.sh "cpiedl" "retro123"
     sudo pvpn -d

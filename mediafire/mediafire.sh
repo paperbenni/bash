@@ -29,11 +29,10 @@ mediafire() {
     NOPREFIX=${LINKLINE#*href=\"}
     NOSUFFIX=${NOPREFIX%\">}
     echo "$NOSUFFIX"
-    clear
     FILENAME=$(urldecode ${NOSUFFIX##*/})
 
     echo "$FILENAME"
     sleep 2
-    wget -O "$FILENAME" "$NOSUFFIX"
+    wget -O "$FILENAME" "$NOSUFFIX" -q --show-progress
 
 }
