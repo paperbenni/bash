@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 unpack() {
+    if [ -z "$@" ]; then
+        echo "usage: unpack file
+      automatically detects the archive type and extracts it"
+    fi
+
     if [ -f $1 ]; then
         case $1 in
         *.tar.bz2) tar xjf $1 ;;
