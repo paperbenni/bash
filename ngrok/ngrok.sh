@@ -8,6 +8,8 @@ exegrok() {
             mkdir -p ~/ngrok
             pushd ~/ngrok
             wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+            unzip *.zip
+            rm *.zip
             chmod +x ngrok
             if ! ./ngrok --version; then
                 echo "failed"
