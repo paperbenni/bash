@@ -1,15 +1,20 @@
 #!/usr/bin/env bash
 
+if pb help; then
+    echo "paperbenni importer found"
+    return 0
+fi
+
 pb() {
     case "$1" in
     clear)
         echo clearing the cache
         rm -rf ~/pb
-        return
+        return 0
         ;;
     help)
         echo "usage: pb filelocationonmygithubbashrepo"
-        return
+        return 0
         ;;
     *)
         echo "importing $@"
@@ -22,7 +27,7 @@ pb() {
 
     for FILE in "$@"; do
         if ! [ -e "~/pb/$FILE" ]; then
-            if echo "$FILE" | grep "/" > /dev/null; then
+            if echo "$FILE" | grep "/" >/dev/null; then
                 FILEPATH=${FILE%/*}
                 mkdir -p ~/pb/"$FILEPATH"
             fi

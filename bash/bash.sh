@@ -1,7 +1,17 @@
 #!/bin/bash
+app() {
+    if [ -z "$APPENDFILE" ]; then
+        echo "append to a \$APPENDFILE"
+        echo "usage: app string"
+        return 1
+    fi
+    if [ -e "$APPENDFILE" ]; then
+        echo "$1" >>"$APPENDFILE"
+    fi
+}
 
 gexit() {
-    echo $?
+    echo "$?"
 }
 
 exe() {
@@ -40,22 +50,4 @@ yess() {
         echo "$1"
         sleep 5
     done
-}
-
-rmlast() {
-    head -n -1 "$1" >tempfoo.txt
-    mv tempfoo.txt "$1"
-}
-
-rmfirst() {
-    tail -n +2 "$1" >tempfirst.txt
-    mv tempfirst.txt "$1"
-}
-
-preappend() {
-    echo -e "$1\n$(cat $2)" >$2
-}
-
-rpstring() {
-    sed -i -e "s/$1/$2/g" $3
 }

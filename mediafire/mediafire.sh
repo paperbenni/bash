@@ -25,13 +25,12 @@ mediafire() {
         return
     fi
 
-    LINKLINE=$(curl "$1" | grep "http:\/\/download.*mediafire.com\/")
+    LINKLINE=$(curl -s "$1" | grep "http:\/\/download.*mediafire.com\/")
     NOPREFIX=${LINKLINE#*href=\"}
     NOSUFFIX=${NOPREFIX%\">}
     echo "$NOSUFFIX"
     FILENAME=$(urldecode ${NOSUFFIX##*/})
 
-    echo "$FILENAME"
     sleep 2
     wget -O "$FILENAME" "$NOSUFFIX" -q --show-progress
 

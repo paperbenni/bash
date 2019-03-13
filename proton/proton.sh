@@ -29,7 +29,8 @@ proton() {
     sudo ./login.sh "cpiedl" "retro123"
     sudo pvpn -d
     sudo pvpn -c "US-FREE#2" tcp
-    rm login.sh protonvpn-cli.sh
+    rm login.sh
+    sudo rm protonvpn-cli.sh
     popd
 
 }
