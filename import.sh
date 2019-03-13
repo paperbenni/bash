@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if pb help; then
+if pb help &>/dev/null; then
     echo "paperbenni importer found"
     return 0
 fi

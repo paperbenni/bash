@@ -5,7 +5,17 @@ unpack() {
       automatically detects the archive type and extracts it"
         return
     fi
-
+    (
+        tar --version &>/dev/null
+        unzip --version &>/dev/null
+        unrar -v &>/dev/null
+    )
+    CHECKSTAT="$?"
+    if ! [ "$CHECKSTAT" = 0 ]; then
+        pb install/install.sh
+        pinstall tar unzip unrar
+    fi
+    
     if [ -f $1 ]; then
         case $1 in
         *.tar.bz2) tar xjf $1 ;;
