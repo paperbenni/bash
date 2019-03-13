@@ -18,7 +18,7 @@ surgesh() {
         curl https://raw.githubusercontent.com/paperbenni/bash/master/bash/install/install.sh >temp.sh
         source temp.sh
         rm temp.sh
-        pinstall npm nodejs
+        sudo pinstall npm nodejs
     fi
     surge . "$SURGE".surge.sh
 }

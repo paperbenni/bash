@@ -6,7 +6,7 @@ proton() {
     if ! sudo --version &>/dev/null; then
         pb sudo/fakesudo.sh
     fi
-    
+
     mkdir -p ~/.proton
     pushd ~/.proton
     (
@@ -20,7 +20,7 @@ proton() {
 
     if ! [ "$EXITCODE" = 0 ]; then
         pb install/install.sh
-        pinstall python openvpn dialog wget expect
+        sudo pinstall python openvpn dialog wget expect iptables
         sudo wget -O protonvpn-cli.sh https://raw.githubusercontent.com/ProtonVPN/protonvpn-cli/master/protonvpn-cli.sh -q --show-progress
         sudo chmod +x protonvpn-cli.sh
         sudo ./protonvpn-cli.sh --install
