@@ -3,7 +3,10 @@
 source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
 
 proton() {
-
+    if ! sudo --version &>/dev/null; then
+        pb sudo/fakesudo.sh
+    fi
+    
     mkdir -p ~/.proton
     pushd ~/.proton
     (
