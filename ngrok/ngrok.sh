@@ -4,7 +4,7 @@ exegrok() {
     if ngrok --version &>/dev/null; then
         ngrok "$@"
     else
-        if ! ~/ngrok/ngrok --version; then
+        if ! ~/ngrok/ngrok --version &>/dev/null; then
             mkdir -p ~/ngrok &>/dev/null
             pushd ~/ngrok
             echo "downloading ngrok"

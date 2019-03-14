@@ -5,8 +5,13 @@ rlogin() {
     mkdir ~/.rlogin
     pushd ~/.rlogin
 
+    if ! [ -e ~/.config/rclone/rclone.conf ]; then
+        echo "setting up default cloud"
+        curl -s https://raw.githubusercontent.com/paperbenni/bash/master/rclone/conf/mineglory.conf >~/.config/rclone/rclone.conf
+    fi
+
     USAGE="rlogin [remote name] username password"
-    if ! rclone --version > /dev/null; then
+    if ! rclone --version >/dev/null; then
         echo "please install rclone"
         popd
         return
@@ -26,7 +31,7 @@ rlogin() {
         RPASS="$2"
     fi
 
-    if rclone lsd "$RCLOUD":"$RNAME" &> /dev/null; then
+    if rclone lsd "$RCLOUD":"$RNAME" &>/dev/null; then
         echo "account found"
         MEGAPASSWORD=$(rclone cat "$RCLOUD":"$USERNAME"/password.txt)
         if [ "$MEGAPASSWORD" = "$RPASS" ]; then
