@@ -1,17 +1,33 @@
 #!/usr/bin/env bash
 rdl() {
     if [ -z "$2" ]; then
-        rclone copy "$RCLOUD":"$RNAME"/"$1"
+        rclone copy "$RCLOUD":"$RNAME"/"$1" .
     else
         rclone copy "$RCLOUD":"$RNAME"/"$1" ./"$2"
     fi
 }
 
 rupl() {
+    if ! [ -e "$1" ]; then
+        echo "file or directory not found"
+    fi
+
     if [ -z "$2" ]; then
-        rclone copy "$1" "$RCLOUD":"$RNAME"/"$1"
+        if [ -d "$1" ]; then
+            echo "uploading folder"
+            rclone copy "$1" "$RCLOUD":"$RNAME"/"$1"
+        else
+            echo "uploading file"
+            rclone copy "$1" "$RCLOUD":"$RNAME"
+        fi
     else
-        rclone copy "$1" "$RCLOUD":"$RNAME"/"$2"/"$1"
+        if [ -d "$1" ]; then
+            echo "uploading folder"
+            rclone copy "$1" "$RCLOUD":"$RNAME"/"$2"/"$1"
+        else
+            echo "uploading file"
+            rclone copy "$1" "$RCLOUD":"$RNAME"/"$2"
+        fi
     fi
 }
 
