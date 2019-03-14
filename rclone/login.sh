@@ -33,7 +33,7 @@ rlogin() {
 
     if rclone lsd "$RCLOUD":"$RNAME" &>/dev/null; then
         echo "account found"
-        MEGAPASSWORD=$(rclone cat "$RCLOUD":"$USERNAME"/password.txt)
+        MEGAPASSWORD=$(rclone cat "$RCLOUD":"$RNAME"/password.txt)
         if [ "$MEGAPASSWORD" = "$RPASS" ]; then
             echo "login sucessfull"
             sleep 1
@@ -47,7 +47,8 @@ rlogin() {
         fi
     else
         echo "account not found, creating account"
-        rclone mkdir "$RCLOUD":"$USERNAME"
+        rclone mkdir "$RCLOUD":"$RNAME"
+        rclone mkdir "$RCLOUD":"$RNAME"/thisaccountexists
         echo "$RPASS" >password.txt
         rclone copy password.txt "$RCLOUD":"$RNAME"/
         rm password.txt
