@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
 
+altinstall() {
+    ALTIFS="$IFS"
+    PKGMANAGER="$1"
+    shift
+    for ARGUMENT in "$@"; do
+        if echo "$ARGUMENT" | grep ':'; then
+            for IPROGRAM in ${ARGUMENT//:/ }; do
+                echo "trying $IPROGRAM"
+                if eval "sudo $PKGMANAGER $IPROGRAM"; then
+                    break
+                else
+                    echo "pkg $IPROGRAM not found, skipping"
+                fi
+            done
+            IFS="$ALTIFS"
+        else
+            eval "sudo $PKGMANAGER $ARGUMENT"
+        fi
+    done
+}
+
 pinstall() {
 
     if ! sudo --version &>/dev/null; then
@@ -13,15 +34,16 @@ pinstall() {
     fi
 
     if apt --version &>/dev/null; then
-        sudo apt update && apt install -y "$@"
+        sudo apt update
+        altinstall "apt install -y" "$@"
     fi
 
     if pacman --version &>/dev/null; then
-        sudo pacman -S "$@"
+        altinstall "pacman -S" "$@"
     fi
 
     if apk --version &>/dev/null; then
-        apk add --update "$@"
+        altinstall "apk add --update" "$@"
     fi
 
 }

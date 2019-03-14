@@ -1,6 +1,10 @@
 #!/bin/bash
 
 spigotdl() {
+    if ! java -version; then
+        pb install/install.sh
+        pinstall openjdk-8-jre:openjdk8:jdk8-openjdk
+    fi
     if [ -e spigot.jar ]; then
         echo "spigot already existing!"
     else
