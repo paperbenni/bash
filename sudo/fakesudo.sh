@@ -5,7 +5,7 @@ sudo() {
         if echo "$argument" | grep -w '\-.*' >/dev/null; then
             shift
         else
-            echo "broke at $argument"
+            echo "running $argument"
             break
         fi
     done

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if pb help &>/dev/null; then
+if ! [ -z "$PAPERIMPORT" ]; then
     echo "paperbenni importer found"
     return 0
 fi
@@ -39,5 +39,7 @@ pb() {
 
     done
 }
+
+PAPERIMPORT="paperbenni.github.io/bash"
 
 echo "paperbenni bash importer ready for use!"

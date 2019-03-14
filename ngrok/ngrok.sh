@@ -9,7 +9,7 @@ exegrok() {
             pushd ~/ngrok
             echo "downloading ngrok"
             wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -q --show-progress
-            unzip *.zip
+            unzip *.zip || (echo "unzip utility not found, please install!" && return 1)
             rm *.zip
             chmod +x ngrok
             if ! ./ngrok --version; then
