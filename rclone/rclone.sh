@@ -1,9 +1,27 @@
 #!/usr/bin/env bash
+
+rcheck() {
+    rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null
+}
+
 rdl() {
-    if [ -z "$2" ]; then
-        rclone copy "$RCLOUD":"$RNAME"/"$1" .
+    DIRLIST=$(rclone lsd "$RCLOUD":"$RNAME")
+    if rcheck "$1"; then
+        echo "downloading folder"
+        if [ -z "$2" ]; then
+            rclone copy "$RCLOUD":"$RNAME"/"$1" ./"$1"
+        else
+            rclone copy "$RCLOUD":"$RNAME"/"$1" ./"$2"/"$1"
+        fi
     else
-        rclone copy "$RCLOUD":"$RNAME"/"$1" ./"$2"
+        echo "downloading file"
+
+        if [ -z "$2" ]; then
+            rclone copy "$RCLOUD":"$RNAME"/"$1" ./
+        else
+            rclone copy "$RCLOUD":"$RNAME"/"$1" ./
+            mv "$1" "$2"
+        fi
     fi
 }
 
