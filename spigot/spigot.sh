@@ -8,20 +8,9 @@ spigotdl() {
     if [ -e spigot.jar ]; then
         echo "spigot already existing!"
     else
-        curl -o spigot.jar https://destroystokyo.com/ci/job/Paper/lastSuccessfulBuild/artifact/paperclip.jar
+        curl -o spigot.jar https://papermc.io/api/v1/paper/1.13.2/565/download
     fi
 
-    if [ -e cache ]; then
-        echo "cache exists."
-    else
-        mkdir cache
-        cd cache || echo "no cache" || echo "no cache"
-        echo "downloading minecraft 1.12"
-        curl -o mojang_1.12.2.jar https://spigot.surge.sh/cache/mojang_1.12.2.jar
-        echo "downloading patched 1.12"
-        curl -o patched_1.12.2.jar https://spigot.surge.sh/cache/patched_1.12.2.jar
-        cd ..
-    fi
     echo "eula=true" >eula.txt #accept eula
 }
 
@@ -29,10 +18,9 @@ spigotdl() {
 spigexe() {
 
     spigotdl
-
-    if [ -n $1 ]; then
-        java -Xmx$1m -Xms$1m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
+    if [ -z $1 ]; then
+      java -Xmx650m -Xms650m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
     else
-        java -Xmx650m -Xms650m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
+      java -Xmx$1m -Xms$1m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
     fi
 }
