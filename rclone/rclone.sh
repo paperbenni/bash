@@ -49,6 +49,30 @@ rupl() {
     fi
 }
 
+rupls() {
+    if ! [ -e "$1" ]; then
+        echo "file or directory not found"
+    fi
+
+    if [ -z "$2" ]; then
+        if [ -d "$1" ]; then
+            echo "synchronizing folder"
+            rclone sync "$1" "$RCLOUD":"$RNAME"/"$1"
+        else
+            echo "synchronizing file"
+            rclone sync "$1" "$RCLOUD":"$RNAME"
+        fi
+    else
+        if [ -d "$1" ]; then
+            echo "synchronizing folder"
+            rclone sync "$1" "$RCLOUD":"$RNAME"/"$2"/"$1"
+        else
+            echo "synchronizing file"
+            rclone sync "$1" "$RCLOUD":"$RNAME"/"$2"
+        fi
+    fi
+}
+
 rappend() {
     if ! [ -e "$HOME"/.config/rclone/rclone.conf ]; then
         mkdir -p "$HOME/.config/rclone"
