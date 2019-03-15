@@ -49,6 +49,7 @@ ixlogin() {
     echo "    login $IXUSERNAME" >>.netrc
     echo "    password $IXPASSWORD" >>.netrc
     popd
+    echo "logged in"
 }
 
 ixrun() {
@@ -66,7 +67,13 @@ ixrun() {
         echo "creating ix.io website..."
         sleep 1
         echo $IXCONTENT | ix >ixidtemp.txt
-        cat ixidtemp.txt | sed -e "s/http:\/\/ix.io\///g" >ixid.txt
+        cat ixidtemp.txt | sed -e "s/http:\/\/ix.io\///g" >ixid2.txt
+        REMOVETHIS=$(cat ixid2.txt | grep -o 'user .*added')
+        IXCONTENT=$(cat ixid2.txt)
+        rm ixid2.txt ixidtemp.txt
+        echo ${IXCONTENT#$REMOVETHIS} >ixid.txt
+
+        #weiter
     fi
 
 }
