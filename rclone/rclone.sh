@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+RCPATH="$RCLOUD:$RNAME"
+
 rcheck() {
     rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null
 }
@@ -97,4 +99,8 @@ rmega() {
     rappend "user = $1"
     rappend "pass = $2"
 
+}
+
+rmount() {
+    rclone mount "$RCPATH/$1" $(realpath "$2")
 }
