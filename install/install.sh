@@ -4,21 +4,25 @@ altinstall() {
     ALTIFS="$IFS"
     PKGMANAGER="$1"
     shift
-    for ARGUMENT in "$@"; do
-        if echo "$ARGUMENT" | grep ':'; then
-            for IPROGRAM in ${ARGUMENT//:/ }; do
-                echo "trying $IPROGRAM"
-                if eval "sudo $PKGMANAGER $IPROGRAM"; then
-                    break
-                else
-                    echo "pkg $IPROGRAM not found, skipping"
-                fi
-            done
-            IFS="$ALTIFS"
-        else
-            eval "sudo $PKGMANAGER $ARGUMENT"
-        fi
-    done
+    if echo "$@" | grep ':'; then
+        for ARGUMENT in "$@"; do
+            if echo "$ARGUMENT" | grep ':'; then
+                for IPROGRAM in ${ARGUMENT//:/ }; do
+                    echo "trying $IPROGRAM"
+                    if eval "sudo $PKGMANAGER $IPROGRAM"; then
+                        break
+                    else
+                        echo "pkg $IPROGRAM not found, skipping"
+                    fi
+                done
+                IFS="$ALTIFS"
+            else
+                eval "sudo $PKGMANAGER $ARGUMENT"
+            fi
+        done
+    else
+        eval "sudo $PKGMANAGER $ARGUMENT"
+    fi
 }
 
 pinstall() {

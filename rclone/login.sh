@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-rlogin() {
+rclogin() {
 
-    mkdir ~/.rlogin
-    pushd ~/.rlogin
+    mkdir ~/.rclogin
+    pushd ~/.rclogin
 
     if ! [ -e ~/.config/rclone/rclone.conf ]; then
         echo "setting up default cloud"
         curl -s https://raw.githubusercontent.com/paperbenni/bash/master/rclone/conf/mineglory.conf >~/.config/rclone/rclone.conf
     fi
 
-    USAGE="rlogin [remote name] username password"
+    USAGE="rclogin [remote name] username password"
     if ! rclone --version >/dev/null; then
         echo "please install rclone"
         popd
