@@ -2,7 +2,7 @@
 
 rclogin() {
 
-    mkdir ~/.rclogin
+    mkdir ~/.rclogin &>/dev/null
     pushd ~/.rclogin
 
     if ! [ -e ~/.config/rclone/rclone.conf ]; then
@@ -16,19 +16,28 @@ rclogin() {
         popd
         return
     fi
-
-    if ! [ -z "$3" ]; then
+    if ! [ -z "$1" ]; then
         RCLOUD="$1"
-        RNAME="$2"
-        RPASS="$3"
     else
-        if [ -z "$2" ]; then
-            popd
-            return
-        fi
-        RCLOUD="mega"
-        RNAME="$1"
-        RPASS="$2"
+        echo "enter cloud storage name"
+        read RCLOUD
+    fi
+
+    if [ -e "$RCLOUD".conf ]; then
+        echo "using existing credentials"
+        RNAME1=$(cat "$RCLOUD".conf | grep "username:")
+        RNAME=${RNAME1#*\:}
+        echo "$RNAME"
+        RPASS1=$(cat "$RCLOUD".conf | grep "password:")
+        RPASS=${RPASS1#*\:}
+    else
+        echo "enter username"
+        read RNAME
+        echo "username:$RNAME" >>"$RCLOUD.conf"
+        echo "enter password"
+        read RPASS
+        echo "password:$RPASS" >>"$RCLOUD.conf"
+
     fi
 
     if rclone lsd "$RCLOUD":"$RNAME" &>/dev/null; then

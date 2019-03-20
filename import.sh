@@ -5,6 +5,10 @@ if ! [ -z "$PAPERIMPORT" ]; then
     return 0
 fi
 
+if [ -e ~/.paperdebug ]; then
+    echo "debugging mode enabled"
+fi
+
 pb() {
     case "$1" in
     clear)
@@ -17,13 +21,13 @@ pb() {
         return 0
         ;;
     *)
+        if [ -z "$@" ]; then
+            echo "usage: pb bashfile"
+            return
+        fi
         echo "importing $@"
         ;;
     esac
-
-    if [ -z "$@" ]; then
-        echo "usage: pb bashfile"
-    fi
 
     for FILE in "$@"; do
         if ! [ -e ~/.paperdebug ]; then

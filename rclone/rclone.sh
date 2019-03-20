@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-RCPATH="$RCLOUD:$RNAME"
-
 rcheck() {
     rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null
 }
@@ -102,5 +100,17 @@ rmega() {
 }
 
 rmount() {
-    rclone mount "$RCPATH/$1"  "$2"
+    echo "$@" || (echo "usage: rcmount dir dest" && return 0)
+
+    if [ -z "$2" ]; then
+        DESTDIR="$1"
+    fi
+
+    if ! [ -e "$DESTDIR" ]; then
+        mkdir "$DESTDIR"
+    fi
+
+    rclone mount "$RCLOUD:$RNAME/$1" "$DESTDIR" >/dev/null &
+    echo "mounted"
+    sleep 2
 }
