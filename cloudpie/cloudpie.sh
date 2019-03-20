@@ -13,7 +13,7 @@ function changeconf() {
     if [ -z "$3" ]; then
         if ! [ -e ~/.config/retroarch/retroarch.cfg ]; then
             echo "generating config"
-            timeout 5 ~/cloudpie/path/retroarch
+            timeout 5 retroarch
         fi
         pushd ~/.config/retroarch
         NEWVALUE="$1 = \"$2\""
@@ -44,7 +44,7 @@ function retroupdate() {
 }
 
 function retro() {
-    ~/cloudpie/path/retroarch -L "$HOME/retroarch/cores/$1.so" "$2"
+    retroarch -L "$HOME/retroarch/cores/$1.so" "$2"
 }
 
 function openrom() {
