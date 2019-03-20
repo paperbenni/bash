@@ -26,16 +26,21 @@ pb() {
     fi
 
     for FILE in "$@"; do
-        if ! [ -e "~/pb/$FILE" ]; then
-            if echo "$FILE" | grep "/" >/dev/null; then
-                FILEPATH=${FILE%/*}
-                mkdir -p ~/pb/"$FILEPATH"
+        if ! [ -e ~/.paperdebug ]; then
+            if ! [ -e "~/pb/$FILE" ]; then
+                if echo "$FILE" | grep "/" >/dev/null; then
+                    FILEPATH=${FILE%/*}
+                    mkdir -p ~/pb/"$FILEPATH"
+                fi
+                curl -s "https://raw.githubusercontent.com/paperbenni/bash/master/$FILE" >~/pb/"$FILE"
+            else
+                echo "using $FILE from cache"
             fi
-            curl -s "https://raw.githubusercontent.com/paperbenni/bash/master/$FILE" >~/pb/"$FILE"
+            source ~/pb/"$FILE"
         else
-            echo "using $FILE from cache"
+            echo "using debugging version"
+            source ~/workspace/bash/"$FILE"
         fi
-        source ~/pb/"$FILE"
 
     done
 }

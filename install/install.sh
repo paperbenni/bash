@@ -17,12 +17,15 @@ altinstall() {
                 done
                 IFS="$ALTIFS"
             else
-                eval "sudo $PKGMANAGER $ARGUMENT"
+                echo "installing $ARGUMENT"
+                eval "sudo $PKGMANAGER $ARGUMENT" >/dev/null
             fi
         done
     else
-        eval "sudo $PKGMANAGER $ARGUMENT"
+        echo "installing $ARGUMENT"
+        eval "sudo $PKGMANAGER $ARGUMENT" >/dev/null
     fi
+
 }
 
 pinstall() {
@@ -38,7 +41,8 @@ pinstall() {
     fi
 
     if apt --version &>/dev/null; then
-        sudo apt update
+        echo "updating repos"
+        sudo apt update >/dev/null
         altinstall "apt install -y" "$@"
     fi
 

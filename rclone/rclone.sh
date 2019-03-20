@@ -102,5 +102,5 @@ rmega() {
 }
 
 rmount() {
-    rclone mount "$RCPATH/$1" $(realpath "$2")
+    rclone mount "$RCPATH/$1"  "$2"
 }
