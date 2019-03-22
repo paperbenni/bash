@@ -104,13 +104,17 @@ rmount() {
 
     if [ -z "$2" ]; then
         DESTDIR="$1"
+    else
+        DESTDIR="$2"
     fi
 
     if ! [ -e "$DESTDIR" ]; then
         mkdir "$DESTDIR"
     fi
 
-    rclone mount "$RCLOUD:$RNAME/$1" "$DESTDIR" >/dev/null &
-    echo "mounted"
-    sleep 2
+    if ! rclone lsd "$RCLOUD:$RNAME/$1"; then
+        rclone mkdir "$RCLOUD:$RNAME/$1"
+    fi
+
+    rclone mount "$RCLOUD:$RNAME/$1" "$DESTDIR"
 }

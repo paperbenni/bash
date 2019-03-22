@@ -40,10 +40,10 @@ pinstall() {
         return
     fi
 
-    if apt --version &>/dev/null; then
+    if apt-get --version &>/dev/null; then
         echo "updating repos"
-        sudo apt update >/dev/null
-        altinstall "apt install -y" "$@"
+        sudo apt-get update >/dev/null
+        altinstall "apt-get install -y" "$@"
     fi
 
     if pacman --version &>/dev/null; then

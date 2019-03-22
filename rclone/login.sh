@@ -23,6 +23,7 @@ rclogin() {
         read RCLOUD
     fi
 
+    rm .conf &>/dev/null
     if [ -e "$RCLOUD".conf ]; then
         echo "using existing credentials"
         RNAME1=$(cat "$RCLOUD".conf | grep "username:")
