@@ -32,11 +32,13 @@ rclogin() {
         RPASS1=$(cat "$RCLOUD".conf | grep "password:")
         RPASS=${RPASS1#*\:}
     else
-        echo "enter username"
-        read RNAME
+        dialog --inputbox "Enter your username:" 8 40 2>username
+        RNAME=$(cat username)
+        rm username
         echo "username:$RNAME" >>"$RCLOUD.conf"
-        echo "enter password"
-        read RPASS
+        dialog --inputbox "Enter your password:" 8 40 2>password
+        RPASS=$(cat password)
+        rm password
         echo "password:$RPASS" >>"$RCLOUD.conf"
 
     fi
