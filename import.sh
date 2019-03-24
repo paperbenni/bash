@@ -32,7 +32,7 @@ pb() {
     for FILE in "$@"; do
         if ! [ -e ~/.paperdebug ]; then
             if ! [ -e "~/pb/$FILE" ]; then
-                if echo "$FILE" | grep "/" >/dev/null; then
+                if echo "$FILE" | grep -q "/"; then
                     FILEPATH=${FILE%/*}
                     mkdir -p ~/pb/"$FILEPATH"
                 fi

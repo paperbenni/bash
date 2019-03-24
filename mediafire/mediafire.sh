@@ -7,11 +7,11 @@ urldecode() {
 mediafire() {
 
     (
-        wget --version > /dev/null
-        curl --version > /dev/null
-        sed --version > /dev/null
-        grep --version > /dev/null
-    )
+        command -v wget
+        command -v curl
+        command -v sed
+        command -v grep
+    ) &>/dev/null
 
     LAST="$?"
     if ! [ "$LAST" = 0 ]; then

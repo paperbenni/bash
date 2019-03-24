@@ -4,9 +4,9 @@ altinstall() {
     ALTIFS="$IFS"
     PKGMANAGER="$1"
     shift
-    if echo "$@" | grep ':'; then
+    if echo "$@" | grep -q ':'; then
         for ARGUMENT in "$@"; do
-            if echo "$ARGUMENT" | grep ':'; then
+            if echo "$ARGUMENT" | grep -q ':'; then
                 for IPROGRAM in ${ARGUMENT//:/ }; do
                     echo "trying $IPROGRAM"
                     if eval "sudo $PKGMANAGER $IPROGRAM"; then

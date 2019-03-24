@@ -10,11 +10,11 @@ proton() {
     mkdir -p ~/.proton
     pushd ~/.proton
     (
-        python --version
-        openvpn --version
-        wget --version
-        dialog --version
-        pvpn --version
+        command -v python
+        command -v openvp
+        command -v wget
+        command -v ialog
+        command -v pvpn
     ) &>/dev/null
     EXITCODE="$?"
 

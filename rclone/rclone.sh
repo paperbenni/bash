@@ -88,7 +88,7 @@ rmega() {
         APPENDCLOUD="$3"
     fi
 
-    if (cat "$HOME/.config/rclone/rclone.conf" | grep "$1"); then
+    if (cat "$HOME/.config/rclone/rclone.conf" | grep -q "$1"); then
         echo "remote name already existing"
         return
     fi

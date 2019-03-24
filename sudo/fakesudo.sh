@@ -2,7 +2,7 @@
 sudo() {
 
     for argument in "$@"; do
-        if echo "$argument" | grep -w '\-.*' >/dev/null; then
+        if echo "$argument" | grep -q -w '\-.*'; then
             shift
         else
             echo "running $argument"
