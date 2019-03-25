@@ -6,10 +6,12 @@ unpack() {
         return
     fi
     (
-        tar --version &>/dev/null
-        unzip --version &>/dev/null
-        unrar -v &>/dev/null
-    )
+        command -v tar
+        command -v unzip
+        command -v unrar
+        command -v 7z
+    ) &>/dev/null
+
     CHECKSTAT="$?"
     if ! [ "$CHECKSTAT" = 0 ]; then
         pb install/install.sh

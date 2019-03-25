@@ -17,7 +17,7 @@ function changeconf() {
         fi
         pushd ~/.config/retroarch
         NEWVALUE="$1 = \"$2\""
-        sed -i "/$1/c $NEWVALUE" retroarch.cfg
+        sed -i "/^$1 =/c $NEWVALUE" retroarch.cfg
         popd
     fi
 
@@ -54,7 +54,7 @@ function openrom() {
     fi
     case "$2" in
     n64)
-        retro "parallel_n64_libretro" "$1"
+        retro "mupen64plus_libretro" "$1"
         ;;
     ds)
         retro "desmume2015_libretro" "$1"
