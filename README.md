@@ -18,15 +18,15 @@ source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import
 
 Then do the following to import functions into your script
 
-```
-$ #here are a few examples
-$ pb unpack/unpack.sh
-$ pb rclone/login.sh
+```sh
+#here are a few examples
+pb unpack/unpack.sh
+pb rclone/login.sh
 
-$ #lets try them out
-$ unpack
-usage: unpack file
-automatically detects the archive type and extracts it
+#lets try them out
+unpack
+  usage: unpack file
+  automatically detects the archive type and extracts it
 ```
 
 These my personal scripts.

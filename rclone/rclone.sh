@@ -5,7 +5,6 @@ rcheck() {
 }
 
 rdl() {
-    DIRLIST=$(rclone lsd "$RCLOUD":"$RNAME")
     if rcheck "$1"; then
         echo "downloading folder"
         if [ -z "$2" ]; then
@@ -88,7 +87,7 @@ rmega() {
         APPENDCLOUD="$3"
     fi
 
-    if (cat "$HOME/.config/rclone/rclone.conf" | grep -q "$1"); then
+    if (grep -q "$1" <"$HOME/.config/rclone/rclone.conf"); then
         echo "remote name already existing"
         return
     fi

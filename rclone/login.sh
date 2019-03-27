@@ -11,6 +11,8 @@ rclogin() {
     fi
 
     USAGE="rclogin [remote name] username password"
+    [ "$1" = "help" ] && echo "$USAGE"
+
     if ! rclone --version >/dev/null; then
         echo "please install rclone"
         popd
@@ -26,10 +28,10 @@ rclogin() {
     rm .conf &>/dev/null
     if [ -e "$RCLOUD".conf ]; then
         echo "using existing credentials"
-        RNAME1=$(cat "$RCLOUD".conf | grep "username:")
+        RNAME1=$(grep "username:" <"$RCLOUD".conf)
         RNAME=${RNAME1#*\:}
         echo "$RNAME"
-        RPASS1=$(cat "$RCLOUD".conf | grep "password:")
+        RPASS1=$(grep "password:" <"$RCLOUD".conf)
         RPASS=${RPASS1#*\:}
     else
         dialog --inputbox "Enter your username:" 8 40 2>username

@@ -18,9 +18,9 @@ function vimm() {
 
 function getvimm() {
     if [ "$1" = "1" ]; then
-        ID1=$(cat "$2" | egrep '^<tr>' | egrep -o 'name="t1" value=".*"><input')
+        ID1=$(egrep '^<tr>' <"$2" | egrep -o 'name="t1" value=".*"><input')
     else
-        ID1=$(cat "$2" | egrep '^<tr>' | egrep -o 'name="t2" value=".*"><table')
+        ID1=$(egrep '^<tr>' <"$2" | egrep -o 'name="t2" value=".*"><table')
     fi
     ID2=${ID1%\"*}
     ID1=${ID2##*=\"}
@@ -34,7 +34,7 @@ function curlvimm() {
     for CHARACTER in {a..z}; do
         curl 'https://vimm.net/vault/?p=list&system='"$1"'&section='"$CHARACTER" >>"$1"2.txt
     done
-    cat "$1"2.txt | grep "onMouseOver" >"$1".txt
+    grep "onMouseOver" <"$1"2.txt >"$1".txt
     rm "$1"2.txt
     while read p; do
         TEMPID=$(echo "$p" | egrep -o 'id=[0-9]*" onMouseOver' | egrep -o '[0-9]*')
