@@ -6,12 +6,17 @@ function vimm() {
     curl 'https://vimm.net/vault/?p=details&id='"$1" >vimm.txt
     DLID1=$(getvimm 1 "vimm.txt")
     DLID2=$(getvimm 2 "vimm.txt")
+    DLLINK='https://download2.vimm.net/download.php?id='"$1"'&t1='"$DLID1"'&t2='"$DLID2"
+    if [ "$2" = "s" ]; then
+        echo "$DLLINK"
+        return
+    fi
     pb proton/proton.sh
     pb wget/fakebrowser.sh
     pb unpack/unpack.sh
     proton
     sleep 1
-    fakebrowser 'https://download2.vimm.net/download.php?id='"$1"'&t1='"$DLID1"'&t2='"$DLID2"
+    fakebrowser "$DLLINK"
     sudo pvpn -d
     unpack $(ls -tp | grep -v /$ | head -1)
 }
@@ -45,5 +50,5 @@ function curlvimm() {
         echo "$TEMPNAME:$TEMPID" >>SNESf.txt
 
     done <"$1"2.txt
-    cat SNESf.txt | egrep '.:' >SNES.txt
+    egrep '.:' <SNESf.txt >SNES.txt
 }
