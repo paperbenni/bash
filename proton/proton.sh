@@ -9,16 +9,13 @@ proton() {
 
     mkdir -p ~/.proton
     pushd ~/.proton
-    (
+    if ! (
         command -v python
         command -v openvp
         command -v wget
-        command -v ialog
+        command -v dialog
         command -v pvpn
-    ) &>/dev/null
-    EXITCODE="$?"
-
-    if ! [ "$EXITCODE" = 0 ]; then
+    ); then
         pb install/install.sh
         pinstall python openvpn dialog wget expect iptables
         sudo wget -O protonvpn-cli.sh https://raw.githubusercontent.com/ProtonVPN/protonvpn-cli/master/protonvpn-cli.sh -q --show-progress
