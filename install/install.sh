@@ -30,7 +30,7 @@ altinstall() {
 
 pinstall() {
 
-    if ! sudo --version &>/dev/null; then
+    if ! command -v sudo &>/dev/null; then
         source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
         pb sudo/fakesudo.sh
     fi
@@ -40,18 +40,22 @@ pinstall() {
         return
     fi
 
-    if apt-get --version &>/dev/null; then
+    if command -v apt-get &>/dev/null; then
         echo "updating repos"
         sudo apt-get update >/dev/null
         altinstall "apt-get install -y" "$@"
     fi
 
-    if pacman --version &>/dev/null; then
-        altinstall "pacman -S" "$@"
+    if command -v pacman &>/dev/null; then
+        altinstall "pacman -S --noconfirm" "$@"
     fi
 
-    if apk --version &>/dev/null; then
+    if command -v apk &>/dev/null; then
         altinstall "apk add --update" "$@"
+    fi
+
+    if command -v yum &>/dev/null; then
+        altinstall "yum install -y" "$@"
     fi
 
 }
