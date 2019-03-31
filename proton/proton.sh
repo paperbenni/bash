@@ -15,6 +15,7 @@ proton() {
         command -v wget
         command -v dialog
         command -v pvpn
+        command -v expect
     ); then
         pb install/install.sh
         pinstall python openvpn dialog wget expect iptables
