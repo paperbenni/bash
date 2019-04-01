@@ -12,15 +12,15 @@ ngrokdl() {
         mv ngrok32 ngrok
     else
         wget ngrok.surge.sh/ngrok -q --show-progress
-    fi
 
-    if ! [ -z "$1" ]; then
-        chmod +x "$HOME"/ngrok/ngrok
-        if ! "$HOME"/ngrok/ngrok --version; then
-            echo "failed"
-            return 1
-        else
+        if [ "$1" = "nochmod" ]; then
             echo "skipping chmod"
+        else
+            chmod +x "$HOME"/ngrok/ngrok
+            if ! "$HOME"/ngrok/ngrok --version; then
+                echo "failed"
+            fi
+            return 1
         fi
     fi
 }
@@ -61,4 +61,12 @@ getgrok() {
     fi
     curl localhost:4040/api/tunnels | grep -oP "$NGROKPROTOCOLL"'://.*?:[0-9]*'
 
+}
+
+waitgrok() {
+    while ! curl localhost:4040/api/tunnels; do
+        echo "waiting for ngrok"
+        sleep 4
+    done
+    echo "ngrok found"
 }
