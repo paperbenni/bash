@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# pb already sourced?
 if ! [ -z "$PAPERIMPORT" ]; then
     echo "paperbenni importer found"
     return 0
@@ -10,6 +11,8 @@ if [ -e ~/.paperdebug ]; then
 fi
 
 PAPERENABLE="false"
+
+# imports bash functions from paperbenni/bash into the script
 
 pb() {
     case "$1" in

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# install the package with the package manager $1
 altinstall() {
     ALTIFS="$IFS"
     PKGMANAGER="$1"
@@ -28,6 +29,7 @@ altinstall() {
 
 }
 
+# installs programs and automatically detects the package manager
 pinstall() {
 
     if ! command -v sudo &>/dev/null; then

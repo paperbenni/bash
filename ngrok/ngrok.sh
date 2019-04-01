@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# installs ngrok binary into ~/ngrok/ngrok
 ngrokdl() {
     mkdir "$HOME"/ngrok &>/dev/null
     cd "$HOME"/ngrok
@@ -24,6 +25,7 @@ ngrokdl() {
     fi
 }
 
+#finds and executes ngrok with the specified arguments
 exegrok() {
     if ngrok --version &>/dev/null; then
         ngrok "$@"
@@ -35,6 +37,7 @@ exegrok() {
     fi
 }
 
+#automatically logs in and runs ngrok
 rungrok() {
 
     mkdir -p ~/.ngrok2
@@ -50,6 +53,12 @@ rungrok() {
 
 }
 
+#gets your ngrok adress into stdout
 getgrok() {
-    curl localhost:4040/api/tunnels | grep -oP 'tcp://.*?:[0-9]*'
+    NGROKPROTOCOLL="tcp"
+    if [ -n "$1" ]; then
+        NGROKPROTOCOLL="$1"
+    fi
+    curl localhost:4040/api/tunnels | grep -oP "$NGROKPROTOCOLL"'://.*?:[0-9]*'
+
 }

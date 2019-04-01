@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+#exits if arg is null
 function zerocheck() {
     if [ -z "$1" ]; then
         exit
     fi
 }
 
+#edits an option in retroarch.cfg
 function changeconf() {
     if [ -z "$2" ]; then
         echo "usage: changeconf option value"
@@ -23,6 +25,7 @@ function changeconf() {
 
 }
 
+# downloads a cloudpie file from github
 function cget() {
     if [ -z "$1" ]; then
         echo "usage: cget filename"
@@ -43,10 +46,12 @@ function retroupdate() {
     popd
 }
 
+#opens $2 with the specified libretro core
 function retro() {
     retroarch -L "$HOME/retroarch/cores/$1.so" "$2"
 }
 
+# automatically determines rom type and opens the rom
 function openrom() {
     if ! [ -e "$1" ]; then
         echo "$1 not found"

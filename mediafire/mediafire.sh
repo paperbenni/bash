@@ -1,4 +1,6 @@
 #!/bin/bash
+
+#decodes html encoded strings
 urldecode() {
     : "${*//+/ }"
     echo -e "${_//%/\\x}"

@@ -1,20 +1,20 @@
 #!/bin/bash
+
+# installs initial programs on a fresh ubuntu install
 papersetup() {
     pushd ~/
     sudo apt update
     sudo apt upgrade -y
     sudo apt update
-    if [ -e .paperbenni/setup/programs.txt ]
-    then
-      echo "program list found"
+    if [ -e .paperbenni/setup/programs.txt ]; then
+        echo "program list found"
     else
-      echo "no list found"
-      return 1
+        echo "no list found"
+        return 1
     fi
 
-    for THISPROGRAM in $(cat .paperbenni/setup/programs.txt)
-    do
-      sudo apt install -y $THISPROGRAM
+    for THISPROGRAM in $(cat .paperbenni/setup/programs.txt); do
+        sudo apt install -y $THISPROGRAM
     done
     popd
 }

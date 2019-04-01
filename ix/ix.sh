@@ -73,7 +73,7 @@ ixrun() {
         rm ixid2.txt ixidtemp.txt
         echo ${IXCONTENT#$REMOVETHIS} >ixid.txt
 
-        #weiter
     fi
+    echo "your id is $(cat ixid.txt)"
 
 }

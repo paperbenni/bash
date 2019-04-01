@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#creates a launcher for a directory containing scripts in /bin
 bashlauncher() {
     if [ -z "$1" ]; then
         echo "usage: bashlauncher directory name"

@@ -2,6 +2,7 @@
 
 source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
 
+# installs, logs in and connects to ProtonVPN
 proton() {
     if ! sudo --version &>/dev/null; then
         pb sudo/fakesudo.sh

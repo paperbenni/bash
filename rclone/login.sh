@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+#log into your remote folder account
 rclogin() {
 
     mkdir ~/.rclogin &>/dev/null

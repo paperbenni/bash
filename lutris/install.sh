@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# installs lutris on ubuntu
 lutrisinstall() {
     ver=$(lsb_release -sr)
     if [ $ver != "18.04" -a $ver != "17.10" -a $ver != "17.04" -a $ver != "16.04" ]; then ver=18.04; fi

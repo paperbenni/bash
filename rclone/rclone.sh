@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
+#check if a file is a directory
 rcheck() {
     rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null
 }
 
+#download a file or directory from your account folder
 rdl() {
     if rcheck "$1"; then
         echo "downloading folder"
@@ -12,6 +14,7 @@ rdl() {
         else
             rclone copy "$RCLOUD":"$RNAME"/"$1" ./"$2"/"$1"
         fi
+        mkdir -p ./"$1"
     else
         echo "downloading file"
 
@@ -24,6 +27,7 @@ rdl() {
     fi
 }
 
+#upload a local folder to your account remote folder
 rupl() {
     if ! [ -e "$1" ]; then
         echo "file or directory not found"
@@ -48,6 +52,7 @@ rupl() {
     fi
 }
 
+#rupl but with sync instead of copy
 rupls() {
     if ! [ -e "$1" ]; then
         echo "file or directory not found"
@@ -72,6 +77,7 @@ rupls() {
     fi
 }
 
+# append string to rclone.conf file
 rappend() {
     if ! [ -e "$HOME"/.config/rclone/rclone.conf ]; then
         mkdir -p "$HOME/.config/rclone"
@@ -80,6 +86,7 @@ rappend() {
     echo "$1" >>rclone.conf
 }
 
+#add a mega storage to rclone.conf
 rmega() {
     if [ -z "$3" ]; then
         APPENDCLOUD="mega"
@@ -98,6 +105,7 @@ rmega() {
 
 }
 
+#mount a folder from your account remote
 rmount() {
     echo "$@" || (echo "usage: rcmount dir dest" && return 0)
 

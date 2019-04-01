@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+#automatically determines filetype and extracts the archive
 unpack() {
     if [ -z "$@" ]; then
         echo "usage: unpack file
@@ -38,7 +40,7 @@ unpack() {
     else
         echo "'$1' is not a valid file"
     fi
-    
+
     if [ "$2" = "rm" ]; then
         rm "$1"
     fi

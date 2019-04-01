@@ -5,5 +5,5 @@ if ! [ -e "$LAUNCHDIR/$1.sh" ]; then
 else
     EXESCRIPT="$1"
     shift
-    "$LAUNCHDIR/$EXESCRIPT" "$@"
+    "$LAUNCHDIR/$EXESCRIPT.sh" "$@"
 fi

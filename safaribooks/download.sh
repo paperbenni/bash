@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# wrapper for the safaribooks downloader
 safari() {
     if ! [ -e .config/safari/password.txt ] || [ "$1" = "login" ]; then
         mkdir -p ~/.config/safari
