@@ -59,6 +59,10 @@ ixrun() {
         IXCONTENT="$1"
     fi
 
+    if [ -d ~/ixid.txt ]; then
+        rm -rf ~/ixid.txt
+    fi
+
     if [ -e ~/ixid.txt ]; then
         IXID=$(cat ~/ixid.txt)
         echo $IXCONTENT | ix -i "$IXID"
@@ -75,6 +79,6 @@ ixrun() {
 
     fi
     echo "ix content $IXCONTENT"
-    echo "your id is $(cat ~ixid.txt)"
+    echo "your id is $(cat ~/ixid.txt)"
 
 }
