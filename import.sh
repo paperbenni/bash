@@ -9,18 +9,23 @@ if [ -e ~/.paperdebug ]; then
     echo "debugging mode enabled"
 fi
 
+PAPERENABLE="false"
+
 pb() {
     case "$1" in
     clear)
         echo clearing the cache
         rm -rf ~/pb
-        return 0
         ;;
     help)
         echo "usage: pb filelocationonmygithubbashrepo"
-        return 0
+        ;;
+    nocache)
+        echo "disabling cache"
+        NOCACHE="true"
         ;;
     *)
+        PAPERENABLE="true"
         if [ -z "$@" ]; then
             echo "usage: pb bashfile"
             return
@@ -29,9 +34,14 @@ pb() {
         ;;
     esac
 
+    if [ "$PAPERENABLE" = "false" ]; then
+        echo "done, exiting"
+        return 0
+    fi
+
     for FILE in "$@"; do
         if ! [ -e ~/.paperdebug ]; then
-            if ! [ -e "~/pb/$FILE" ]; then
+            if ! [ -e "~/pb/$FILE" ] || [ -z "$NOCACHE" ]; then
                 if echo "$FILE" | grep -q "/"; then
                     FILEPATH=${FILE%/*}
                     mkdir -p ~/pb/"$FILEPATH"

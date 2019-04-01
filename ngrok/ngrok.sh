@@ -7,7 +7,7 @@ ngrokdl() {
     wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -q --show-progress
     unzip *.zip || (echo "unzip utility not found, please install!" && return 1)
     rm *.zip
-    if [ -z "$1" ]; then
+    if ! [ -z "$1" ]; then
         chmod +x "$HOME"/ngrok/ngrok
         if ! "$HOME"/ngrok/ngrok --version; then
             echo "failed"
