@@ -1,18 +1,21 @@
 #!/bin/bash
 
 ngrokdl() {
-    mkdir -p ~/ngrok &>/dev/null
-    pushd ~/ngrok
+    mkdir "$HOME"/ngrok &>/dev/null
+    cd "$HOME"/ngrok
     echo "downloading ngrok"
     wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -q --show-progress
     unzip *.zip || (echo "unzip utility not found, please install!" && return 1)
     rm *.zip
-    chmod +x ngrok
-    if ! ./ngrok --version; then
-        echo "failed"
-        return 1
+    if [ -z "$1" ]; then
+        chmod +x "$HOME"/ngrok/ngrok
+        if ! "$HOME"/ngrok/ngrok --version; then
+            echo "failed"
+            return 1
+        else
+            echo "skipping chmod"
+        fi
     fi
-    popd
 }
 
 exegrok() {
