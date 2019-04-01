@@ -14,6 +14,7 @@ unpack() {
 
     CHECKSTAT="$?"
     if ! [ "$CHECKSTAT" = 0 ]; then
+        source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
         pb install/install.sh
         pinstall tar unzip unrar
     fi
@@ -36,5 +37,9 @@ unpack() {
         esac
     else
         echo "'$1' is not a valid file"
+    fi
+    
+    if [ "$2" = "rm" ]; then
+        rm "$1"
     fi
 }

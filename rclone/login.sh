@@ -34,15 +34,30 @@ rclogin() {
         RPASS1=$(grep "password:" <"$RCLOUD".conf)
         RPASS=${RPASS1#*\:}
     else
-        dialog --inputbox "Enter your username:" 8 40 2>username
-        RNAME=$(cat username)
-        rm username
-        echo "username:$RNAME" >>"$RCLOUD.conf"
-        dialog --inputbox "Enter your password:" 8 40 2>password
-        RPASS=$(cat password)
-        rm password
-        echo "password:$RPASS" >>"$RCLOUD.conf"
+        if [ -z "$2" ]; then
+            touch username
+            while test -z $(cat username); do
+                dialog --inputbox "Enter your username:" 8 40 2>username
+            done
+            RNAME=$(cat username)
+            rm username
+        else
+            RNAME="$2"
 
+        fi
+        echo "username:$RNAME" >>"$RCLOUD.conf"
+
+        if [ -z "$3" ]; then
+            touch password
+            while test -z $(cat password); do
+                dialog --inputbox "Enter your password:" 8 40 2>password
+            done
+            RPASS=$(cat password)
+            rm password
+        else
+            RPASS="$3"
+        fi
+        echo "password:$RPASS" >>"$RCLOUD.conf"
     fi
 
     if rclone lsd "$RCLOUD":"$RNAME" &>/dev/null; then
