@@ -59,8 +59,8 @@ ixrun() {
         IXCONTENT="$1"
     fi
 
-    if [ -e ixid.txt ]; then
-        IXID=$(cat ixid.txt)
+    if [ -e ~/ixid.txt ]; then
+        IXID=$(cat ~/ixid.txt)
         echo $IXCONTENT | ix -i "$IXID"
     else
         echo "ixid.txt missing"
@@ -71,9 +71,10 @@ ixrun() {
         REMOVETHIS=$(cat ixid2.txt | grep -o 'user .*added')
         IXCONTENT=$(cat ixid2.txt)
         rm ixid2.txt ixidtemp.txt
-        echo ${IXCONTENT#$REMOVETHIS} >ixid.txt
+        echo ${IXCONTENT#$REMOVETHIS} >~/ixid.txt
 
     fi
-    echo "your id is $(cat ixid.txt)"
+    echo "ix content $IXCONTENT"
+    echo "your id is $(cat ~ixid.txt)"
 
 }

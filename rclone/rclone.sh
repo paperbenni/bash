@@ -5,8 +5,19 @@ rcheck() {
     rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null
 }
 
+rexists() {
+    rclone rm -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null ||
+        rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null ||
+        return 1
+    return 0
+}
+
 #download a file or directory from your account folder
 rdl() {
+    if ! rexists "$1"; then
+        echo "file does not exist on remote"
+        exit 1
+    fi
     if rcheck "$1"; then
         echo "downloading folder"
         if [ -z "$2" ]; then
