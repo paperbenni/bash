@@ -27,12 +27,13 @@ spigexe() {
 
 spigoautostop() {
     if [ -e plugins ]; then
-        test -z "$1" && STOPSECONDS=7200
+        STOPSECONDS=${1:-7200}
         echo "using $STOPSECONDS s spigot autostop time"
         cd plugins
-        wget spigot.surge.sh/AutoStop.jar
+        test -e AutoStop.jar || wget spigot.surge.sh/AutoStop.jar
         mkdir AutoStop
         cd AutoStop
+        rm config.yml
         wget spigot.surge.sh/AutoStop/config.yml
         echo "stopseconds: $STOPSECONDS" >>config.yml
 
