@@ -49,7 +49,7 @@ rungrok() {
         rm ./ngroktokens.txt
         if ! [ -z "$PORT" ] && ! grep "$PORT" <~/.ngrok2/ngrok.yml; then
             echo "Setting ngrok port to $PORT"
-            echo 'web_addr: localhost:'"$PORT" >>~/.ngrok2/ngrok.yml
+            echo 'web_addr: 0.0.0.0:'"$PORT" >>~/.ngrok2/ngrok.yml
         fi
 
         sleep 2
@@ -70,7 +70,8 @@ getgrok() {
 }
 
 waitgrok() {
-    while ! curl localhost:4040/api/tunnels; do
+    test -z "$PORT" && PORT=4040
+    while ! curl localhost:"$PORT"/api/tunnels; do
         echo "waiting for ngrok"
         sleep 4
     done
