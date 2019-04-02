@@ -8,7 +8,8 @@ spigotdl() {
     if [ -e spigot.jar ]; then
         echo "spigot already existing!"
     else
-        curl -o spigot.jar https://papermc.io/api/v1/paper/1.13.2/565/download
+        curl -o spigot.jar https://papermc.io/api/v1/paper/1.13.2/597/download
+
     fi
 
     cat eula.txt || echo "eula=true" >eula.txt #accept eula
@@ -21,5 +22,22 @@ spigexe() {
         java -Xmx650m -Xms650m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
     else
         java -Xmx$1m -Xms$1m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
+    fi
+}
+
+spigoautostop() {
+    if [ -e plugins ]; then
+        test -z "$1" && STOPSECONDS=7200
+        echo "using $STOPSECONDS s spigot autostop time"
+        cd plugins
+        wget spigot.surge.sh/AutoStop.jar
+        mkdir AutoStop
+        cd AutoStop
+        wget spigot.surge.sh/AutoStop/config.yml
+        echo "stopseconds: $STOPSECONDS" >>config.yml
+
+        cd ..
+        cd ..
+
     fi
 }
