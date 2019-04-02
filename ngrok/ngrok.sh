@@ -44,9 +44,15 @@ rungrok() {
 
     while true; do
         curl "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt" >./ngroktokens.txt
+        rm ~/.ngrok2/ngrok.yml
         exegrok authtoken $(shuf -n 1 ./ngroktokens.txt)
         rm ./ngroktokens.txt
-        sleep 5
+        if ! [ -z "$PORT" ] && ! grep "$PORT" <~/.ngrok2/ngrok.yml; then
+            echo "Setting ngrok port to $PORT"
+            echo 'web_addr: localhost:'"$PORT" >>~/.ngrok2/ngrok.yml
+        fi
+
+        sleep 2
         exegrok "$@"
         sleep 5
     done
