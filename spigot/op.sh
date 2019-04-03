@@ -6,16 +6,22 @@ source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import
 # returns the mojang uuid fromt the username
 mineuuid() {
 
-    if [[ ! $# -eq 1 ]]; then
-        echo 'Error: Expected one argument: Minecraft user name.'
+    if [ -z "$1" ]; then
+        echo 'Error: usage: mineuuid name [offline]'
         return 1
     fi
-
-    UUID_URL=https://api.mojang.com/users/profiles/minecraft/$1
-    mojang_output="$(wget -qO- $UUID_URL)"
-    rawUUID=${mojang_output:7:32}
-    UUID=${rawUUID:0:8}-${rawUUID:8:4}-${rawUUID:12:4}-${rawUUID:16:4}-${rawUUID:20:12}
-    echo $UUID
+    if [ -z "$2" ]; then
+        UUID_URL=https://api.mojang.com/users/profiles/minecraft/$1
+        mojang_output="$(wget -qO- $UUID_URL)"
+        rawUUID=${mojang_output:7:32}
+        UUID=${rawUUID:0:8}-${rawUUID:8:4}-${rawUUID:12:4}-${rawUUID:16:4}-${rawUUID:20:12}
+        echo $UUID
+    else
+        rawUUID=$(curl -s http://tools.glowingmines.eu/convertor/nick/"$1")
+        rawUUID2=${rawUUID#*teduuid\":\"}
+        UUID=${rawUUID2%\"*}
+        echo "$UUID"
+    fi
 }
 
 # ops the user $1
@@ -28,14 +34,20 @@ mcop() {
         return
     fi
 
-    if grep "$1" <ops.json; then
-        echo "user $1 is already op"
+    pb replace/replace.sh
+    pb bash/bash.sh
+
+    if [ -z "$2" ]; then
+        UUID=$(mineuuid "$1")
+    else
+        UUID=$(mineuuid "$1" offline)
+    fi
+
+    if grep "$UUID" <ops.json; then
+        echo "already op"
         return 0
     fi
 
-    pb replace/replace.sh
-    pb bash/bash.sh
-    UUID=$(mineuuid "$1")
     APPENDFILE=$(realpath ops.json)
     if grep 'uuid' <ops.json; then
         rmlast ops.json 3
