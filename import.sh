@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 # pb already sourced?
-if ! [ -z "$PAPERIMPORT" ]; then
+if [ -z "$PAPERIMPORT" ]; then
+    PAPERIMPORT="paperbenni.github.io/bash"
+    echo "paperbenni bash importer ready for use!"
+else
     echo "paperbenni importer found"
     return 0
 fi
@@ -43,25 +46,26 @@ pb() {
     fi
 
     for FILE in "$@"; do
+        if echo "$1" | grep '.sh'; then
+            PAPERPACKAGE="$FILE"
+        else
+            PAPERPACKAGE="$FILE.sh"
+        fi
         if ! [ -e ~/.paperdebug ]; then
-            if ! [ -e "~/pb/$FILE" ] || [ -z "$NOCACHE" ]; then
-                if echo "$FILE" | grep -q "/"; then
-                    FILEPATH=${FILE%/*}
+            if ! [ -e "~/pb/$PAPERPACKAGE" ] || [ -z "$NOCACHE" ]; then
+                if echo "$PAPERPACKAGE" | grep -q "/"; then
+                    FILEPATH=${PAPERPACKAGE%/*}
                     mkdir -p ~/pb/"$FILEPATH"
                 fi
-                curl -s "https://raw.githubusercontent.com/paperbenni/bash/master/$FILE" >~/pb/"$FILE"
+                curl -s "https://raw.githubusercontent.com/paperbenni/bash/master/$PAPERPACKAGE" >~/pb/"$PAPERPACKAGE"
             else
-                echo "using $FILE from cache"
+                echo "using $PAPERPACKAGE from cache"
             fi
-            source ~/pb/"$FILE"
+            source ~/pb/"$PAPERPACKAGE"
         else
             echo "using debugging version"
-            source ~/workspace/bash/"$FILE"
+            source ~/workspace/bash/"$PAPERPACKAGE"
         fi
 
     done
 }
-
-PAPERIMPORT="paperbenni.github.io/bash"
-
-echo "paperbenni bash importer ready for use!"

@@ -21,11 +21,8 @@ mineuuid() {
 # ops the user $1
 # execute in the spigot folder
 mcop() {
-    if ! [ -e ops.json ]; then
-        echo "ops.json not found"
-        return
-    fi
 
+    touch ops.json
     if [ -z "$1" ]; then
         echo "usage: mcop username"
         return
@@ -43,6 +40,7 @@ mcop() {
     if grep 'uuid' <ops.json; then
         rmlast ops.json
         rmlast ops.json
+        rmlast ops.json
         app "  },"
     else
         rm ops.json
@@ -56,4 +54,5 @@ mcop() {
     app "    \"bypassesPlayerLimit\": false"
     app "  }"
     app "]"
+    app ""
 }
