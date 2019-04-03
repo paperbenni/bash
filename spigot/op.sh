@@ -38,15 +38,14 @@ mcop() {
     UUID=$(mineuuid "$1")
     APPENDFILE=$(realpath ops.json)
     if grep 'uuid' <ops.json; then
-        rmlast ops.json
-        rmlast ops.json
-        rmlast ops.json
+        rmlast ops.json 3
         app "  },"
     else
         rm ops.json
         touch ops.json
         app "["
     fi
+
     app "  {"
     app "    \"uuid\": \"$UUID\", "
     app "    \"name\": \"$1\", "
