@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# downloads spigot into the current foder
 spigotdl() {
     if ! java -version; then
         pb install/install.sh
@@ -25,6 +26,7 @@ spigexe() {
     fi
 }
 
+# adds an AutoStop plugin to spigot that automatically stops the server after $1 seconds
 spigoautostop() {
     if [ -e plugins ]; then
         STOPSECONDS=${1:-7200}
