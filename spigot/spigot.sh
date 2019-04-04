@@ -31,16 +31,15 @@ spigoautostop() {
     if [ -e plugins ]; then
         STOPSECONDS=${1:-7200}
         echo "using $STOPSECONDS s spigot autostop time"
-        pushd plugins
+        cd plugins
         test -e AutoStop.jar || wget spigot.surge.sh/AutoStop.jar
         grep "$STOPSECONDS" <AutoStop/config.yml && return 0
         mkdir AutoStop
-        cd AutoStop
+        cd AutoStop || (cd ../ && echo "spigot autostop failed" && exit 1)
         rm config.yml
         wget spigot.surge.sh/AutoStop/config.yml
         echo "stopseconds: $STOPSECONDS" >>config.yml
-
-        popd
+        cd ../..
 
     fi
 }

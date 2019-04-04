@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 function confset() {
-
     if ! [ -e "$1" ]; then
         echo "target config file $1 not existing!"
         return 1
@@ -17,5 +16,5 @@ function confset() {
     fi
     NEWVALUE="$2=$3"
     sed -i "/^$2=/c $NEWVALUE" "$1"
-
+    grep "$2" <"$1"
 }
