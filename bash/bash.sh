@@ -66,11 +66,19 @@ confirm() {
     # call with a prompt string or use a default
     read -r -p "${1:-Are you sure? [y/N]} " response
     case "$response" in
-        [yY][eE][sS]|[yY])
-            true
-            ;;
-        *)
-            false
-            ;;
+    [yY][eE][sS] | [yY])
+        true
+        ;;
+    *)
+        false
+        ;;
     esac
+}
+
+loop() {
+    LOOPI="$1"
+    shift 1
+    for i in $(seq "$LOOPI"); do
+        eval "$@"
+    done
 }
