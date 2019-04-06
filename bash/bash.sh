@@ -76,9 +76,21 @@ confirm() {
 }
 
 loop() {
-    LOOPI="$1"
-    shift 1
-    for i in $(seq "$LOOPI"); do
-        eval "$@"
-    done
+    if [ "$1" -eq "$1" ]; then
+        LOOPI="$1"
+        shift 1
+        for i in $(seq "$LOOPI"); do
+            eval "$@"
+        done
+    else
+        while :; do
+            eval "$@"
+            sleep 1
+        done
+    fi
+}
+
+random() {
+    MAX=$(echo $(($2 - $1)))
+    echo $((($RANDOM % $MAX) + $1))
 }

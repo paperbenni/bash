@@ -27,3 +27,8 @@ preappend() {
 rpstring() {
     sed -i -e "s/$1/$2/g" $3
 }
+
+insertat() {
+    sed -i -e "/$1/a $2" $3
+    sed -i '/removeme/d' "$3"
+}
