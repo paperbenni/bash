@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
-
 #usage: mineuuid {playername}
 # returns the mojang uuid fromt the username
 mineuuid() {

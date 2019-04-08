@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
-
 function vimm() {
     curl 'https://vimm.net/vault/?p=details&id='"$1" >vimm.txt
     DLID1=$(getvimm 1 "vimm.txt")

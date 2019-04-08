@@ -9,7 +9,7 @@ spigotdl() {
     if [ -e spigot.jar ]; then
         echo "spigot already existing!"
     else
-        curl -o spigot.jar https://papermc.io/api/v1/paper/1.13.2/597/download
+        curl -o spigot.jar spigot.surge.sh/spigot.jar
 
     fi
 
@@ -42,6 +42,21 @@ spigoautostop() {
         cd ../..
 
     fi
+}
+
+spigotautorestart() {
+    ls ./plugins || return 1
+    STOPTIME=${1:-1.5}
+    echo "using $STOPSECONDS s spigot autorestart time"
+    cd plugins
+    test -e AutoRestart.jar || wget spigot.surge.sh/AutoRestart.jar
+    grep "$STOPSECONDS" <AutoRestart/Main.yml && return 0
+    mkdir AutoRestart
+    cd AutoRestart || (cd ../ && echo "spigot autorestart failed" && exit 1)
+    rm Main.yml
+    wget spigot.surge.sh/AutoStop/Main.yml
+    cd ../..
+    pb replace/replace.sh
 }
 
 spigotserveo() {

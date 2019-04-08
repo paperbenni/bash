@@ -18,6 +18,7 @@ PAPERENABLE="false"
 # imports bash functions from paperbenni/bash into the script
 
 pb() {
+
     case "$1" in
     clear)
         echo clearing the cache
@@ -30,15 +31,26 @@ pb() {
         echo "disabling cache"
         NOCACHE="true"
         ;;
+    list)
+        echo "imported packages:"
+        echo "$PAPERLIST"
+        ;;
     *)
         PAPERENABLE="true"
         if [ -z "$@" ]; then
             echo "usage: pb bashfile"
-            return
+            return 0
         fi
         echo "importing $@"
         ;;
     esac
+
+    if echo "$PAPERLIST" | grep "$1"; then
+        echo "$1 already imported"
+        return 0
+    fi
+
+    PAPERLIST=$"$PAPERLIST\n$1"
 
     if [ "$PAPERENABLE" = "false" ]; then
         echo "done, exiting"
