@@ -44,19 +44,23 @@ spigoautostop() {
     fi
 }
 
+# installs an AutoRestart plugin on your spigot server
 spigotautorestart() {
     ls ./plugins || return 1
+    pb replace/replace.sh
     STOPTIME=${1:-1.5}
-    echo "using $STOPSECONDS s spigot autorestart time"
+    echo "using $STOPTIME s spigot autorestart time"
     cd plugins
     test -e AutoRestart.jar || wget spigot.surge.sh/AutoRestart.jar
-    grep "$STOPSECONDS" <AutoRestart/Main.yml && return 0
+    grep "$STOPTIME" <AutoRestart/Main.yml && return 0
     mkdir AutoRestart
     cd AutoRestart || (cd ../ && echo "spigot autorestart failed" && exit 1)
     rm Main.yml
-    wget spigot.surge.sh/AutoStop/Main.yml
+    wget spigot.surge.sh/AutoRestart/Main.yml
+    rpstring replaceme "$1" Main.yml
     cd ../..
-    pb replace/replace.sh
+    rpstring "\.\/start.sh" '\~\/restart.sh' spigot.yml
+    echo "autorestart installed"
 }
 
 spigotserveo() {

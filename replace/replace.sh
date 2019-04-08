@@ -25,7 +25,11 @@ preappend() {
 
 # replaces $1 with $2 in file $3
 rpstring() {
-    sed -i -e "s/$1/$2/g" $3
+    if echo "$1$2" | egrep '[/~]'; then
+        sed -i -e "s/$1/$2/g" $3
+    else
+        sed -i -e "s#$1#$2#g" $3
+    fi
 }
 
 insertat() {
