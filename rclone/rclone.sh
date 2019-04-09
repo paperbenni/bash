@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 #check if a file is a directory
+
 rcheck() {
     rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null
 }
@@ -22,7 +23,7 @@ rdl() {
         return 1
     fi
     if rcheck "$1"; then
-        echo "downloading folder"
+        echo "downloading folder $1"
         if [ -z "$2" ]; then
             rclone copy "$RCLOUD":"$RNAME"/"$1" ./"$1"
         else
@@ -30,7 +31,7 @@ rdl() {
         fi
         mkdir -p ./"$1"
     else
-        echo "downloading file"
+        echo "downloading file $1"
 
         if [ -z "$2" ]; then
             rclone copy "$RCLOUD":"$RNAME"/"$1" ./
@@ -49,19 +50,34 @@ rupl() {
 
     if [ -z "$2" ]; then
         if [ -d "$1" ]; then
-            echo "uploading folder"
-            rclone copy "$1" "$RCLOUD":"$RNAME"/"$1"
+            echo "uploading folder $1"
+            rclone copy "$1" "$RCLOUD":"$RNAME"/"$1.1" || (echo "upload failed, exiting..." && return 1)
+            echo "uploading $1 done"
+            rrm "$1"
+            rmove "$1.1" "$1"
         else
-            echo "uploading file"
-            rclone copy "$1" "$RCLOUD":"$RNAME"
+            echo "uploading file $1"
+            mv "$1" "$1.1"
+            rclone copy "$1.1" "$RCLOUD":"$RNAME" || (echo "upload failed, exiting..." && return 1)
+            rrm "$1"
+            mv "$1.1" "$1"
+            echo "uploading $1 done"
+            rmove "$1.1" "$1"
+
         fi
     else
         if [ -d "$1" ]; then
-            echo "uploading folder"
-            rclone copy "$1" "$RCLOUD":"$RNAME"/"$2"/"$1"
+            echo "uploading folder $1"
+            rclone copy "$1" "$RCLOUD:$RNAME/$2/$1.1" || (echo "upload failed, exiting..." && return 1)
+            echo "uploading $1 done"
+            rrm "$2/$1"
+            rmove "$2/$1.1" "$2/$1"
         else
-            echo "uploading file"
-            rclone copy "$1" "$RCLOUD":"$RNAME"/"$2"
+            echo "uploading file $1"
+            rclone copy "$1" "$RCLOUD:$RNAME/$2.1" || (echo "upload failed, exiting..." && return 1)
+            echo "uploading $1 done"
+            rrm "$2"
+            rmove "$2.1" "$2"
         fi
     fi
 }
@@ -74,18 +90,18 @@ rupls() {
 
     if [ -z "$2" ]; then
         if [ -d "$1" ]; then
-            echo "synchronizing folder"
+            echo "synchronizing folder $1"
             rclone sync "$1" "$RCLOUD":"$RNAME"/"$1"
         else
-            echo "synchronizing file"
+            echo "synchronizing file $1"
             rclone sync "$1" "$RCLOUD":"$RNAME"
         fi
     else
         if [ -d "$1" ]; then
-            echo "synchronizing folder"
+            echo "synchronizing folder $1"
             rclone sync "$1" "$RCLOUD":"$RNAME"/"$2"/"$1"
         else
-            echo "synchronizing file"
+            echo "synchronizing file $1"
             rclone sync "$1" "$RCLOUD":"$RNAME"/"$2"
         fi
     fi
@@ -138,4 +154,20 @@ rmount() {
     fi
 
     rclone mount "$RCLOUD:$RNAME/$1" "$DESTDIR"
+}
+
+rmove() {
+    rexists "$1" || return 1
+    rclone moveto "$RCLOUD:$RNAME/$1" "$RCLOUD:$RNAME/$2"
+}
+
+rrm() {
+    rexists "$1" || (echo "cannot remove this" && return 0)
+    if rcheck "$1"; then
+        echo "removing directory $1"
+        rclone purge "$RCLOUD:$RNAME/$1"
+    else
+        echo "removing file $1"
+        rclone delete "$RCLOUD:$RNAME/$1"
+    fi
 }
