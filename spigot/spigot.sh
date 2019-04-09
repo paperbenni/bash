@@ -59,8 +59,12 @@ spigotautorestart() {
     wget spigot.surge.sh/AutoRestart/Main.yml
     rpstring replaceme "$1" Main.yml
     cd ../..
-    rpstring "\.\/start.sh" '\~\/restart.sh' spigot.yml
+    rpstring "\.\/start.sh" '\.\/restart.sh' spigot.yml
     echo "autorestart installed"
+    if [ -e ~/restart.sh ]; then
+        echo "HOME restart.sh found"
+        cp ~/restart.sh ./
+    fi
 }
 
 spigotserveo() {
