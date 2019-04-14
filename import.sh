@@ -61,7 +61,11 @@ pb() {
         if echo "$1" | grep '.sh'; then
             PAPERPACKAGE="$FILE"
         else
-            PAPERPACKAGE="$FILE.sh"
+            if echo "$1" | grep '/'; then
+                PAPERPACKAGE="$FILE.sh"
+            else
+                PAPERPACKAGE="$FILE/$FILE.sh"
+            fi
         fi
         if ! [ -e ~/.paperdebug ]; then
             if ! [ -e "~/pb/$PAPERPACKAGE" ] || [ -z "$NOCACHE" ]; then
