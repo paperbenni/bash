@@ -2,11 +2,12 @@
 
 #automatically determines filetype and extracts the archive
 unpack() {
-    if [ -z "$@" ]; then
+    if [ -z "$1" ]; then
         echo "usage: unpack file
       automatically detects the archive type and extracts it"
         return
     fi
+
     (
         command -v tar
         command -v unzip
@@ -20,7 +21,7 @@ unpack() {
         pinstall tar unzip unrar
     fi
 
-    if [ -f $1 ]; then
+    if [ -e $1 ]; then
         case $1 in
         *.tar.bz2) tar xjf $1 ;;
         *.tar.gz) tar xzf $1 ;;
@@ -34,10 +35,12 @@ unpack() {
         *.zip) unzip $1 ;;
         *.Z) uncompress $1 ;;
         *.7z) 7z x $1 ;;
-        *) echo "'$1' cannot be extracted via extract()" ;;
+        *) echo "'$1' cannot be extracted via extract()"
+        return 0;;
         esac
     else
-        echo "'$1' is not a valid file"
+        echo "$1 is not a valid file"
+        return 1
     fi
 
     if [ "$2" = "rm" ]; then

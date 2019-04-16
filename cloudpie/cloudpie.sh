@@ -73,6 +73,9 @@ function openrom() {
     gba)
         retro "vbam_libretro" "$1"
         ;;
+    nes)
+        retro "nestopia_libretro" "$1"
+        ;;
     *)
         echo "no core found for $2"
         ;;
