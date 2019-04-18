@@ -165,9 +165,9 @@ rrm() {
     rexists "$1" || (echo "cannot remove this" && return 0)
     if rcheck "$1"; then
         echo "removing directory $1"
-        rclone purge "$RCLOUD:$RNAME/$1"
+        rclone purge --mega-hard-delete "$RCLOUD:$RNAME/$1"
     else
         echo "removing file $1"
-        rclone delete "$RCLOUD:$RNAME/$1"
+        rclone delete --mega-hard-delete "$RCLOUD:$RNAME/$1"
     fi
 }
