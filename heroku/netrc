@@ -1,0 +1,6 @@
+machine api.heroku.com
+  login loginmail
+  password loginpassword
+machine git.heroku.com
+  login loginmail
+  password loginpassword
