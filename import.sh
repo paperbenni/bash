@@ -16,6 +16,7 @@ fi
 PAPERENABLE="false"
 
 # imports bash functions from paperbenni/bash into the script
+PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
 
 pb() {
 
