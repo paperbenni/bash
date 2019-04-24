@@ -76,6 +76,10 @@ function openrom() {
     nes)
         retro "nestopia_libretro" "$1"
         ;;
+    gbc)
+        retro "gambatte_libretro" "$1"
+        ;;
+
     *)
         echo "no core found for $2"
         ;;
