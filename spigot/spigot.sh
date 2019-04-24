@@ -67,6 +67,17 @@ spigotautorestart() {
     fi
 }
 
+spigotversion() {
+    if ! [ -e "version_history.json" ]; then
+        echo "version_history.json not found"
+        return 1
+    fi
+    #example content: {"currentVersion":"git-Paper-610 (MC: 1.13.2)"}
+    cat version_history.json | grep 'currentVersion' |
+        egrep -o '[0-9].[0-9]{2}.[0-9]' |
+        egrep -o '[0-9].[0-9]{2}'
+}
+
 spigotserveo() {
     nohup autossh -M 0 -R "$1":localhost:25565 serveo.net
 }
