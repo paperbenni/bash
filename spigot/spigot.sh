@@ -4,27 +4,43 @@ pname spigot/spigot
 
 # downloads spigot into the current foder
 spigotdl() {
+
+    MC=${1:-1.13}
+
     if ! java -version; then
         pb install/install.sh
         pinstall openjdk-8-jre:openjdk8:jdk8-openjdk curl
     fi
+
     if [ -e spigot.jar ]; then
         echo "spigot already existing!"
     else
-        curl -o spigot.jar spigot.surge.sh/spigot.jar
-
+        wget "https://raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.jar"
     fi
 
     cat eula.txt || echo "eula=true" >eula.txt #accept eula
+
+    test -e bukkit.yml || wget raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/bukkit.yml
+    test -e paper.yml || wget raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/paper.yml
+    test -e spigot.yml || wget raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.yml
+    test -e server.properties || wget raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/server.properties
+    ls *.html &>/dev/null && rm *.html
+
 }
 
-# usage: spigexe {ammount of memory}
+# usage: spigexe MCVERSION {ammount of memory}
 spigexe() {
-    spigotdl
-    if [ -z $1 ]; then
+
+    if [ -n "$1" ]; then
+        spigotdl $1
+    else
+        spigotdl
+    fi
+
+    if [ -z $2 ]; then
         java -Xmx650m -Xms650m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
     else
-        java -Xmx$1m -Xms$1m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
+        java -Xmx$2m -Xms$2m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
     fi
 }
 
