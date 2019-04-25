@@ -1,5 +1,5 @@
 #!/bin/bash
-
+pname surge/surge
 #upload the current folder to a surge.sh site
 surgesh() {
     echo "running surge.sh"

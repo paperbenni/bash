@@ -1,7 +1,7 @@
 #!/usr/bin/expect -f
+pname proton/login
 
 # log into the otherwise interactive ProtonVPN from a bash script
-
 set timeout -20
 set username [lindex $argv 0];
 set password [lindex $argv 1];

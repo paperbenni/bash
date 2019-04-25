@@ -1,5 +1,5 @@
 #!/bin/bash
-
+pname mediafire/mediafire
 #decodes html encoded strings
 urldecode() {
     : "${*//+/ }"

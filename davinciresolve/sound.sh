@@ -1,4 +1,6 @@
 #!/bin/bash
+pname davinciresolve/sound
+
 batchwav() {
     SOUNDTYPE="mp3"
     if [ -n "$2" ]; then

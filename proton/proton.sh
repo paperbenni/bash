@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname proton/proton
 
 source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 #check if a file is a directory
+pname rclone/rclone
 
 rcheck() {
     rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null

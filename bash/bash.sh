@@ -1,4 +1,5 @@
 #!/bin/bash
+pname bash/bash
 
 # appends to previously set APPENDFILE
 app() {

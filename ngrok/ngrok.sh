@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pname ngrok/ngrok
+
 # installs ngrok binary into ~/ngrok/ngrok
 ngrokdl() {
     mkdir "$HOME"/ngrok &>/dev/null

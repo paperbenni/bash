@@ -1,4 +1,5 @@
 #!/bin/bash
+pb paperbashtools/list
 
 pbuild() {
     case $1 in

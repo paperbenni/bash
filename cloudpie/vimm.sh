@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname cloudpie/vimm
 
 function vimm() {
     curl 'https://vimm.net/vault/?p=details&id='"$1" >vimm.txt
@@ -9,7 +10,7 @@ function vimm() {
         echo "$DLLINK"
         return
     fi
-    
+
     pb proton/proton.sh
     pb wget/fakebrowser.sh
     pb unpack/unpack.sh

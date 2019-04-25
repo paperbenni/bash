@@ -1,5 +1,5 @@
 #!/bin/bash
-
+pname lutris/install
 # installs lutris on ubuntu
 lutrisinstall() {
     ver=$(lsb_release -sr)

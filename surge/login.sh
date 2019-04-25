@@ -1,4 +1,5 @@
 #!/usr/bin/expect -f
+pname surge/login
 # log into surge.sh from a bash script
 
 set timeout -20

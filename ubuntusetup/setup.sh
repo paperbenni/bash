@@ -1,7 +1,8 @@
 #!/bin/bash
+pname ubuntusetup/setup
 
 # installs initial programs on a fresh ubuntu install
-papersetup() {
+ubuntusetup() {
     pushd ~/
     sudo apt update
     sudo apt upgrade -y

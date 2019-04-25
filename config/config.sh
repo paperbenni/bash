@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname config/config
 
 function confset() {
     if ! [ -e "$1" ]; then

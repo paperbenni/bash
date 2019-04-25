@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname dialog/dialog
 #dialog confirm promt that returns exit status
 confirm() {
     DIATEXT=${1:-are you sure about that?}

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+pname spigot/op
+
+PAPERLIST="$PAPERLIST $1 "$'\n'
+
 #usage: mineuuid {playername}
 # returns the mojang uuid fromt the username
 mineuuid() {

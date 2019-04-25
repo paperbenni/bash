@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+pname spigot/mpm
+
 mpm() {
 
     pb spigot

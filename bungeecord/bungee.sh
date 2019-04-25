@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname bungee/bungee
 
 bungeedl() {
     if ! java -version; then

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname sudo/fakesudo
 
 # emulates sudo on non-sudo systems like docker containers
 # so that bash scripts containing sudo can be run without modifications

@@ -1,4 +1,6 @@
 #!/bin/bash
+pname davinciresolve/c2r
+
 c2r() {
     if ffprobe "$1"; then
         if [ -e "${1%.*}.mov" ] || [ -e ./resolve/"${1%.*}.mov" ]; then

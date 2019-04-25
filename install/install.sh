@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+pname install/install
 # install the package with the package manager $1
 altinstall() {
     ALTIFS="$IFS"

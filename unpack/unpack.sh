@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname unpack/unpack
 
 #automatically determines filetype and extracts the archive
 unpack() {

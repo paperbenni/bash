@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+pname windscribe/windscribe
 
 #this script is unfinished
 

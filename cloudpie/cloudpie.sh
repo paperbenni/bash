@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname cloudpie/cloudpie
 
 #exits if arg is null
 function zerocheck() {

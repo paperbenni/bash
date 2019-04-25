@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pname spigot/spigot
+
 # downloads spigot into the current foder
 spigotdl() {
     if ! java -version; then

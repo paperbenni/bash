@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+pname ix/ix
 # this is the ix function from ix.io
 ix() {
     local opts

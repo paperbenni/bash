@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname wget/fakebrowser
 
 #user agent and stuff to wget files from anti-bot sites
 fakebrowser() {

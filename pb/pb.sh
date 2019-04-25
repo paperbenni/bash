@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+pname pb/pb
 #creates a launcher for a directory containing scripts in /bin
 bashlauncher() {
     if [ -z "$1" ]; then

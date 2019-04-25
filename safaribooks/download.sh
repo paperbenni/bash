@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+pname safaribooks/download
 # wrapper for the safaribooks downloader
 safari() {
     if ! [ -e .config/safari/password.txt ] || [ "$1" = "login" ]; then

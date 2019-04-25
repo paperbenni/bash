@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+pname rclone/login
 
 #log into your remote folder account
 rclogin() {
