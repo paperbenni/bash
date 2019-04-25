@@ -35,6 +35,20 @@ pb() {
         echo "imported packages:"
         echo "$PAPERLIST"
         ;;
+    debug)
+        if [ "$2" = "all" ]; then
+            PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
+            echo "refreshing $PPACKAGES"
+            for i in "$PPACKAGES"; do
+                echo "source $i"
+                source ~/workspace/bash/"$i.sh"
+            done
+        else
+            cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
+            source ~/workspace/bash/"$2.sh"
+        fi
+        return 0
+        ;;
     *)
         PAPERENABLE="true"
         if [ -z "$@" ]; then
