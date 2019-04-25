@@ -5,7 +5,7 @@ mpm() {
 
     MPMLINK="https://github.com/paperbenni/mpm/raw/master"
     if [ -n "$2" ]; then
-        MCVERSION="$(curl MPMLINK/latest)"
+        MCVERSION="$(spigotversion)"
     else
         MCVERSION="$2"
     fi
@@ -25,7 +25,7 @@ mpm() {
     #check for new version if the plugin is installed
     if [ -e "$1.mpm"]; then
         OLDVERSION="$(grep version <"$1.mpm" | egrep -o '[0-9]*')"
-        NEWVERSION="$(curl "$MPMLINK/plugins/$1.mpm" | grep 'version' | egrep -o '[0-9*]')"
+        NEWVERSION="$(curl "$MPMLINK/plugins/$MCVERSION/$1.mpm" | grep 'version' | egrep -o '[0-9*]')"
         if [ "$OLDVERSION" = "$NEWVERSION" ]; then
             echo "newest version of $1 already installed"
             return 0
@@ -37,7 +37,7 @@ mpm() {
     fi
 
     #download metadata
-    curl "$MPMLINK/plugins/$1.mpm" >"$1.mpm"
+    curl "$MPMLINK/plugins/$MCVERSION/$1.mpm" >"$1.mpm"
 
     #check if the plugin exists
     if ! grep 'describe' <"$1.mpm"; then
@@ -49,5 +49,16 @@ mpm() {
     if grep "$SPIGOTVERSION" <"$1.mpm"; then
         echo "version check sucessful"
     fi
+    wget "$MPMLINK/plugins/$MCVERSION/$1.jar"
+    echo "installed $1.jar"
+
+    if grep 'depend' <"$1.mpm"; then
+        DPENDENCIES="$(grep 'depend' <$1.mpm)"
+        for i in "$DPENDENCIES"; do
+            echo "installing dependency $i"
+        done
+    fi
+    ß
+    cd ..
 
 }

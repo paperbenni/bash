@@ -46,12 +46,12 @@ pb() {
         ;;
     esac
 
-    if echo "$PAPERLIST" | grep "$1"; then
+    if echo "$PAPERLIST" | grep "$1 "; then
         echo "$1 already imported"
         return 0
     fi
 
-    PAPERLIST=$"$PAPERLIST\n$1"
+    PAPERLIST=$"$PAPERLIST $1 "
 
     if [ "$PAPERENABLE" = "false" ]; then
         echo "done, exiting"
