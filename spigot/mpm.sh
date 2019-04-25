@@ -4,6 +4,17 @@ pname spigot/mpm
 
 mpm() {
 
+    if [ "$1" = "-f" ]; then
+        if [ -e "mpmfile" ]; then
+            for i in "$(cat mpmfile)"; do
+                mpm "$i"
+            done
+        else
+            echo "put your plugin names in mpmfile"
+        fi
+        return 0
+    fi
+
     pb spigot
 
     MPMLINK="https://raw.githubusercontent.com/paperbenni/mpm/master"
@@ -60,7 +71,7 @@ mpm() {
     echo "installed $1.jar"
 
     if grep 'depend' <"$1.mpm"; then
-      echo "plugin needs dependencies"
+        echo "plugin needs dependencies"
         DPENDENCIES="$(grep 'depend' <$1.mpm)"
         cd ../
         for i in "$DPENDENCIES"; do
