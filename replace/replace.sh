@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-paname replace/replace
+pname replace/replace
 # removes the last line from a file
 rmlast() {
     RMTIMES="${2:-1}"

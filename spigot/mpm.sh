@@ -6,9 +6,10 @@ mpm() {
 
     if [ "$1" = "-f" ]; then
         if [ -e "mpmfile" ]; then
-            for i in "$(cat mpmfile)"; do
-                mpm "$i"
-            done
+            while read p; do
+                mpm "$p"
+                echo "$p"
+            done <mpmfile
         else
             echo "put your plugin names in mpmfile"
         fi

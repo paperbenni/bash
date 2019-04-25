@@ -64,16 +64,14 @@ pb() {
         return 0
     fi
 
-    if echo "$1" | grep '.sh'; then
-        PAPERPACKAGE="$1"
-    else
-        if echo "$1" | grep '/'; then
-            PAPERPACKAGE="$1.sh"
-        else
-            PAPERPACKAGE="$1/$1.sh"
-        fi
+    PAPERPACKAGE="$1"
+    if ! echo "$PAPERPACKAGE" | grep '/'; then
+        PAPERPACKAGE="$PAPERPACKAGE/$PAPERPACKAGE"
     fi
-
+    if ! echo "$PAPERPACKAGE" | grep '\.sh'; then
+        PAPERPACKAGE="$PAPERPACKAGE.sh"
+    fi
+    echo "$PAPERPACKAGE"
     if echo "$PAPERLIST" | grep "${PAPERPACKAGE%.sh} "; then
         echo "$1 already imported"
         return 0
@@ -90,7 +88,7 @@ pb() {
             echo "using $PAPERPACKAGE from cache"
         fi
 
-        if grep 'pname' <"~/pb/$PAPERPACKAGE"; then
+        if cat ~/pb/"$PAPERPACKAGE" | grep 'pname'; then
             echo "script is valid"
             source ~/pb/"$PAPERPACKAGE"
         else
