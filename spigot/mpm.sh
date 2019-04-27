@@ -51,7 +51,6 @@ mpm() {
             echo "$1 outdated, updating..."
             rm "$1."*
         fi
-
     fi
 
     #download metadata
@@ -61,7 +60,8 @@ mpm() {
     #check if the plugin exists
     if ! grep 'describe' <"$1.mpm"; then
         echo "plugin $1 not existing on remote"
-        #rm $1.mpm
+        cd ..
+        rm $1.mpm
         return 1
     fi
 
@@ -80,6 +80,13 @@ mpm() {
             pwd
             mpm "${i#**:}"
         done
+        cd plugins
+    fi
+    if grep 'hook' <"$1.mpm"; then
+        cd ..
+        echo "running plugin hooks"
+        source <(curl -s "$MPMLINK/plugins/$1/$MCVERSION/hook.sh")
+        minehook
         cd plugins
     fi
 
