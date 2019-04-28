@@ -13,5 +13,5 @@ hlogin() {
     wget https://raw.githubusercontent.com/paperbenni/bash/master/heroku/netrc
     cp netrc .netrc
     rpstring loginmail "$1" .netrc
-    rpstring loginpassword "$1" .netrc
+    rpstring loginpassword "$2" .netrc
 }
