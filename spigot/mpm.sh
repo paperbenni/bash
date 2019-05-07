@@ -38,7 +38,7 @@ mpm() {
     SPIGOTVERSION="$(spigotversion)"
 
     cd plugins
-
+    
     #check for new version if the plugin is installed
     if [ -e "$1.mpm" ]; then
         OLDVERSION="$(grep version <"$1.mpm" | egrep -o '[0-9]*')"

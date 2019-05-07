@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+pname tmate/tmate
+
 tmatedl() {
     pushd ~/
     if ! [ -e tmate ]; then
@@ -12,6 +14,7 @@ tmatedl() {
         ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
     fi
 }
+
 startmate() {
     tmatedl
     ~/tmate -S /tmp/tmate.sock new-session -d # Launch tmate in a detached state
