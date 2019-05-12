@@ -109,8 +109,7 @@ spigotversion() {
     fi
     #example content: {"currentVersion":"git-Paper-610 (MC: 1.13.2)"}
     cat version_history.json | grep 'currentVersion' |
-        egrep -o '[0-9].[0-9]{2}.[0-9]' |
-        egrep -m 1 -o '[0-9].[0-9]{2}'
+        egrep -m 1 -o '[0-9]\.[0-9]{2}'
 }
 
 spigotserveo() {
