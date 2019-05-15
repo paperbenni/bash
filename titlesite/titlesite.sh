@@ -6,10 +6,12 @@ pname titlesite/titlesite
 titlesite() {
     pb git
     pb replace
-    gitfolder paperbenni/titlesites "$1"
-    mv "$1" "$2"
-    cd "$2"
-    rpstring "titleplace" "$3" index.html
-    rpstring "subplace" "$4" index.html
+    TITLETEMPLATE=${1:-glitch}
+    TITLEDEST=${2:quark}
+    gitfolder paperbenni/titlesites "$TITLETEMPLATE"
+    mv "$TITLETEMPLATE" "$TITLEDEST"
+    cd "$TITLEDEST"
+    rpstring "titleplace" "${3:-titletemplate}" index.html
+    rpstring "subplace" "${4:-titlesubtitle}" index.html
     cd ..
 }
