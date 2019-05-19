@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
+pname heroku/title
+
 herokutitle() {
 
     if [ -z "$PORT" ]; then
         echo "$PORT not found"
         return 0
     fi
-    
+
     pb titlesite
     titlesite glitch quark "$1" "$2"
 
