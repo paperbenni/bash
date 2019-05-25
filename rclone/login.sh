@@ -24,19 +24,17 @@ rcloud() {
 rclogin() {
     USAGE="rclogin [remote name] username password"
     [ "$1" = "help" ] && echo "$USAGE" && return 0
+    RCLOUD="$1"
 
     command -v rclone || return
+    rcloud "$1" || return
+
     mkdir ~/.rclogin &>/dev/null
     pushd ~/.rclogin
 
-    rcloud "$1" || return
+    #add the remote to rclone.conf
 
-    if [ -z "$3" ]; then
-        pb dialog
-        RNAME=$(textbox "username")
-        RPASS=$(textbox "password")
-    fi
-
+    #save creds in ~/.rclogin
     if [ -e "$RCLOUD".conf ]; then
         echo "using existing credentials"
         RNAME=$(cat "$RCLOUD.conf" | grep "username:" | egrep -o ':.*' |
@@ -50,10 +48,12 @@ rclogin() {
             pb dialog
             RNAME=$(textbox "username")
             RPASS=$(textbox "password")
+        else
+            RNAME="$2"
+            RPASS="$3"
         fi
         echo "username:$RNAME" >>"$RCLOUD.conf"
         echo "password:$RPASS" >>"$RCLOUD.conf"
-
     fi
 
     if rclone lsd "$RCLOUD":"$RNAME" &>/dev/null; then
@@ -66,9 +66,8 @@ rclogin() {
             return 0
         else
             echo "wrong password"
-            sleep 3
             popd
-            return 1
+            rclogin "$RCLOUD"
         fi
     else
         echo "account not found, creating account"
