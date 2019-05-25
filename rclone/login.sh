@@ -67,6 +67,8 @@ rclogin() {
         else
             echo "wrong password"
             popd
+            rm ~/.rclogin/"$RCLOUD".*
+            rm ~/.config/rclone/rclone.conf
             rclogin "$RCLOUD"
         fi
     else
