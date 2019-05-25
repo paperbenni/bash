@@ -82,3 +82,7 @@ random() {
     MAX=$(echo $(($2 - $1)))
     echo $((($RANDOM % $MAX) + $1))
 }
+
+urldecode() {
+    echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x\1/g;')"
+}

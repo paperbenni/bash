@@ -87,3 +87,27 @@ function openrom() {
     esac
 
 }
+
+function repoload() {
+    # $1 is the link
+    # $2 is the repo file name
+    # $3 is the system name
+    # $4 is the file extension
+    rm "$2".txt
+    echo "updating $(echo $1 | urldecode) repos"
+
+    curl https://the-eye.eu/public/rom/$1/ >"$2".2.tmp
+    if ! grep "z64" <"$2.2.tmp"; then
+        curl http://the-eye.eu/public/rom/$1/ >"$2".2.tmp
+    fi
+
+    #decodes spaces and other characters from html links
+    sed -n 's/.*href="\([^"]*\).*/\1/p' "$2".2.tmp >"$2.tmp"
+    rm "$2.2.tmp"
+    cat "$2".tmp | urldecode >"$2".txt
+    rm "$2".tmp
+    # add the link prefix as the last line
+    echo "https://the-eye.eu/public/rom/$1/" >>"$2".txt
+    sleep 1
+
+}
