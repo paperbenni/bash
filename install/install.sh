@@ -19,6 +19,7 @@ altinstall() {
                 IFS="$ALTIFS"
             else
                 echo "installing $ARGUMENT"
+                command -v "$ARGUMENT" && return
                 eval "sudo $PKGMANAGER $ARGUMENT" >/dev/null
             fi
         done
