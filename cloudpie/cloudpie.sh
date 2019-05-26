@@ -116,3 +116,19 @@ function repoload() {
     sleep 1
 
 }
+
+function romupdate() {
+
+    mkdir -p ~/cloudpie/repos
+    pushd ~/cloudpie/repos
+
+    repoload 'Nintendo%2064/Roms' n64
+    repoload 'SNES' snes
+    repoload 'Playstation/Games/NTSC' psx
+    repoload 'Nintendo%20Gameboy%20Advance' gba
+    repoload 'Nintendo%20DS' ds
+    repoload 'NES' nes
+    repoload 'Nintendo%20Gameboy%20Color' gbc
+
+    popd
+}
