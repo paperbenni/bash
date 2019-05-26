@@ -32,6 +32,10 @@ rpstring() {
     fi
 }
 
+rmstring() {
+    sed -i '/'"$1"'/d' ./"$2"
+}
+
 insertat() {
     sed -i -e "/$1/a $2" $3
     sed -i '/removeme/d' "$3"

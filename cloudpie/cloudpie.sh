@@ -93,6 +93,7 @@ function repoload() {
     # $2 is the repo file name
     # $3 is the system name
     # $4 is the file extension
+    pb replace
     rm "$2".txt
     echo "updating $(echo $1 | urldecode) repos"
 
@@ -106,6 +107,10 @@ function repoload() {
     rm "$2.2.tmp"
     cat "$2".tmp | urldecode >"$2".txt
     rm "$2".tmp
+
+    rmstring 'https' "$2.txt"
+    rmstring '\.\.\/' "$2.txt"
+
     # add the link prefix as the last line
     echo "https://the-eye.eu/public/rom/$1/" >>"$2".txt
     sleep 1
