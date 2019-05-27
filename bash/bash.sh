@@ -30,7 +30,7 @@ gitget() {
 
 # create and cd into dir
 mkcd() {
-    mkdir "$1" &> /dev/null
+    mkdir "$1" &>/dev/null
     cd "$1" || echo "problem creating the dir"
 }
 
@@ -62,7 +62,6 @@ yess() {
     done
 }
 
-
 loop() {
     if [ "$1" -eq "$1" ]; then
         LOOPI="$1"
@@ -85,4 +84,22 @@ random() {
 
 urldecode() {
     echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x\1/g;')"
+}
+
+urlencode() {
+    local string="${1}"
+    local strlen=${#string}
+    local encoded=""
+    local pos c o
+
+    for ((pos = 0; pos < strlen; pos++)); do
+        c=${string:$pos:1}
+        case "$c" in
+        [-_.~a-zA-Z0-9]) o="${c}" ;;
+        *) printf -v o '%%%02x' "'$c" ;;
+        esac
+        encoded+="${o}"
+    done
+    echo "${encoded}"  # You can either set a return variable (FASTER)
+    REPLY="${encoded}" #+or echo the result (EASIER)... or both... :p
 }
