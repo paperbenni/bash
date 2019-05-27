@@ -46,8 +46,9 @@ rclogin() {
     else
         if [ -z "$3" ]; then
             pb dialog
-            RNAME=$(textbox "username")
-            RPASS=$(textbox "password")
+            pb dialog/dmenu
+            RNAME=$(dtext "username")
+            RPASS=$(dtext "password")
         else
             RNAME="$2"
             RPASS="$3"

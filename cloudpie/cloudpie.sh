@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 pname cloudpie/cloudpie
-
+pb bash
 #exits if arg is null
 function zerocheck() {
     if [ -z "$1" ]; then
@@ -94,10 +94,10 @@ function repoload() {
     # $3 is the system name
     # $4 is the file extension
     pb replace
-    rm "$2".txt
+    rm "$2".txt &> /dev/null
     echo "updating $(echo $1 | urldecode) repos"
 
-    curl https://the-eye.eu/public/rom/$1/ >"$2".2.tmp
+    curl http://the-eye.eu/public/rom/$1/ >"$2".2.tmp
     if ! grep "z64" <"$2.2.tmp"; then
         curl http://the-eye.eu/public/rom/$1/ >"$2".2.tmp
     fi
@@ -112,7 +112,7 @@ function repoload() {
     rmstring '\.\.\/' "$2.txt"
 
     # add the link prefix as the last line
-    echo "https://the-eye.eu/public/rom/$1/" >>"$2".txt
+    echo "http://the-eye.eu/public/rom/$1/" >>"$2".txt
     sleep 1
 
 }
@@ -129,6 +129,5 @@ function romupdate() {
     repoload 'Nintendo%20DS' ds
     repoload 'NES' nes
     repoload 'Nintendo%20Gameboy%20Color' gbc
-
     popd
 }

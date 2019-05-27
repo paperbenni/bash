@@ -30,7 +30,7 @@ gitget() {
 
 # create and cd into dir
 mkcd() {
-    mkdir "$1" || echo "dir already exists"
+    mkdir "$1" &> /dev/null
     cd "$1" || echo "problem creating the dir"
 }
 

@@ -19,3 +19,7 @@ dsudo() {
     test -n "$SUDOPASS" || SUDOPASS=$(echo '' | dmenu -p "sudo password")
     printf "$SUDOPASS" | sudo -S "$@"
 }
+
+dtext() {
+    echo '' | dmenu -p "$1"
+}
