@@ -18,3 +18,12 @@ hlogin() {
     rpstring loginpassword "$2" .netrc
     cat .netrc
 }
+
+isheroku() {
+    if [ -n "$HEROKU_APP_NAME" ]; then
+        echo "heroku detected"
+        return 0
+    else
+        return 1
+    fi
+}
