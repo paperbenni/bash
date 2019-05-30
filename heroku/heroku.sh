@@ -24,6 +24,7 @@ isheroku() {
         echo "heroku detected"
         return 0
     else
+        echo "not running in heroku"
         return 1
     fi
 }
