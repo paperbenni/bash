@@ -3,35 +3,22 @@ pname cloudpie/vimm
 
 function vimm() {
     curl 'https://vimm.net/vault/?p=details&id='"$1" >vimm.txt
-    DLID1=$(getvimm 1 "vimm.txt")
-    DLID2=$(getvimm 2 "vimm.txt")
+    DLID1=$(getvimm "vimm.txt" 1)
+    DLID2=$(getvimm "vimm.txt" 2)
     DLLINK='https://download2.vimm.net/download.php?id='"$1"'&t1='"$DLID1"'&t2='"$DLID2"
-    if [ "$2" = "s" ]; then
-        echo "$DLLINK"
-        return
-    fi
 
-    pb proton/proton.sh
     pb wget/fakebrowser.sh
     pb unpack/unpack.sh
-    proton
     sleep 1
     fakebrowser "$DLLINK"
-    sudo pvpn -d
-    unpack $(ls -tp | grep -v /$ | head -1)
+    unpackdir
 }
 
 function getvimm() {
-    if [ "$1" = "1" ]; then
-        ID1=$(egrep '^<tr>' <"$2" | egrep -o 'name="t1" value=".*"><input')
-    else
-        ID1=$(egrep '^<tr>' <"$2" | egrep -o 'name="t2" value=".*"><table')
-    fi
-    ID2=${ID1%\"*}
-    ID1=${ID2##*=\"}
-    echo "$ID1"
+    cat "$1" | egrep -o "=\"t$2\""' value="[0-9a-z]*"' | sort -u | egrep -o '[a-z0-9]{6,}'
 }
 
+#https://download1.vimm.net/download.php?id=7606&t1=4d190be365b3660a305c91802f9726ce&t2=01d459a08461d23ff323621e0db2094f&download=Download
 function curlvimm() {
     rm "$1".txt "$1"id.txt "$1"name.txt
 
@@ -39,16 +26,6 @@ function curlvimm() {
     for CHARACTER in {a..z}; do
         curl 'https://vimm.net/vault/?p=list&system='"$1"'&section='"$CHARACTER" >>"$1"2.txt
     done
-    grep "onMouseOver" <"$1"2.txt >"$1".txt
-    rm "$1"2.txt
-    while read p; do
-        TEMPID=$(echo "$p" | egrep -o 'id=[0-9]*" onMouseOver' | egrep -o '[0-9]*')
-        TEMPNAME=$(echo "$p" | egrep -o ')">.*</a></td><td style')
-        TEMPNAME2=${TEMPNAME#*>}
-        TEMPNAME=${TEMPNAME2%%<*}
 
-        echo "$TEMPNAME:$TEMPID" >>SNESf.txt
-
-    done <"$1"2.txt
-    egrep '.:' <SNESf.txt >SNES.txt
+    cat "$1"2.txt | egrep -i 'mouse' | egrep -o '>[^<>/]{6,}</a' | egrep -o '[^>].*' | egrep -o '.*[^</a]' >"$1.txt"
 }

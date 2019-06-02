@@ -103,3 +103,9 @@ urlencode() {
     echo "${encoded}"  # You can either set a return variable (FASTER)
     REPLY="${encoded}" #+or echo the result (EASIER)... or both... :p
 }
+
+function zerocheck() {
+    if [ -z "$1" ]; then
+        exit
+    fi
+}

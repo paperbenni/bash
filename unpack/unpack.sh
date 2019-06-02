@@ -37,7 +37,7 @@ unpack() {
         *.Z) uncompress "$1" ;;
         *.7z) 7z x "$1" ;;
         *)
-            echo "'$1' cannot be extracted via extract()"
+            echo "$1 is not an archive"
             return 0
             ;;
         esac
@@ -49,4 +49,30 @@ unpack() {
     if [ "$2" = "rm" ]; then
         rm "$1"
     fi
+}
+
+unpackdir() {
+    pushd "$1"
+    for i in ./*; do
+        case "$i" in
+        *.tar.bz2) tar xjf "$i" ;;
+        *.tar.gz) tar xzf "$i" ;;
+        *.tar.xz) tar xvf "$i" ;;
+        *.bz2) bunzip2 "$i" ;;
+        *.rar) unrar e "$i" ;;
+        *.gz) gunzip "$i" ;;
+        *.tar) tar xf "$i" ;;
+        *.tbz2) tar xjf "$i" ;;
+        *.tgz) tar xzf "$i" ;;
+        *.zip) unzip "$i" ;;
+        *.Z) uncompress "$i" ;;
+        *.7z) 7z x "$i" ;;
+        *)
+            echo "$i is not an archive"
+            continue
+            ;;
+        esac
+        rm "$i"
+    done
+    popd
 }
