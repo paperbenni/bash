@@ -11,3 +11,8 @@ regexfilter() {
         mv "$FILE.1" "$FILE"
     done
 }
+
+betweenquotes(){
+  QUOTE=${2:-\"}
+  egrep -o "$QUOTE"'.*'"$QUOTE" | egrep -o "[^$QUOTE]*"
+}
