@@ -71,13 +71,15 @@ getgrok() {
         NGROKWEBPORT=8080
     fi
 
-    curl localhost:$NGROKWEBPORT || (echo "web interface not found, exiting" && return 1)
-
-    if [ -n "$1" ]; then
-        NGROKPROTOCOLL="$1"
-    fi
-
-    curl localhost:$NGROKWEBPORT/api/tunnels | grep -oP "$NGROKPROTOCOLL"'://.*?:[0-9]*'
+    curl localhost:$NGROKWEBPORT &>/dev/null || (echo "web interface not found, exiting" && return 1)
+    case "$NGROKPROTOCOLL" in
+    tcp)
+        curl localhost:$NGROKWEBPORT/api/tunnels | grep 'ngrok' | grep -oP 'tcp://.*?:[0-9]*'
+        ;;
+    http*)
+        curl localhost:$NGROKWEBPORT/api/tunnels | egrep -o 'http.://[a-z0-9]*\.ngrok\.io'
+        ;;
+    esac
 
 }
 
