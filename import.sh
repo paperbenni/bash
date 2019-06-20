@@ -105,3 +105,5 @@ pb() {
 pname() {
     PAPERLIST="$PAPERLIST $1 "$'\n'
 }
+
+pb bash

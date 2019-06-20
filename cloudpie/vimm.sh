@@ -7,8 +7,8 @@ function vimm() {
     DLID2=$(getvimm "vimm.txt" 2)
     DLLINK='https://download2.vimm.net/download.php?id='"$1"'&t1='"$DLID1"'&t2='"$DLID2"
 
-    pb wget/fakebrowser.sh
-    pb unpack/unpack.sh
+    pb wget/fakebrowser
+    pb unpack
     sleep 1
     fakebrowser "$DLLINK"
     unpackdir

@@ -109,3 +109,5 @@ function zerocheck() {
         exit
     fi
 }
+
+echoerr() { echo "$@" 1>&2; }

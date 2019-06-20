@@ -12,7 +12,7 @@ spigotdl() {
     fi
 
     if ! java -version; then
-        pb install/install.sh
+        pb install
         pinstall openjdk-8-jre:openjdk8:jdk8-openjdk curl
     fi
 
@@ -76,7 +76,7 @@ spigoautostop() {
 spigotautorestart() {
     ls ./plugins || return 1
 
-    pb replace/replace.sh
+    pb replace
     pb spigot/mpm
     mpm autorestart
 

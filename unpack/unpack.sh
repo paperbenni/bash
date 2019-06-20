@@ -18,7 +18,7 @@ unpack() {
 
     CHECKSTAT="$?"
     if ! [ "$CHECKSTAT" = 0 ]; then
-        pb install/install.sh
+        pb install
         pinstall tar unzip unrar
     fi
 

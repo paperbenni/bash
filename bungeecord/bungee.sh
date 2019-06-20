@@ -3,7 +3,7 @@ pname bungee/bungee
 
 bungeedl() {
     if ! java -version; then
-        pb install/install.sh
+        pb install
         pinstall openjdk-8-jre:openjdk8:jdk8-openjdk curl
     fi
     if [ -e bungeecord.jar ]; then
@@ -16,7 +16,7 @@ bungeedl() {
 }
 
 bungeeadd() {
-    pb replace/replace.sh
+    pb replace
     insertat "servers:" "removeme\n  $1:\n    motd: $2\n    adress: $3\n    restricted: false" config.yml
 
 }

@@ -6,7 +6,7 @@ source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import
 # installs, logs in and connects to ProtonVPN
 proton() {
     if ! sudo --version &>/dev/null; then
-        pb sudo/fakesudo.sh
+        pb sudo/fakesudo
     fi
 
     mkdir -p ~/.proton
@@ -19,7 +19,7 @@ proton() {
         command -v pvpn
         command -v expect
     ); then
-        pb install/install.sh
+        pb install
         pinstall python openvpn dialog wget expect iptables
         sudo wget -O protonvpn-cli.sh https://raw.githubusercontent.com/ProtonVPN/protonvpn-cli/master/protonvpn-cli.sh -q --show-progress
         sudo chmod +x protonvpn-cli.sh

@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 pname cloudpie/cloudpie
-pb bash
-#exits if arg is null
-function zerocheck() {
-    if [ -z "$1" ]; then
-        exit
-    fi
-}
 
 #edits an option in retroarch.cfg
 function changeconf() {

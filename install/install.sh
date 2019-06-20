@@ -35,7 +35,7 @@ pinstall() {
 
     if ! command -v sudo &>/dev/null; then
         source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
-        pb sudo/fakesudo.sh
+        pb sudo/fakesudo
     fi
 
     if [ -z "$1" ]; then

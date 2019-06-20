@@ -36,8 +36,7 @@ mcop() {
         return
     fi
 
-    pb replace/replace.sh
-    pb bash/bash.sh
+    pb replace
 
     if grep 'online-mode=true' <server.properties; then
         UUID=$(mineuuid "$1")

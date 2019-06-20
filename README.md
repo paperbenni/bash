@@ -17,11 +17,12 @@ source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import
 ```
 
 Then do the following to import functions into your script
-
+*pb* supports the following three types of syntax
 ```sh
 #here are a few examples
-pb unpack/unpack.sh
-pb rclone/login.sh
+pb unpack # just the name if there are no other scripts in the category
+pb rclone/login.sh # full name with file extension
+pb spigot/op # full name without file extension
 
 #lets try them out
 unpack
