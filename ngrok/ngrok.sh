@@ -63,11 +63,21 @@ rungrok() {
 
 #gets your ngrok adress into stdout
 getgrok() {
-    NGROKPROTOCOLL="tcp"
+    NGROKPROTOCOLL="${1:-tcp}"
+    NGROKWEBPORT=4040
+    echo "trying 4040"
+    if ! curl localhost:4040; then
+        echo "switching ngrok to 8080"
+        NGROKWEBPORT=8080
+    fi
+
+    curl localhost:$NGROKWEBPORT || (echo "web interface not found, exiting" && return 1)
+
     if [ -n "$1" ]; then
         NGROKPROTOCOLL="$1"
     fi
-    curl localhost:4040/api/tunnels | grep -oP "$NGROKPROTOCOLL"'://.*?:[0-9]*'
+
+    curl localhost:$NGROKWEBPORT/api/tunnels | grep -oP "$NGROKPROTOCOLL"'://.*?:[0-9]*'
 
 }
 
