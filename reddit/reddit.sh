@@ -1,23 +1,26 @@
 #!/usr/bin/env bash
 pname reddit/reddit
+pb grep
 
 rdsubmissions() {
 
     PUSHSHIFT="https://api.pushshift.io/reddit/submission/search/?subreddit"
     curl "$PUSHSHIFT=$1&num_comments=>100&sort=desc&filter=created_utc,id,title,score&size=1000" >push.txt
 
-    RDCOUNT=$(( $1 / 7000 ))
+    RDLIMIT=${2:-1000}
+    RDCOUNT=$(($RDLIMIT / 2000))
+    echo "fetching $RDCOUNT pages"
     #get the last time
-    for ((i = 0; i < 10; i++)); do
+    for i in $(seq $RDCOUNT); do
         #statements
         LASTTIME=$(cat push.txt | tail -8 | grep '"created_utc"' | egrep -o '[0-9]*')
-        echo "$LASTTIME"
-        curl "$PUSHSHIFT=$1&num_comments=>100&sort=desc&filter=created_utc,id,title,score&size=1000&before=$LASTTIME" >>push.txt
+        echo "after $LASTTIME"
+        curl "$PUSHSHIFT=$1&num_comments=>10&sort=desc&filter=created_utc,id,title,score&size=1000&before=$LASTTIME" >>push.txt
+        sleep 1
     done
 }
 
 rdid() {
-    pb grep
     cat "$1" | egrep '"id"' | egrep -o ':.*' | betweenquotes >"$2.2"
     sort -u "$2.2" >"$2"
     rm "$2.2"
