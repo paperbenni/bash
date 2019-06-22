@@ -40,3 +40,9 @@ insertat() {
     sed -i -e "/$1/a $2" $3
     sed -i '/removeme/d' "$3"
 }
+
+removepresent() {
+    mv "$2" "$2.2"
+    awk 'NR==FNR{a[$0];next} !($0 in a)' "$1" "$2.2" >"$2"
+    rm "$2.2"
+}

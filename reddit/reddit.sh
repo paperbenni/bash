@@ -5,6 +5,8 @@ rdsubmissions() {
 
     PUSHSHIFT="https://api.pushshift.io/reddit/submission/search/?subreddit"
     curl "$PUSHSHIFT=$1&num_comments=>100&sort=desc&filter=created_utc,id,title,score&size=1000" >push.txt
+
+    RDCOUNT=$(( $1 / 7000 ))
     #get the last time
     for ((i = 0; i < 10; i++)); do
         #statements

@@ -15,7 +15,7 @@ herokutitle() {
         echo "checking web server"
         if ! curl 0.0.0.0:$PORT | grep "$1"; then
             echo "web server not found, starting httpd"
-            if busybox httpd --version | grep 'applet not found'; then
+            if command -v httpd; then
                 httpd -p 0.0.0.0:"$PORT" -h quark
             else
                 busybox httpd -p 0.0.0.0:"$PORT" -h quark
