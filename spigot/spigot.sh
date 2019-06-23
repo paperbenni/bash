@@ -22,8 +22,8 @@ spigotdl() {
         wget "https://raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.jar"
     fi
 
-    test -e server-icon.png || \
-	    wget "https://raw.githubusercontent.com/paperbenni/paperbenni.github.io/master/paperbenni64.png"
+    test -e server-icon.png ||
+        wget "https://raw.githubusercontent.com/paperbenni/paperbenni.github.io/master/paperbenni64.png"
     mv paperbenni64.png server-icon.png
     cat eula.txt || echo "eula=true" >eula.txt #accept eula
 
@@ -108,7 +108,7 @@ spigotversion() {
         return 1
     fi
     #example content: {"currentVersion":"git-Paper-610 (MC: 1.13.2)"}
-    cat version_history.json | grep 'currentVersion' |
+    grep 'currentVersion' <version_history.json |
         egrep -m 1 -o '[0-9]\.[0-9]{2}'
 }
 

@@ -98,7 +98,7 @@ function repoload() {
     #decodes spaces and other characters from html links
     sed -n 's/.*href="\([^"]*\).*/\1/p' "$2".2.tmp >"$2.tmp"
     rm "$2.2.tmp"
-    cat "$2".tmp | urldecode >"$2".txt
+    urldecode < "$2".tmp >"$2".txt
     rm "$2".tmp
 
     rmstring 'https' "$2.txt"

@@ -4,7 +4,7 @@ pname dialog/dmenu
 dconfirm() {
     echo "yes" >~/.doptions
     echo "no" >>~/.doptions
-    CHOICE=$(cat ~/.doptions | dmenu)
+    CHOICE=$(dmenu < ~/.doptions)
     case "$CHOICE" in
     yes)
         return 0
