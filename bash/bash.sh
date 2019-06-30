@@ -10,6 +10,8 @@ app() {
     fi
     if [ -e "$APPENDFILE" ]; then
         echo "$1" >>"$APPENDFILE"
+    else
+        echo "file $APPENDFILE not found"
     fi
 }
 
@@ -110,6 +112,16 @@ function zerocheck() {
             exit
         fi
     done
+}
+
+phelp() {
+    if [ "$1" = "--help" ]; then
+        echo "$2"
+        return 1
+    else
+        return 0
+    fi
+
 }
 
 echoerr() { echo "$@" 1>&2; }

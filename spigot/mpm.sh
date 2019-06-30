@@ -95,9 +95,10 @@ mpm() {
 }
 
 mpupdate() {
+    phelp "$1" "usage: mpupdate filename pluginname mcversion" || return 0
     MCPATH="$HOME/workspace/mpm/plugins/$2/1.$3/"
     zerocheck "$1" "$2" "$3"
-
+    test -e "$1" || (echo "file $1 not found!" && return 0)
     #clone if mpm does not exist locally
     if ! [ -e ~/workspace/mpm/.git ]; then
         pushd ~
@@ -117,11 +118,12 @@ mpupdate() {
         fi
     fi
 
-    test -e ~/workspace/mpm/plugins/"$2" || mkdir -p ~/workspace/mpm/plugins/"$2"
+    test -e ~/workspace/mpm/plugins/"$2" || mkdir -p ~/workspace/mpm/plugins/"$2"/"1.$3"
     cp "$1" ~/workspace/mpm/plugins/"$2"/1."$3"/"$2".jar
     #generate a new mpm file
     pushd $MCPATH
     if ! [ -e "$2.mpm" ]; then
+        touch "$2.mpm"
         APPENDFILE="$2.mpm"
         app "version:1"
         app "mc:1.$3"
@@ -136,8 +138,11 @@ mpupdate() {
     else
         #update existing mpmfile
         MCVER=$(grep 'version:' <"$2.mpm" | egrep -o '[0-9]*')
-        echo "updating to version $MCVER"
-        sed -i 's/version:.*/'"version:$MCVER/g" $2.mpm
+        echo "updating to version $((MCVER + 1))"
+        sed -i 's/version:.*/'"version:$((MCVER + 1))/g" $2.mpm
+        cat "$2.mpm"
     fi
+    echo "updated $2"
+    popd
 
 }
