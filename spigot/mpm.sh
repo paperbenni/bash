@@ -96,7 +96,7 @@ mpm() {
 
 mpupdate() {
     phelp "$1" "usage: mpupdate filename pluginname mcversion" || return 0
-    MCPATH="$HOME/workspace/mpm/plugins/$2/1.$3/"
+    MCPATH="$HOME/workspace/mpm/plugins/$2/1.$3"
     zerocheck "$1" "$2" "$3"
     test -e "$1" || (echo "file $1 not found!" && return 0)
     #clone if mpm does not exist locally
@@ -110,12 +110,10 @@ mpupdate() {
 
     #compare hashes if there's no update
     if [ -e "$MCPATH/$2.jar" ]; then
-        HASH1=$(sha256sum "$MCPATH/$2.jar")
-        HASH2=$(sha256sum "$1")
-        if [ "$HASH1" = "$HASH2" ]; then
-            echo "files identical, exiting"
-            return 0
-        fi
+        pb hash
+        different "$1" "$MCPATH/$2.jar" || return 1
+    else
+        echo "no existing version found"
     fi
 
     test -e ~/workspace/mpm/plugins/"$2" || mkdir -p ~/workspace/mpm/plugins/"$2"/"1.$3"
