@@ -38,7 +38,7 @@ mpm() {
     SPIGOTVERSION="$(spigotversion)"
 
     cd plugins
-    
+
     #check for new version if the plugin is installed
     if [ -e "$1.mpm" ]; then
         OLDVERSION="$(grep version <"$1.mpm" | egrep -o '[0-9]*')"
@@ -91,5 +91,53 @@ mpm() {
     fi
 
     cd ..
+
+}
+
+mpupdate() {
+    MCPATH="$HOME/workspace/mpm/plugins/$2/1.$3/"
+    zerocheck "$1" "$2" "$3"
+
+    #clone if mpm does not exist locally
+    if ! [ -e ~/workspace/mpm/.git ]; then
+        pushd ~
+        mkdir workspace
+        cd workspace
+        git clone --depth=1 https://github.com/paperbenni/mpm.git
+        popd
+    fi
+
+    #compare hashes if there's no update
+    if [ -e "$MCPATH/$2.jar" ]; then
+        HASH1=$(sha256sum "$MCPATH/$2.jar")
+        HASH2=$(sha256sum "$1")
+        if [ "$HASH1" = "$HASH2" ]; then
+            echo "files identical, exiting"
+            return 0
+        fi
+    fi
+
+    test -e ~/workspace/mpm/plugins/"$2" || mkdir -p ~/workspace/mpm/plugins/"$2"
+    cp "$1" ~/workspace/mpm/plugins/"$2"/1."$3"/"$2".jar
+    #generate a new mpm file
+    pushd $MCPATH
+    if ! [ -e "$2.mpm" ]; then
+        APPENDFILE="$2.mpm"
+        app "version:1"
+        app "mc:1.$3"
+        pb dialog
+        app "describe:$(textbox description)"
+        messagebox "Add dependencies such as vault."
+        MCDEP=$(textbox "Enter none for no dependencies")
+        while ! [ "$MCDEP" = "none" ]; do
+            app "depend:$MCDEP"
+            MCDEP=$(textbox "Enter none to quit")
+        done
+    else
+        #update existing mpmfile
+        MCVER=$(grep 'version:' <"$2.mpm" | egrep -o '[0-9]*')
+        echo "updating to version $MCVER"
+        sed -i 's/version:.*/'"version:$MCVER/g" $2.mpm
+    fi
 
 }

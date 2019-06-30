@@ -105,9 +105,11 @@ urlencode() {
 }
 
 function zerocheck() {
-    if [ -z "$1" ]; then
-        exit
-    fi
+    for i in "$@"; do
+        if [ -z "$i" ]; then
+            exit
+        fi
+    done
 }
 
 echoerr() { echo "$@" 1>&2; }
