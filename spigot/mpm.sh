@@ -19,14 +19,9 @@ mpm() {
     pb spigot
 
     MPMLINK="https://raw.githubusercontent.com/paperbenni/mpm/master"
-
     echo "starting mpm"
-    if [ -e plugins ] && [ -e spigot.jar ]; then
-        echo "minecraft server found"
-    else
-        echo "minecraft server not found"
-        return 0
-    fi
+
+    checkspigot || return 1
 
     if [ -z "$2" ]; then
         MCVERSION="$(spigotversion)"

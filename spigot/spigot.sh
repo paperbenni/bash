@@ -107,11 +107,26 @@ spigotversion() {
         echo "version_history.json not found"
         return 1
     fi
+
     #example content: {"currentVersion":"git-Paper-610 (MC: 1.13.2)"}
-    grep 'currentVersion' <version_history.json |
-        egrep -m 1 -o '[0-9]\.[0-9]{2}'
+
+    cat version_history.json |
+        egrep -o 'currentVersion.*' |
+        egrep -o 'MC: 1\.[0-9]{1,}' |
+        egrep -o '1\.[0-9]{1,}'
+
 }
 
 spigotserveo() {
     nohup autossh -M 0 -R "$1":localhost:25565 serveo.net
+}
+
+checkspigot() {
+    if [ -e plugins ] && [ -e spigot.jar ]; then
+        echo "minecraft server found"
+        return 0
+    else
+        echo "minecraft server not found"
+        return 1
+    fi
 }
