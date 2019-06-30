@@ -116,7 +116,7 @@ mpupdate() {
         echo "no existing version found"
     fi
 
-    test -e ~/workspace/mpm/plugins/"$2" || mkdir -p ~/workspace/mpm/plugins/"$2"/"1.$3"
+    test -e ~/workspace/mpm/plugins/"$2"/"1.$3" || mkdir -p ~/workspace/mpm/plugins/"$2"/"1.$3"
     cp "$1" ~/workspace/mpm/plugins/"$2"/1."$3"/"$2".jar
     #generate a new mpm file
     pushd $MCPATH
