@@ -77,10 +77,10 @@ getgrok() {
         curl localhost:$NGROKWEBPORT/api/tunnels | grep 'ngrok' | grep -oP 'tcp://.*?:[0-9]*'
         ;;
     http)
-        curl localhost:$NGROKWEBPORT/api/tunnels | egrep -o 'http://[a-z0-9]*\.ngrok\.io'
+        curl localhost:$NGROKWEBPORT/api/tunnels | egrep -o 'http://[a-zA-Z0-9]*\.ngrok\.io'
         ;;
     https)
-        curl localhost:$NGROKWEBPORT/api/tunnels | egrep -o 'https://[a-z0-9]*\.ngrok\.io'
+        curl localhost:$NGROKWEBPORT/api/tunnels | egrep -o 'https://[a-zA-Z0-9]*\.ngrok\.io'
         ;;
     esac
 

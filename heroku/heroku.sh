@@ -20,7 +20,7 @@ hlogin() {
 }
 
 isheroku() {
-    if [ -n "$HEROKU_APP_NAME" ]; then
+    if [ -n "$HEROKU_APP_NAME" ] || [ -n "$HEROKU" ]; then
         echo "heroku detected"
         return 0
     else

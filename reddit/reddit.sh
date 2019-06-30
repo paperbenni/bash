@@ -11,7 +11,8 @@ rdsubmissions() {
     if [ $RDLIMIT -gt 2000 ]; then
         RDCOUNT=$(($RDLIMIT / 2000))
     else
-        RDCOUNT=2
+        echo "defaulting to 2 pages"
+        RDCOUNT=2 
     fi
 
     echo "fetching $RDCOUNT pages"
