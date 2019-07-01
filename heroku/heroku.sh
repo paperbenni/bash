@@ -9,13 +9,17 @@ hlogin() {
     echo "logging in $1"
     cd "$HOME"
     pwd
-    rm .netrc
-    pb replace
-    cat netrc ||
-        wget https://raw.githubusercontent.com/paperbenni/bash/master/heroku/netrc
-    cp netrc .netrc
-    rpstring loginmail "$1" .netrc
-    rpstring loginpassword "$2" .netrc
+    rm .netrc &>/dev/null
+    touch .netrc
+    HPSS=$(echo "$2" | sed 's/#/\\#/g')
+    
+    APPENDFILE='.netrc'
+    app 'machine api.heroku.com'
+    app "  login $1"
+    app "  password $HPSS"
+    app "machine git.heroku.com"
+    app "  login $1"
+    app "  password $HPSS"
     cat .netrc
 }
 
