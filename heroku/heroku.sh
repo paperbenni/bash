@@ -6,21 +6,14 @@ htime() {
 }
 
 hlogin() {
-    echo "logging in $1"
-    cd "$HOME"
-    pwd
-    rm .netrc &>/dev/null
-    touch .netrc
-    HPSS=$(echo "$2" | sed 's/#/\\#/g')
-    
-    APPENDFILE='.netrc'
-    app 'machine api.heroku.com'
-    app "  login $1"
-    app "  password $HPSS"
-    app "machine git.heroku.com"
-    app "  login $1"
-    app "  password $HPSS"
-    cat .netrc
+
+    test -e ~/hlogin.sh ||
+        (
+            curl "https://raw.githubusercontent.com/paperbenni/bash/master/heroku/login.sh" >~/hlogin.sh
+            chmod +x ~/hlogin.sh
+        )
+    ~/hlogin.sh "$1" "$2"
+
 }
 
 isheroku() {
