@@ -14,17 +14,17 @@ ngrokdl() {
         mv ngrok32 ngrok
     else
         wget ngrok.surge.sh/ngrok -q --show-progress
-
-        if [ "$1" = "nochmod" ]; then
-            echo "skipping chmod"
-        else
-            chmod +x "$HOME"/ngrok/ngrok
-            if ! "$HOME"/ngrok/ngrok --version; then
-                echo "failed"
-            fi
-            return 1
-        fi
     fi
+    if [ "$1" = "nochmod" ]; then
+        echo "skipping chmod"
+    else
+        chmod +x "$HOME"/ngrok/ngrok
+        if ! "$HOME"/ngrok/ngrok --version; then
+            echo "failed"
+        fi
+        return 1
+    fi
+
 }
 
 #finds and executes ngrok with the specified arguments
@@ -45,10 +45,10 @@ rungrok() {
     mkdir -p ~/.ngrok2
 
     while true; do
-        curl "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt" >./ngroktokens.txt
+        curl "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt" >$HOME/ngroktokens.txt
         rm ~/.ngrok2/ngrok.yml
-        exegrok authtoken $(shuf -n 1 ./ngroktokens.txt)
-        rm ./ngroktokens.txt
+        exegrok authtoken $(shuf -n 1 $HOME/ngroktokens.txt)
+        rm $HOME/ngroktokens.txt
         if ! [ -z "$PORT" ] && ! grep "$PORT" <~/.ngrok2/ngrok.yml; then
             echo "Setting ngrok port to $PORT"
             echo 'web_addr: 0.0.0.0:'"$PORT" >>~/.ngrok2/ngrok.yml

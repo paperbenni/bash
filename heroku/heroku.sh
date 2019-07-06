@@ -13,7 +13,10 @@ hlogin() {
             chmod +x ~/hlogin.sh
         )
     ~/hlogin.sh "$1" "$2"
-
+    if command -v docker; then
+        echo "logging in docker"
+        heroku container:login
+    fi
 }
 
 isheroku() {
