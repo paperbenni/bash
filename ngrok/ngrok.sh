@@ -25,6 +25,7 @@ ngrokdl() {
         return 1
     fi
 
+
 }
 
 #finds and executes ngrok with the specified arguments
@@ -49,7 +50,7 @@ rungrok() {
         rm ~/.ngrok2/ngrok.yml
         exegrok authtoken $(shuf -n 1 $HOME/ngroktokens.txt)
         rm $HOME/ngroktokens.txt
-        if ! [ -z "$PORT" ] && ! grep "$PORT" <~/.ngrok2/ngrok.yml; then
+        if [ -n "$PORT" ] && ! grep "$PORT" <~/.ngrok2/ngrok.yml; then
             echo "Setting ngrok port to $PORT"
             echo 'web_addr: 0.0.0.0:'"$PORT" >>~/.ngrok2/ngrok.yml
         fi
