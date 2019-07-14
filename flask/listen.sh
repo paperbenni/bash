@@ -5,10 +5,6 @@ pname flask/listen
 flisten() {
     # create the listener if it doesn't exist
     APPENDFILE="listener.py"
-    if cat listener.py | grep "${1}name"; then
-        echo "$1 already listening"
-        return 1
-    fi
 
     if ! [ -e listener.py ]; then
         if ! python3 -c 'import flask'; then
@@ -23,6 +19,11 @@ flisten() {
         app 'from flask import Flask, escape, request'
         app 'import os'
         app 'app = Flask(__name__)'
+    else
+        if cat listener.py | grep "${1}name"; then
+            echo "$1 already listening"
+            return 1
+        fi
     fi
 
     app "@app.route('/$1/<${1}name>')"
