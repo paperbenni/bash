@@ -37,13 +37,8 @@ ix() {
 
 #usage: ixlogin {username} {password}
 ixlogin() {
-    if [ -z "$2" ]; then
-        IXUSERNAME="paperbennitester"
-        IXPASSWORD="paperbennitester"
-    else
-        IXUSERNAME="$1"
-        IXPASSWORD="$2"
-    fi
+    IXUSERNAME=${1:-paperbennitester}
+    IXPASSWORD=${2:-paperbennitester}
     pushd $HOME
     echo "machine ix.io" >.netrc
     echo "    login $IXUSERNAME" >>.netrc
@@ -53,12 +48,8 @@ ixlogin() {
 }
 
 ixrun() {
-    if [ -z "$1" ]; then
-        IXCONTENT="test"
-    else
-        IXCONTENT="$1"
-    fi
 
+    IXCONTENT=${1:-test}
     if [ -d ~/ixid.txt ]; then
         rm -rf ~/ixid.txt
     fi
