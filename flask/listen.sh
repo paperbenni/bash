@@ -36,10 +36,16 @@ flisten() {
 }
 
 frun() {
+    FLASK_APP=${1:-listener.py}
+    PORT=${PORT:-5000}
+    if ! [ -e $FLAPP ]; then
+        echo "flask file $FLAPP not found"
+        return 1
+    fi
+
     while true; do
-        PORT=${PORT:-5000}
-        env FLASK_APP=$1 flask run --host=0.0.0.0 --port=$PORT
+        flask run --host=0.0.0.0 --port=$PORT
         echo "flask exited"
         sleep 2
-    done
+    done &
 }
