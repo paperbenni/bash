@@ -103,6 +103,17 @@ spigotautorestart() {
 }
 
 spigotversion() {
+
+    if [ -n "$MINECRAFTVERSION" ]; then
+        echo "$MINECRAFTVERSION"
+        return 0
+    fi
+
+    if [ -n "$HSPIGOT" ]; then
+        echo "$HSPIGOT"
+        return 0
+    fi
+
     if ! [ -e "version_history.json" ]; then
         echo "version_history.json not found"
         return 1
@@ -114,7 +125,6 @@ spigotversion() {
         egrep -o 'currentVersion.*' |
         egrep -o 'MC: 1\.[0-9]{1,}' |
         egrep -o '1\.[0-9]{1,}'
-
 }
 
 spigotserveo() {
