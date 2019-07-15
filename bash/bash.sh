@@ -65,7 +65,7 @@ yess() {
 }
 
 loop() {
-    if [ "$1" -eq "$1" ]; then
+    if [ "$1" -eq "$1" ] &> /dev/null; then
         LOOPI="$1"
         shift 1
         for i in $(seq "$LOOPI"); do

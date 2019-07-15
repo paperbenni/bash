@@ -128,7 +128,7 @@ spigotserveo() {
 }
 
 checkspigot() {
-    if [ -e plugins ] && [ -e spigot.jar ]; then
+    if [ -e plugins ] && [ -e usercache.json ]; then
         echo "minecraft server found"
         return 0
     else

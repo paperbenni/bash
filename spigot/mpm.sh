@@ -77,6 +77,7 @@ mpm() {
         done
         cd plugins
     fi
+    
     if grep 'hook' <"$1.mpm"; then
         cd ..
         echo "running plugin hooks"

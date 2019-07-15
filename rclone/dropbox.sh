@@ -5,7 +5,7 @@ addbox() {
         echo "usage: addbox [name] token"
         return 0
     fi
-
+    cd
     pb replace
     mkdir -p .config/rclone
     cd .config/rclone
