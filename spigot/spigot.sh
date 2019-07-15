@@ -5,12 +5,12 @@ pname spigot/spigot
 # downloads spigot into the current foder
 spigotdl() {
 
-    if [ -n "$1" ]; then
+    if echo "$1" | grep '1.'; then
         MC="$1"
     else
         MC="$(curl https://raw.githubusercontent.com/paperbenni/mpm/master/latest)"
     fi
-
+    echo "downloading minecraft version $MC"
     if ! java -version; then
         pb install
         pinstall openjdk-8-jre:openjdk8:jdk8-openjdk curl
@@ -41,11 +41,7 @@ spigexe() {
         java -jar spigot.jar
         return 0
     fi
-    if [ -n "$1" ]; then
-        spigotdl $1
-    else
-        spigotdl
-    fi
+    spigotdl "$1"
 
     if [ -z $2 ]; then
         java -Xmx500m -Xms500m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
@@ -119,7 +115,7 @@ spigotversion() {
         return 1
     fi
 
-    #example content: {"currentVersion":"git-Paper-610 (MC: 1.13.2)"}
+    #example content: {"currentVersion":"git-Paper-610 (MC: 1.xx.x)"}
 
     cat version_history.json |
         egrep -o 'currentVersion.*' |
