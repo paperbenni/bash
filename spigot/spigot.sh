@@ -8,29 +8,29 @@ spigotdl() {
     if echo "$1" | grep '1.'; then
         MC="$1"
     else
-        MC="$(curl https://raw.githubusercontent.com/paperbenni/mpm/master/latest)"
+        MC="$(curl -s https://raw.githubusercontent.com/paperbenni/mpm/master/latest)"
     fi
     echo "downloading minecraft version $MC"
     if ! java -version; then
         pb install
         pinstall openjdk-8-jre:openjdk8:jdk8-openjdk curl
     fi
-
+    echo "downloading https://raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.jar"
     if [ -e spigot.jar ]; then
         echo "spigot already existing!"
     else
-        wget "https://raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.jar"
+        wget -q "https://raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.jar"
     fi
 
     test -e server-icon.png ||
-        wget "https://raw.githubusercontent.com/paperbenni/paperbenni.github.io/master/paperbenni64.png"
+        wget -q "https://raw.githubusercontent.com/paperbenni/paperbenni.github.io/master/paperbenni64.png"
     mv paperbenni64.png server-icon.png
     cat eula.txt || echo "eula=true" >eula.txt #accept eula
 
-    test -e bukkit.yml || wget raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/bukkit.yml
-    test -e paper.yml || wget raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/paper.yml
-    test -e spigot.yml || wget raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.yml
-    test -e server.properties || wget raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/server.properties
+    test -e bukkit.yml || wget -q raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/bukkit.yml
+    test -e paper.yml || wget -q raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/paper.yml
+    test -e spigot.yml || wget -q raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.yml
+    test -e server.properties || wget -q raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/server.properties
     ls *.html &>/dev/null && rm *.html
 
 }

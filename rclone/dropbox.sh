@@ -9,7 +9,7 @@ addbox() {
     pb replace
     mkdir -p .config/rclone
     cd .config/rclone
-    curl https://raw.githubusercontent.com/paperbenni/bash/master/rclone/conf/dropbox.conf >>rclone.conf
+    curl -s https://raw.githubusercontent.com/paperbenni/bash/master/rclone/conf/dropbox.conf >>rclone.conf
     rpstring "dropname" "${2:-dropbox}" rclone.conf
     rpstring "droptoken" "$1" rclone.conf
 
