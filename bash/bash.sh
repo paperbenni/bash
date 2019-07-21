@@ -80,8 +80,8 @@ loop() {
 }
 
 random() {
-    MAX=$(echo $(($2 - $1)))
-    echo $((($RANDOM % $MAX) + $1))
+    MAX=$(($2 - $1))
+    echo $(((RANDOM % MAX) + $1))
 }
 
 urldecode() {

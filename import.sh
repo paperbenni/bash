@@ -88,7 +88,7 @@ pb() {
             echo "using $PAPERPACKAGE from cache"
         fi
 
-        if cat ~/pb/"$PAPERPACKAGE" | grep 'pname'; then
+        if grep 'pname' < ~/pb/"$PAPERPACKAGE"; then
             echo "script is valid"
             source ~/pb/"$PAPERPACKAGE"
         else
