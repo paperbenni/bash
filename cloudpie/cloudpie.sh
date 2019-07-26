@@ -87,26 +87,15 @@ function repoload() {
     # $3 is the system name
     # $4 is the file extension
     pb replace
-    rm "$2".txt &> /dev/null
+    rm "$2".txt &>/dev/null
     echo "updating $(echo $1 | urldecode) repos"
-
-    curl http://the-eye.eu/public/rom/$1/ >"$2".2.tmp
-    if ! grep "z64" <"$2.2.tmp"; then
-        curl http://the-eye.eu/public/rom/$1/ >"$2".2.tmp
-    fi
-
-    #decodes spaces and other characters from html links
-    sed -n 's/.*href="\([^"]*\).*/\1/p' "$2".2.tmp >"$2.tmp"
-    rm "$2.2.tmp"
-    urldecode < "$2".tmp >"$2".txt
-    rm "$2".tmp
-
-    rmstring 'https' "$2.txt"
-    rmstring '\.\.\/' "$2.txt"
-
+    sleep 1
+    curl "http://the-eye.eu/public/rom/$1" |
+        egrep -o '<a href=".*">.*</a>' |
+        egrep -o '".*"' | egrep -o '[^"]*' |
+        urldecode >"$2".txt
     # add the link prefix as the last line
     echo "http://the-eye.eu/public/rom/$1/" >>"$2".txt
-    sleep 1
 
 }
 
