@@ -86,17 +86,13 @@ function repoload() {
     # $2 is the repo file name
     # $3 is the system name
     # $4 is the file extension
-    pb replace
-    rm "$2".txt &>/dev/null
+    pb wget/curl
     echo "updating $(echo $1 | urldecode) repos"
     sleep 1
-    curl "http://the-eye.eu/public/rom/$1" |
-        egrep -o '<a href=".*">.*</a>' |
-        egrep -o '".*"' | egrep -o '[^"]*' |
-        urldecode >"$2".txt
+    getlinks "https://the-eye.eu/public/rom/$1/" > "$2.txt"
+    debug "https://the-eye.eu/public/rom/$1/"
     # add the link prefix as the last line
-    echo "http://the-eye.eu/public/rom/$1/" >>"$2".txt
-
+    echo "https://the-eye.eu/public/rom/$1/" >>"$2".txt
 }
 
 function romupdate() {
