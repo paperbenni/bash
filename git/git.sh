@@ -7,5 +7,11 @@ gitfolder() {
 
 ghrepos() {
     GHUSER="$1"
-    curl "https://api.github.com/users/$GHUSER/repos?per_page=100" | grep -o 'git@[^"]*'
+    curl -s "https://api.github.com/users/$GHUSER/repos?per_page=100" | grep -o 'git@[^"]*' | egrep -o ':.*' | egrep -o '[^:]*'
+}
+
+ghbackup() {
+    for repo in $(ghrepos $1); do
+        git clone "https://github.com/$repo"
+    done
 }
