@@ -65,7 +65,7 @@ yess() {
 }
 
 loop() {
-    if [ "$1" -eq "$1" ] &> /dev/null; then
+    if [ "$1" -eq "$1" ] &>/dev/null; then
         LOOPI="$1"
         shift 1
         for i in $(seq "$LOOPI"); do
@@ -122,6 +122,14 @@ phelp() {
         return 0
     fi
 
+}
+
+debug() {
+    if [ -e ~/.paperdebug ]; then
+        echo "$1"
+    else
+        return 0
+    fi
 }
 
 echoerr() { echo "$@" 1>&2; }
