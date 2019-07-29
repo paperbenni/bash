@@ -132,4 +132,6 @@ debug() {
     fi
 }
 
+alias dm='dmenu -l 30'
+
 echoerr() { echo "$@" 1>&2; }

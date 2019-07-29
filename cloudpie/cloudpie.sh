@@ -89,7 +89,7 @@ function repoload() {
     pb wget/curl
     echo "updating $(echo $1 | urldecode) repos"
     sleep 1
-    getlinks "https://the-eye.eu/public/rom/$1/" > "$2.txt"
+    getlinks "https://the-eye.eu/public/rom/$1/" >"$2.txt"
     debug "https://the-eye.eu/public/rom/$1/"
     # add the link prefix as the last line
     echo "https://the-eye.eu/public/rom/$1/" >>"$2".txt
@@ -108,4 +108,25 @@ function romupdate() {
     repoload 'NES' nes
     repoload 'Nintendo%20Gameboy%20Color' gbc
     popd
+}
+
+cloudconnect() {
+    if ! [ -e "$HOME/cloudpie/save/cloud.txt" ]; then
+        if ! [ -e "$HOME/cloudpie/sync.sh" ]; then
+            echo "sync.sh missing"
+            echo "your installation might be corrupted"
+        fi
+
+        echo "no existing connection found"
+        ~/cloudpie/sync.sh &
+        sleep 5
+
+        while ! test -e ~/cloudpie/saves/cloud.txt; do
+            if ! pgrep dmenu; then
+                echo "waiting for cloud saves"
+            fi
+            sleep 5
+        done
+
+    fi
 }
