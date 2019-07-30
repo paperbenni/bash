@@ -97,16 +97,19 @@ function repoload() {
 
 function romupdate() {
 
-    mkdir -p ~/cloudpie/repos
-    pushd ~/cloudpie/repos
+    pushd ~/
+    cd cloudpie/consoles || return 1
+    for i in ./*; do
+        echo "repos for $i"
+        REPOLINK=$(cat "$i" | grep 'link' | betweenquotes)
+        if ! echo "$REPOLINK" | grep 'http'; then
+            LINK="https://the-eye.eu/public/rom/$REPOLINK/"
+        else
+            LINK="$REPOLINK"
+        fi
+        repoload "$LINK" "${i%.*}"
+    done
 
-    repoload 'Nintendo%2064/Roms' n64
-    repoload 'SNES' snes
-    repoload 'Playstation/Games/NTSC' psx
-    repoload 'Nintendo%20Gameboy%20Advance' gba
-    repoload 'Nintendo%20DS' ds
-    repoload 'NES' nes
-    repoload 'Nintendo%20Gameboy%20Color' gbc
     popd
 }
 
