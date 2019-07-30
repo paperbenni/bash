@@ -132,6 +132,10 @@ debug() {
     fi
 }
 
+currentdir() {
+    pwd | egrep -o '[^/]*' | tail -1
+}
+
 alias dm='dmenu -l 30'
 
 echoerr() { echo "$@" 1>&2; }
