@@ -47,38 +47,27 @@ function retro() {
 
 # automatically determines rom type and opens the rom
 function openrom() {
-    if ! [ -e "$1" ]; then
-        echo "$1 not found"
-        exit 0
+    if [ -z "$@" ]; then
+        echo "usage: openrom filename console"
     fi
-    case "$2" in
-    n64)
-        retro "mupen64plus_libretro" "$1"
-        ;;
-    ds)
-        retro "desmume2015_libretro" "$1"
-        ;;
-    snes)
-        retro "snes9x_libretro" "$1"
-        ;;
-    psx)
-        retro "pcsx_rearmed_libretro" "$1"
-        ;;
-    gba)
-        retro "vbam_libretro" "$1"
-        ;;
-    nes)
-        retro "nestopia_libretro" "$1"
-        ;;
-    gbc)
-        retro "gambatte_libretro" "$1"
-        ;;
-
-    *)
-        echo "no core found for $2"
-        ;;
-    esac
-
+    if ! [ -e "$1" ]; then
+        echo "file $1 not found"
+        return 1
+    fi
+    if [ -n "$2" ]; then
+        CONSOLE="$2"
+    else
+        echo "auto detecting rom"
+        CONSOLE2=$(currentdir)
+        if [ -e ~/cloudpie/consoles/$CONSOLE2.conf ]; then
+            CONESOLE="$(currentdir)"
+        else
+            echo "console $CONSOLE2 not found"
+            return 1
+        fi
+    fi
+    CORE="$(cat ~/cloudpie/consoles/$CONESOLE.conf | grep 'core' | betweenquotes)_libretro.so"
+    retro "$CORE" "$1"
 }
 
 function repoload() {
