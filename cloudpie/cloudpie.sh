@@ -122,3 +122,15 @@ cloudconnect() {
 
     fi
 }
+
+getconsole() {
+    if ! [ -n "$2" ]; then
+        echo "usage: getconsole consolename property"
+        return 0
+    fi
+
+    if ! test -e ~/cloudpie/consoles/$1.conf; then
+        return 1
+    fi
+    cat ~/cloudpie/consoles/${1%.*}.conf | grep "$2" | egrep -o '"[^,]*"' | egrep -o '[^"]*'
+}
