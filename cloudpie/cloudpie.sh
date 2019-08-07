@@ -79,25 +79,30 @@ function repoload() {
     pb wget/curl
     echo "updating $(echo $1 | urldecode) repos"
     sleep 1
-    getlinks "https://the-eye.eu/public/rom/$1/" >"$2.txt"
+    getlinks "https://the-eye.eu/public/rom/$1/" >~/cloudpie/repos/"$2.txt"
     debug "https://the-eye.eu/public/rom/$1/"
     # add the link prefix as the last line
-    echo "https://the-eye.eu/public/rom/$1/" >>"$2".txt
+    echo "https://the-eye.eu/public/rom/$1/" >>~/cloudpie/repos/"$2".txt
 }
 
 function romupdate() {
     pb grep
     pushd ~/
     cd cloudpie/consoles || return 1
-    for i in ./*; do
+    for i in *; do
         echo "repos for $i"
-        REPOLINK=$(cat "$i" | grep 'link' | betweenquotes)
+        if ! echo "$i" | grep '\.conf'; then
+            echo "$i not a console, skipping"
+            continue
+        fi
+        RCONSOLE=${i%.*}
+        $REPOLINK="$(getconsole $RCONSOLE link)"
         if ! echo "$REPOLINK" | grep 'http'; then
             LINK="https://the-eye.eu/public/rom/$REPOLINK/"
         else
             LINK="$REPOLINK"
         fi
-        repoload "$LINK" "${i%.*}"
+        repoload "$LINK" "$RCONSOLE"
     done
 
     popd

@@ -55,12 +55,12 @@ pb() {
             echo "usage: pb bashfile"
             return 0
         fi
-        echo "importing $@"
+        pecho "importing $@"
         ;;
     esac
 
     if [ "$PAPERENABLE" = "false" ]; then
-        echo "done, exiting"
+        pecho "done, exiting"
         return 0
     fi
 
@@ -71,9 +71,9 @@ pb() {
     if ! echo "$PAPERPACKAGE" | grep '\.sh'; then
         PAPERPACKAGE="$PAPERPACKAGE.sh"
     fi
-    echo "$PAPERPACKAGE"
+    pecho "$PAPERPACKAGE"
     if echo "$PAPERLIST" | grep "${PAPERPACKAGE%.sh} "; then
-        echo "$1 already imported"
+        pecho "$1 already imported"
         return 0
     fi
 
@@ -85,18 +85,18 @@ pb() {
             fi
             curl -s "https://raw.githubusercontent.com/paperbenni/bash/master/$PAPERPACKAGE" >~/pb/"$PAPERPACKAGE"
         else
-            echo "using $PAPERPACKAGE from cache"
+            pecho "using $PAPERPACKAGE from cache"
         fi
 
-        if grep 'pname' < ~/pb/"$PAPERPACKAGE"; then
-            echo "script is valid"
+        if grep 'pname' <~/pb/"$PAPERPACKAGE"; then
+            pecho "script is valid"
             source ~/pb/"$PAPERPACKAGE"
         else
-            echo "$PAPERPACKAGE not a pb package"
+            pecho "$PAPERPACKAGE not a pb package"
         fi
     else
-        echo "using debugging version"
-        cat ~/workspace/bash/"$PAPERPACKAGE" || (echo "debug package not found" && return 1)
+        pecho "using debugging version"
+        pecho $(cat ~/workspace/bash/"$PAPERPACKAGE" || (echo "debug package not found" && return 1))
         source ~/workspace/bash/"$PAPERPACKAGE"
     fi
 
@@ -104,6 +104,21 @@ pb() {
 
 pname() {
     PAPERLIST="$PAPERLIST $1 "$'\n'
+}
+
+psilent() {
+    (
+        PAPER_SILENT="true"
+        sleep ${1:-10}
+        PAPER_SILENT="false"
+    ) &
+}
+
+pecho() {
+    if [ "$PAPER_SILENT" = "true" ]; then
+        return 0
+    fi
+    echo"$@"
 }
 
 pb bash
