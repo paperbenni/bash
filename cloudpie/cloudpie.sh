@@ -47,6 +47,7 @@ function retro() {
 
 # automatically determines rom type and opens the rom
 function openrom() {
+    pb grep
     if [ -z "$@" ]; then
         echo "usage: openrom filename console"
     fi
@@ -85,7 +86,7 @@ function repoload() {
 }
 
 function romupdate() {
-
+    pb grep
     pushd ~/
     cd cloudpie/consoles || return 1
     for i in ./*; do
