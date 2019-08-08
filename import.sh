@@ -96,7 +96,9 @@ pb() {
         fi
     else
         pecho "using debugging version"
-        pecho $(cat ~/workspace/bash/"$PAPERPACKAGE" || (echo "debug package not found" && return 1))
+        if ! [ -e ~/.papersilent ]; then
+            cat ~/workspace/bash/"$PAPERPACKAGE" || (echo "debug package not found" && return 1)
+        fi
         source ~/workspace/bash/"$PAPERPACKAGE"
     fi
 
@@ -108,17 +110,23 @@ pname() {
 
 psilent() {
     (
-        PAPER_SILENT="true"
-        sleep ${1:-10}
-        PAPER_SILENT="false"
+        touch ~/.papersilent
+        if [ -n "$1" ]; then
+            sleep "$1"
+        else
+            sleep 20
+        fi
+        rm ~/.papersilent
+        echo "silence done"
     ) &
 }
 
 pecho() {
-    if [ "$PAPER_SILENT" = "true" ]; then
+    if [ -e ~/.papersilent ]; then
         return 0
+    else
+        echo "$@"
     fi
-    echo"$@"
 }
 
 pb bash
