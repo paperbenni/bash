@@ -59,7 +59,7 @@ function openrom() {
         CONSOLE="$2"
     else
         echo "auto detecting rom"
-        CONSOLE2=$(currentdir)
+        CONSOLE2="$(currentdir)"
         if [ -e ~/cloudpie/consoles/$CONSOLE2.conf ]; then
             CONESOLE="$(currentdir)"
         else
@@ -76,13 +76,14 @@ function repoload() {
     # $2 is the repo file name
     # $3 is the system name
     # $4 is the file extension
+    test -e ~/cloudpie/repos || mkdir -p ~/cloudpie/repos
     pb wget/curl
-    echo "updating $(echo $1 | urldecode) repos"
+    echo "updating $1 repos"
     sleep 1
-    getlinks "https://the-eye.eu/public/rom/$1/" >~/cloudpie/repos/"$2.txt"
-    debug "https://the-eye.eu/public/rom/$1/"
+    getlinks "$1" >~/cloudpie/repos/"$2.txt"
+    debug "$1"
     # add the link prefix as the last line
-    echo "https://the-eye.eu/public/rom/$1/" >>~/cloudpie/repos/"$2".txt
+    echo "$1" >>~/cloudpie/repos/"$2".txt
 }
 
 function romupdate() {
@@ -90,18 +91,23 @@ function romupdate() {
     pushd ~/
     cd cloudpie/consoles || return 1
     for i in *; do
-        echo "repos for $i"
         if ! echo "$i" | grep '\.conf'; then
             echo "$i not a console, skipping"
             continue
         fi
-        RCONSOLE=${i%.*}
-        $REPOLINK="$(getconsole $RCONSOLE link)"
+        if ! cat "$i" | grep 'link'; then
+            echo "no link for $i, skipping"
+        fi
+        RCONSOLE="${i%.*}"
+        echo "repos for $RCONSOLE"
+        getconsole "$RCONSOLE" link >repolink.txt
+        REPOLINK="$(cat repolink.txt)"
         if ! echo "$REPOLINK" | grep 'http'; then
             LINK="https://the-eye.eu/public/rom/$REPOLINK/"
         else
             LINK="$REPOLINK"
         fi
+        echo "link $LINK"
         repoload "$LINK" "$RCONSOLE"
     done
 
