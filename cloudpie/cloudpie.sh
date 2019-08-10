@@ -124,8 +124,8 @@ cloudconnect() {
         echo "no existing connection found"
         ~/cloudpie/sync.sh &
         sleep 5
-
-        while ! test -e ~/cloudpie/saves/cloud.txt; do
+        mkdir -p ~/cloudpie/save/ &>/dev/null
+        while ! cat ~/cloudpie/save/cloud.txt; do
             if ! pgrep dmenu; then
                 echo "waiting for cloud saves"
             fi
