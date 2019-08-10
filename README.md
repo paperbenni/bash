@@ -36,6 +36,6 @@ I hold no responsibility for them being difficult to
 use or causing the end of the world
 
 debugger:
-```
-cat ~/.bashrc | grep "papertest" || curl -s "https://raw.githubusercontent.com/paperbenni/bash/master/debugger.sh" >> ~/.bashrc
+```sh
+source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/setup.sh)
 ```

@@ -117,7 +117,6 @@ psilent() {
             sleep 20
         fi
         rm ~/.papersilent
-        echo "silence done"
     ) &
 }
 

@@ -8,8 +8,12 @@ if ! command -v papertest; then
     chmod +x papertest
     sudo mv papertest /usr/bin/
     echo "done setting up papertest"
+    if ! grep 'pb()' <~/.bashrc; then
+        echo 'pb(){ source $(which papertest) ; }' >>~/.bashrc
+    fi
 else
     rm .paperdebug
     sudo rm /usr/bin/papertest
     echo "done removing papertest"
+    sed -i '/pb().*$/d' ~/.bashrc
 fi

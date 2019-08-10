@@ -67,7 +67,7 @@ function openrom() {
             return 1
         fi
     fi
-    CORE="$(cat ~/cloudpie/consoles/$CONESOLE.conf | grep 'core' | betweenquotes)_libretro.so"
+    CORE="$(grep 'core' <~/cloudpie/consoles/$CONESOLE.conf | betweenquotes)_libretro.so"
     retro "$CORE" "$1"
 }
 
@@ -95,7 +95,7 @@ function romupdate() {
             echo "$i not a console, skipping"
             continue
         fi
-        if ! cat "$i" | grep 'link'; then
+        if ! grep 'link' <"$i"; then
             echo "no link for $i, skipping"
         fi
         RCONSOLE="${i%.*}"
@@ -145,5 +145,5 @@ getconsole() {
     if ! test -e ~/cloudpie/consoles/$1.conf; then
         return 1
     fi
-    cat ~/cloudpie/consoles/${1%.*}.conf | grep "$2" | egrep -o '"[^,]*"' | egrep -o '[^"]*'
+    grep "$2" <~/cloudpie/consoles/${1%.*}.conf | egrep -o '".*"' | egrep -o '[^"]*'
 }

@@ -14,5 +14,5 @@ regexfilter() {
 
 betweenquotes() {
     QUOTE=${2:-\"}
-    egrep -o "$QUOTE"'[^,]*'"$QUOTE" | egrep -o "[^$QUOTE]*"
+    egrep -o "$QUOTE.*$QUOTE" | egrep -o "[^$QUOTE]*"
 }
