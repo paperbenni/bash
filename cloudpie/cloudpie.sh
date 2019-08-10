@@ -34,7 +34,7 @@ function retroupdate() {
     rm -rf ~/retroarch/"$1"
     mkdir -p ~/retroarch/"$1"
     pushd ~/retroarch/"$1"
-    wget "$2"
+    wget "$2" -q --show-progress
     unzip -o *.zip
     rm *.zip
     popd
@@ -131,7 +131,8 @@ cloudconnect() {
             fi
             sleep 5
         done
-
+    else
+        echo "cloudpie already connected"
     fi
 }
 
