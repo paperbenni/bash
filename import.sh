@@ -128,7 +128,5 @@ pecho() {
         echo "$@"
     fi
 }
-# expand aliases
-shopt -s expand_aliases
 
 pb bash
