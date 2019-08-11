@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 pname cloudpie/cloudpie
+pb grep
 
 #edits an option in retroarch.cfg
 function changeconf() {
@@ -42,15 +43,19 @@ function retroupdate() {
 
 #opens $2 with the specified libretro core
 function retro() {
+    if [ -z "$2" ]; then
+        echo "usage: retro filename core"
+        return 1
+    fi
+    if ! [ -e "$HOME/retroarch/cores/$1.so" ]; then
+        echo "core $1.so not found"
+        return 1
+    fi
     retroarch -L "$HOME/retroarch/cores/$1.so" "$2"
 }
 
 # automatically determines rom type and opens the rom
 function openrom() {
-    pb grep
-    if [ -z "$@" ]; then
-        echo "usage: openrom filename console"
-    fi
     if ! [ -e "$1" ]; then
         echo "file $1 not found"
         return 1
@@ -59,15 +64,17 @@ function openrom() {
         CONSOLE="$2"
     else
         echo "auto detecting rom"
-        CONSOLE2="$(currentdir)"
-        if [ -e ~/cloudpie/consoles/$CONSOLE2.conf ]; then
-            CONESOLE="$(currentdir)"
+
+        CONSOLE="$(currentdir)"
+        if [ -e ~/cloudpie/consoles/$CONSOLE.conf ]; then
+            echo "$CONSOLE config file found"
         else
-            echo "console $CONSOLE2 not found"
+            echo "console $CONSOLE config not found"
             return 1
         fi
     fi
-    CORE="$(grep 'core' <~/cloudpie/consoles/$CONESOLE.conf | betweenquotes)_libretro.so"
+    CORE="$(getconsole "$CONSOLE" core)_libretro.so"
+    echo "core: $CORE"
     retro "$CORE" "$1"
 }
 
