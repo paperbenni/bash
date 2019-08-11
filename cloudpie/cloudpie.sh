@@ -47,11 +47,11 @@ function retro() {
         echo "usage: retro filename core"
         return 1
     fi
-    if ! [ -e "$HOME/retroarch/cores/$1.so" ]; then
-        echo "core $1.so not found"
+    if ! [ -e "$HOME/retroarch/cores/$1" ]; then
+        echo "core $1 not found"
         return 1
     fi
-    retroarch -L "$HOME/retroarch/cores/$1.so" "$2"
+    retroarch -L "$HOME/retroarch/cores/$1" "$2"
 }
 
 # automatically determines rom type and opens the rom
