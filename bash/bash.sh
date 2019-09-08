@@ -136,6 +136,16 @@ currentdir() {
     pwd | egrep -o '[^/]*' | tail -1
 }
 
+exists() {
+    for i in "$@"; do
+        if ! [ -e "$i" ]; then
+            echo "target $i does not exist"
+            return 1
+        fi
+    done
+    return 0
+}
+
 alias dm='dmenu -l 30'
 
 echoerr() { echo "$@" 1>&2; }
