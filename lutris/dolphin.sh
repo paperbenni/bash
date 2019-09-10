@@ -4,43 +4,39 @@ pname lutris/dolphin
 
 # wrapper to execute sed command on dolphin config
 changewii() {
-    pushd ~/.config/dolphin-emu
-    sed -i $1 Dolphin.ini
-    popd
+    pushd ~/.config/dolphin-emu &>/dev/null
+    sed -i "$1" Dolphin.ini
+    popd &>/dev/null
 }
 
 # fixes an error when launching geckoOS from modern versions of dolphin
 fixgecko() {
-    pushd ~/.config/dolphin-emu
+    pushd ~/.config/dolphin-emu &>/dev/null
 
-    if grep 'MMU = False' <Dolphin.ini; then
-        echo "MMU fix already applied"
-    else
+    if ! grep 'MMU = False' <Dolphin.ini &>/dev/null; then
         changewii '/^\[Core\].*/a MMU = False'
     fi
 
-    if grep 'UsePanicHandlers = False' <Dolphin.ini; then
-        echo "panic handlers already disabled"
-    else
+    if ! grep 'UsePanicHandlers = False' <Dolphin.ini &>/dev/null; then
         changewii 's/UsePanicHandlers = True/UsePanicHandlers = False/g'
     fi
 
-    popd
+    popd &>/dev/null
 }
 
 # insert iso into dolphin disk slot
 wiinsertiso() {
-    exists "$1"
-    echo "default iso set to $1"
-    changewii 's~DefaultISO = .*~DefaultISO = '"$1"'~g'
+    test -e "$1" || return 1
+    changewii 's@DefaultISO = .*@DefaultISO = '"$1"'@g'
 }
 
 # insert virtual sd card file into dolphin wii
 wiinsertsd() {
-    if exists "$1"; then
-        SDPATH="$(realpath $1)"
+    if test -e "$1"; then
+        SDPATH2="$(realpath $1)"
     else
-        SDPATH="$1"
+        SDPATH2="$1"
     fi
-    changewii 's~WiiSDCardPath = .*~WiiSDCardPath = '"$SDPATH"'~g'
+    SDPATH=${SDPATH2//./\\.}
+    changewii 's@WiiSDCardPath = .*@WiiSDCardPath = '"$SDPATH"'@g'
 }
