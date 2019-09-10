@@ -26,8 +26,13 @@ fixgecko() {
 
 # insert iso into dolphin disk slot
 wiinsertiso() {
-    test -e "$1" || return 1
-    changewii 's@DefaultISO = .*@DefaultISO = '"$1"'@g'
+    if test -e "$1"; then
+        ISOPATH2="$(realpath $1)"
+    else
+        ISOPATH2="$1"
+    fi
+    ISOPATH=${ISOPATH2//./\\.}
+    changewii 's@DefaultISO = .*@DefaultISO = '"$ISOPATH"'@g'
 }
 
 # insert virtual sd card file into dolphin wii

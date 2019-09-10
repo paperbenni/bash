@@ -127,5 +127,6 @@ pecho() {
         echo "$@"
     fi
 }
-SCRIPTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
+SCRIPTDIR=$(echo "$0" | egrep -o '.*/')
 pb bash
