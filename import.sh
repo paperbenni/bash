@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+if ! echo "$SHELL" | grep -i 'bash'; then
+    echo "error: shell is not bash"
+    return 0
+fi
 
 # pb already sourced?
 if [ -z "$PAPERIMPORT" ]; then
@@ -48,6 +52,13 @@ pb() {
             source ~/workspace/bash/"$2.sh"
         fi
         return 0
+        ;;
+    offupdate)
+        echo "updating offline install"
+        cd
+        cd workspace
+        rm -rf bash
+        git clone --depth=1 https://github.com/paperbenni/bash.git
         ;;
     *)
         PAPERENABLE="true"
