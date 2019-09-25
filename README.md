@@ -4,10 +4,6 @@ A collection of neat little bash functions.
 
 ## Usage in scripts
 
-### Demo
-
-[![asciicast](https://asciinema.org/a/ieoK56ZmQlXtttQyAOrF2pP8R.svg)](https://asciinema.org/a/ieoK56ZmQlXtttQyAOrF2pP8R)
-
 ### Instructions
 
 Add the following line to the top of your bash script to get started using my functions
@@ -29,6 +25,10 @@ unpack
   usage: unpack file
   automatically detects the archive type and extracts it
 ```
+
+### Demo
+
+[![asciicast](https://asciinema.org/a/ieoK56ZmQlXtttQyAOrF2pP8R.svg)](https://asciinema.org/a/ieoK56ZmQlXtttQyAOrF2pP8R)
 
 These my personal scripts.
 
