@@ -15,3 +15,7 @@ ghbackup() {
         git clone "https://github.com/$repo"
     done
 }
+
+papergit(){
+	git clone --depth 1 "https://github.com/paperbenni/$1"
+}
