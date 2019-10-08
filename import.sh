@@ -139,5 +139,9 @@ pecho() {
     fi
 }
 
+getdistro(){
+	cat /etc/os-release | grep NAME | egrep -o '".*"'
+}
+
 SCRIPTDIR=$(echo "$0" | egrep -o '.*/')
 pb bash
