@@ -1,24 +1,45 @@
 #!/usr/bin/env bash
+# currently does not work
+
 pname cloudpie/vimm
+pb wget/fakebrowser
+pb unpack
 
 function vimm() {
-    curl 'https://vimm.net/vault/?p=details&id='"$1" >vimm.txt
-    DLID1=$(getvimm "vimm.txt" 1)
-    DLID2=$(getvimm "vimm.txt" 2)
-    DLLINK='https://download2.vimm.net/download.php?id='"$1"'&t1='"$DLID1"'&t2='"$DLID2"
-
-    pb wget/fakebrowser
-    pb unpack
+    curl "https://vimm.net/vault/$1" >vimm.txt
+    DLID1=$(getvimm1 <vimm.txt)
+    DLID2=$(getvimm2 <vimm.txt)
+    MEDIA=$(vimmmedia <vimm.txt)
     sleep 1
-    fakebrowser "$DLLINK"
+    URL="$(vimmlink $MEDIA $DLID1 $DLID2)"
+    fakebrowser "$URL"
     unpackdir
 }
 
-function getvimm() {
-    egrep -o "=\"t$2\""' value="[0-9a-z]*"' < "$1" | sort -u | egrep -o '[a-z0-9]{6,}'
+getvimm2() {
+    egrep -o 'name="t2" value=".{,33}"><input' |
+        head -1 |
+        egrep -o 'value=.*' |
+        egrep -o '".*"' |
+        egrep -o '[^"]*'
 }
 
-#https://download1.vimm.net/download.php?id=7606&t1=4d190be365b3660a305c91802f9726ce&t2=01d459a08461d23ff323621e0db2094f&download=Download
+getvimm1() {
+    egrep -o 'name="t1" value=".{,33}"><input' |
+        head -1 |
+        egrep -o 'value=.*' |
+        egrep -o '".*"' |
+        egrep -o '[^"]*'
+}
+
+vimmmedia() {
+    egrep -o 'name="mediaId" value="[0-9]{4,}"' | egrep -o '[0-9]*' | head -1
+}
+
+vimmlink() {
+    echo "https://download.vimm.net/download.php?mediaId=$1&t1=$2&t2=$3&download=Download"
+}
+
 function curlvimm() {
     rm "$1".txt "$1"id.txt "$1"name.txt
 
@@ -27,5 +48,5 @@ function curlvimm() {
         curl 'https://vimm.net/vault/?p=list&system='"$1"'&section='"$CHARACTER" >>"$1"2.txt
     done
 
-    egrep -i 'mouse' < "$1"2.txt | egrep -o '>[^<>/]{6,}</a' | egrep -o '[^>].*' | egrep -o '.*[^</a]' >"$1.txt"
+    egrep -i 'mouse' <"$1"2.txt | egrep -o '>[^<>/]{6,}</a' | egrep -o '[^>].*' | egrep -o '.*[^</a]' >"$1.txt"
 }
