@@ -146,6 +146,14 @@ exists() {
     return 0
 }
 
+isdebian() {
+    if grep -i 'debian' </etc/os-release; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 alias dm='dmenu -l 30'
 
 echoerr() { echo "$@" 1>&2; }
