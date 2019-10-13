@@ -16,7 +16,7 @@ dconfirm() {
 }
 
 dsudo() {
-    test -n "$SUDOPASS" || SUDOPASS=$(echo '' | dmenu -p "sudo password")
+    test -n "$SUDOPASS" || SUDOPASS=$(echo '' | dmenu -P -p "sudo password")
     printf "$SUDOPASS" | sudo -S "$@"
 }
 
