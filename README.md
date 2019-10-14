@@ -1,6 +1,7 @@
 # paperbenni/bash
 
 A collection of neat little bash functions.
+Meant for use in Scripting
 
 ## Usage in scripts
 
@@ -34,6 +35,8 @@ These my personal scripts.
 
 I hold no responsibility for them being difficult to
 use or causing the end of the world
+
+If you want to contribute, feel free to send pull requests. 
 
 debugger:
 ```sh

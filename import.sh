@@ -6,7 +6,7 @@ fi
 
 # pb already sourced?
 if [ -z "$PAPERIMPORT" ]; then
-    export PAPERIMPORT="paperbenni.github.io/bash"
+    PAPERIMPORT="paperbenni.github.io/bash"
     echo "paperbenni bash importer ready for use!"
 else
     echo "paperbenni importer found"
@@ -139,8 +139,8 @@ pecho() {
     fi
 }
 
-getdistro(){
-	cat /etc/os-release | grep NAME | egrep -o '".*"'
+getdistro() {
+    cat /etc/os-release | grep NAME | egrep -o '".*"'
 }
 
 SCRIPTDIR=$(echo "$0" | egrep -o '.*/')

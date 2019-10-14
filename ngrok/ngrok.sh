@@ -25,7 +25,6 @@ ngrokdl() {
         return 1
     fi
 
-
 }
 
 #finds and executes ngrok with the specified arguments

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 pname logo/logo
-logocloudpie(){
+logocloudpie() {
 
   echo " ██████╗██╗      ██████╗ ██╗   ██╗██████╗ ██████╗ ██╗███████╗"
   echo "██╔════╝██║     ██╔═══██╗██║   ██║██╔══██╗██╔══██╗██║██╔════╝"

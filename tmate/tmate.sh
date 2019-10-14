@@ -34,10 +34,11 @@ startmate() {
         pushd ~/
     fi
     echo "staring tmate"
-    ./tmate -S /tmp/tmate.sock new-session -d & sleep 4 # Launch tmate in a detached state
+    ./tmate -S /tmp/tmate.sock new-session -d &
+    sleep 4 # Launch tmate in a detached state
     ./tmate -S /tmp/tmate.sock wait tmate-ready
-    ./tmate -S /tmp/tmate.sock display -p '#{tmate_web}' > web.txt  # Prints the web connection string
-    ./tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}' > ssh.txt   # Prints the SSH connection string
+    ./tmate -S /tmp/tmate.sock display -p '#{tmate_web}' >web.txt # Prints the web connection string
+    ./tmate -S /tmp/tmate.sock display -p '#{tmate_ssh}' >ssh.txt # Prints the SSH connection string
     cat web.txt
     echo " "
     cat ssh.txt
