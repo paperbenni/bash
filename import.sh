@@ -6,7 +6,7 @@ fi
 
 # pb already sourced?
 if [ -z "$PAPERIMPORT" ]; then
-    PAPERIMPORT="paperbenni.github.io/bash"
+    export PAPERIMPORT="paperbenni.github.io/bash"
     echo "paperbenni bash importer ready for use!"
 else
     echo "paperbenni importer found"

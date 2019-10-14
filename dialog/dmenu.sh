@@ -21,12 +21,24 @@ dsudo() {
 }
 
 dpop() {
+    touch ~/.dpopped
     yres=$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/' | egrep -o '[^x]*$')
-    echo 'ok' | dmenu -y $(expr $yres / 2) -p "$1" -l 10 &
-    sleep 5
-    if pgrep dmenu; then
-        pkill dmenu
-    fi
+
+    while [ -e ~/.dpopped ]; do
+        CLOUDMENU=$(echo "$1" | dmenu -y $(expr $yres / 2) -p "please wait" -l 10)
+        if [ "$CLOUDMENU" = "pb" ]; then
+            break
+        fi
+        sleep 0.5
+    done &
+
+    sleep ${2:-60}
+    rmdpop
+}
+
+rmdpop() {
+    pkill dmenu
+    rm ~/.dpopped
 }
 
 dtext() {
