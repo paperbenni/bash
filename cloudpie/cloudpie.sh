@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 pname cloudpie/cloudpie
 pb grep
+pb dialog/dmenu
 
 #edits an option in retroarch.cfg
 function changeconf() {
@@ -26,17 +27,28 @@ function cget() {
         echo "usage: cget filename"
     else
         for file in "$@"; do
-            wget https://raw.githubusercontent.com/paperbenni/CloudPie/master/"$file"
+            wget https://raw.githubusercontent.com/paperbenni/CloudPie/master/"$file" -q --show-progress
         done
     fi
 }
 
 function retroupdate() {
+    if [ -e ~/retroarch/"$1*" ]; then
+        echo "alredy existing, skipping"
+        return 0
+    fi
+
+    if [ -e ~/.cache/retroarch/"$1" ]; then
+        echo "using cached version of $1"
+        mv "~/.cache/retroarch/$1" "~/retroarch"
+        return 0
+    fi
+
     rm -rf ~/retroarch/"$1"
     mkdir -p ~/retroarch/"$1"
     pushd ~/retroarch/"$1"
     wget "$2" -q --show-progress
-    unzip -o *.zip
+    unzip -o *.zip &>/dev/null
     rm *.zip
     popd
 }
@@ -130,7 +142,7 @@ cloudconnect() {
 
         echo "no existing connection found"
         ~/cloudpie/sync.sh &
-        sleep 5
+        sleep 2
         mkdir -p ~/cloudpie/save/ &>/dev/null
         while ! cat ~/cloudpie/save/cloud.txt; do
             if ! pgrep dmenu; then
@@ -138,6 +150,7 @@ cloudconnect() {
             fi
             sleep 5
         done
+        rmpopd
     else
         echo "cloudpie already connected"
     fi
