@@ -2,6 +2,7 @@
 pname cloudpie/cloudpie
 pb grep
 pb dialog/dmenu
+pb wget/curl
 
 #edits an option in retroarch.cfg
 function changeconf() {

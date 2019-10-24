@@ -118,7 +118,11 @@ function checkexit() {
     if [ $? -eq 0 ]; then
         echo 'OK'
     else
-        echo 'FAIL'
+        if [ -n "$1" ]; then
+            echo "$1"
+        else
+            echo 'checkexit FAILED'
+        fi
         exit 1
     fi
 }
