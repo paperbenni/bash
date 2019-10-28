@@ -19,3 +19,12 @@ function confset() {
     sed -i "/^$2=/c $NEWVALUE" "$1"
     grep "$2" <"$1"
 }
+
+function confget(){
+    if [ -z "$2" ]
+    then
+        return 1
+    fi
+    grep "$2" < "$1" | egrep -o ':.*' | egrep -o '[^:]*'
+
+}
