@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 pname dialog/dmenu
 
+# yes/no chooser
 dconfirm() {
     echo "yes" >~/.doptions
     echo "no" >>~/.doptions
@@ -15,11 +16,13 @@ dconfirm() {
     esac
 }
 
+# get sudo password
 dsudo() {
     test -n "$SUDOPASS" || SUDOPASS=$(echo '' | dmenu -P -p "sudo password")
     printf "$SUDOPASS" | sudo -S "$@"
 }
 
+# I have no idea
 dpop() {
     touch ~/.dpopped
     yres=$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/' | egrep -o '[^x]*$')
@@ -41,6 +44,26 @@ rmdpop() {
     rm ~/.dpopped
 }
 
+
+# display text
 dtext() {
     echo '' | dmenu -p "$1"
+}
+
+# file chooser
+dfile() {
+    cd
+    newdir='.'
+    while [ -n "$newdir" ]; do
+        if echo "$newdir" | grep -i '[:,-]' &>/dev/null; then
+            break
+        fi
+        if [ -e "$newdir" ]; then
+            cd "$newdir"
+        else
+            break
+        fi
+        newdir=$(ls | egrep '^[^\$].*' | dmenu -l 30)
+    done
+    echo "$newdir"
 }
