@@ -44,7 +44,6 @@ rmdpop() {
     rm ~/.dpopped
 }
 
-
 # display text
 dtext() {
     echo '' | dmenu -p "$1"
@@ -52,6 +51,7 @@ dtext() {
 
 # file chooser
 dfile() {
+    pushd . &>/dev/null
     cd
     newdir='.'
     while [ -n "$newdir" ]; do
@@ -65,5 +65,6 @@ dfile() {
         fi
         newdir=$(ls | egrep '^[^\$].*' | dmenu -l 30)
     done
-    echo "$newdir"
+    realpath "$newdir"
+    popd &>/dev/null
 }
