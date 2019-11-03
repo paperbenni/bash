@@ -12,7 +12,7 @@ pb grep/sed
 echo "removing papertest"
 removebetween ~/.bashrc
 
-if grep 'papertest' </etc/profile; then
+if grep -q 'papertest' </etc/profile; then
     sudo removebetween /etc/profile
 fi
 

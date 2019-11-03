@@ -8,11 +8,11 @@ archsetup() {
     if [ -e ./programs.txt ]; then
         echo "program list found"
     else
-        echo "no list found"
+        echo "no list found" >&2
         return 1
     fi
 
-    for THISPROGRAM in $(cat ./programs.txt); do
+    for THISPROGRAM in $(< ./programs.txt); do
         sudo pacman -Sy $THISPROGRAM
     done
 
