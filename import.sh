@@ -83,7 +83,7 @@ pb() {
         PAPERPACKAGE="$PAPERPACKAGE.sh"
     fi
     pecho "$PAPERPACKAGE"
-    if grep "${PAPERPACKAGE%.sh} " <<< "$PAPERLIST"; then
+    if grep -q "${PAPERPACKAGE%.sh} " <<< "$PAPERLIST"; then
         pecho "$1 already imported"
         return 0
     fi
@@ -99,7 +99,7 @@ pb() {
             pecho "using $PAPERPACKAGE from cache"
         fi
 
-        if grep 'pname' <~/pb/"$PAPERPACKAGE"; then
+        if grep -q 'pname' <~/pb/"$PAPERPACKAGE"; then
             pecho "script is valid"
             source ~/pb/"$PAPERPACKAGE"
         else

@@ -53,20 +53,20 @@ mpm() {
     curl "$MPMLINK/plugins/$1/$MCVERSION/$1.mpm" >"$1.mpm"
     #cat "$1.mpm"
     #check if the plugin exists
-    if ! grep 'describe' <"$1.mpm"; then
+    if ! grep -q 'describe' <"$1.mpm"; then
         echo "plugin $1 not existing on remote"
         cd ..
         rm $1.mpm
         return 1
     fi
 
-    if grep "$SPIGOTVERSION" <"$1.mpm"; then
+    if grep -q "$SPIGOTVERSION" <"$1.mpm"; then
         echo "version check sucessful"
     fi
     wget "$MPMLINK/plugins/$1/$MCVERSION/$1.jar"
     echo "installed $1.jar"
 
-    if grep 'depend' <"$1.mpm"; then
+    if grep -q 'depend' <"$1.mpm"; then
         echo "plugin needs dependencies"
         DPENDENCIES="$(grep 'depend' <$1.mpm)"
         cd ../
@@ -78,7 +78,7 @@ mpm() {
         cd plugins
     fi
 
-    if grep 'hook' <"$1.mpm"; then
+    if grep -q 'hook' <"$1.mpm"; then
         cd ..
         echo "running plugin hooks"
         source <(curl -s "$MPMLINK/plugins/$1/$MCVERSION/hook.sh")

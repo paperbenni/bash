@@ -55,7 +55,7 @@ dfile() {
     cd
     newdir='.'
     while [ -n "$newdir" ]; do
-        if echo "$newdir" | grep -i '[:,-]' &>/dev/null; then
+        if echo "$newdir" | grep -q -i '[:,-]'; then
             break
         fi
         if [ -e "$newdir" ]; then

@@ -38,19 +38,19 @@ mcop() {
 
     pb replace
 
-    if grep 'online-mode=true' <server.properties; then
+    if grep -q 'online-mode=true' <server.properties; then
         UUID=$(mineuuid "$1")
     else
         UUID=$(mineuuid "$1" offline)
     fi
 
-    if grep "$UUID" <ops.json; then
+    if grep -q "$UUID" <ops.json; then
         echo "already op"
         return 0
     fi
 
     APPENDFILE=$(realpath ops.json)
-    if grep 'uuid' <ops.json; then
+    if grep -q 'uuid' <ops.json; then
         rmlast ops.json 3
         app "  },"
     else

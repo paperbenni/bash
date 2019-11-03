@@ -13,11 +13,11 @@ changewii() {
 fixgecko() {
     pushd ~/.config/dolphin-emu &>/dev/null
 
-    if ! grep 'MMU = False' <Dolphin.ini &>/dev/null; then
+    if ! grep -q 'MMU = False' <Dolphin.ini; then
         changewii '/^\[Core\].*/a MMU = False'
     fi
 
-    if ! grep 'UsePanicHandlers = False' <Dolphin.ini &>/dev/null; then
+    if ! grep -q 'UsePanicHandlers = False' <Dolphin.ini; then
         changewii 's/UsePanicHandlers = True/UsePanicHandlers = False/g'
     fi
 

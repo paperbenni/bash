@@ -9,7 +9,7 @@ function confset() {
     if [ -z "$3" ]; then
         echo "usage: confset file option value"
     fi
-    if grep "$2=$3" <"$1"; then
+    if grep -q "$2=$3" <"$1"; then
         echo "value $2=$3 already set"
         return 0
     else

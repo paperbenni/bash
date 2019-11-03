@@ -166,7 +166,7 @@ exists() {
 }
 
 isdebian() {
-    if grep -i 'debian' </etc/os-release; then
+    if grep -q -i 'debian' </etc/os-release; then
         return 0
     else
         return 1

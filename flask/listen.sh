@@ -20,7 +20,7 @@ flisten() {
         app 'import os'
         app 'app = Flask(__name__)'
     else
-        if grep "${1}name" <listener.py; then
+        if grep -q "${1}name" <listener.py; then
             echo "$1 already listening"
             return 1
         fi

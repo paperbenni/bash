@@ -10,7 +10,7 @@ rcloud() {
     mkdir -p ~/.config/rclone
     pushd ~/.config/rclone
     test -e rclone.conf || touch rclone.conf
-    if grep "$1" <rclone.conf; then
+    if grep -q "$1" <rclone.conf; then
         echo "rclone remote with name $1 already existing"
         return 0
     fi

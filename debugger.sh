@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if ! echo "$SHELL" | grep "bash"; then
+if ! [ "${SHELL##*/}" == 'bash' ]; then
     echo "only for bash"
     exit 1
 fi
