@@ -19,14 +19,12 @@ aurinstall() {
             git reset --hard
             git pull
         fi
-    
-        for i in $(grep 'provides' <.SRCINFO | grep -Eo '=.*' | grep -Eo '[^ =]*'); do
-            if command -v $i; then
-                echo "program already installed"
-                return 0
-            fi
-        done
-    
+
+        if pacman -Qi "$1" &>/dev/null; then
+            echo "already installed"
+            return 0
+        fi
+
         makepkg .
         sudo pacman -U --noconfirm ./*.pkg.tar.xz
     )
