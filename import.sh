@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-if ! echo "$SHELL" | grep -i 'bash'; then
+if ! [ "${SHELL##*/}" == 'bash' ]; then
     echo "error: shell is not bash"
     return 0
 fi
@@ -24,50 +24,50 @@ pb() {
 
     PAPERENABLE="false"
     case "$1" in
-    clear)
-        echo clearing the cache
-        rm -rf ~/pb
-        ;;
-    help)
-        echo "usage: pb filelocationonmygithubbashrepo"
-        ;;
-    nocache)
-        echo "disabling cache"
-        NOCACHE="true"
-        ;;
-    list)
-        echo "imported packages:"
-        echo "$PAPERLIST"
-        ;;
-    debug)
-        if [ "$2" = "all" ]; then
-            PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
-            echo "refreshing $PPACKAGES"
-            for i in "$PPACKAGES"; do
-                echo "source $i"
-                source ~/workspace/bash/"$i.sh"
-            done
-        else
-            cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
-            source ~/workspace/bash/"$2.sh"
-        fi
-        return 0
-        ;;
-    offupdate)
-        echo "updating offline install"
-        cd
-        cd workspace
-        rm -rf bash
-        git clone --depth=1 https://github.com/paperbenni/bash.git
-        ;;
-    *)
-        PAPERENABLE="true"
-        if [ -z "$@" ]; then
-            echo "usage: pb bashfile"
+        clear)
+            echo clearing the cache
+            rm -rf ~/pb
+            ;;
+        help)
+            echo "usage: pb filelocationonmygithubbashrepo"
+            ;;
+        nocache)
+            echo "disabling cache"
+            NOCACHE="true"
+            ;;
+        list)
+            echo "imported packages:"
+            echo "$PAPERLIST"
+            ;;
+        debug)
+            if [ "$2" = "all" ]; then
+                PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
+                echo "refreshing $PPACKAGES"
+                for i in "$PPACKAGES"; do
+                    echo "source $i"
+                    source ~/workspace/bash/"$i.sh"
+                done
+            else
+                cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
+                source ~/workspace/bash/"$2.sh"
+            fi
             return 0
-        fi
-        pecho "importing $@"
-        ;;
+            ;;
+        offupdate)
+            echo "updating offline install"
+            cd
+            cd workspace
+            rm -rf bash
+            git clone --depth=1 https://github.com/paperbenni/bash.git
+            ;;
+        *)
+            PAPERENABLE="true"
+            if [ -z "$@" ]; then
+                echo "usage: pb bashfile"
+                return 0
+            fi
+            pecho "importing $@"
+            ;;
     esac
 
     if [ "$PAPERENABLE" = "false" ]; then
@@ -76,21 +76,21 @@ pb() {
     fi
 
     PAPERPACKAGE="$1"
-    if ! echo "$PAPERPACKAGE" | grep '/'; then
+    if ! grep -q '/' <<< "$PAPERPACKAGE"; then
         PAPERPACKAGE="$PAPERPACKAGE/$PAPERPACKAGE"
     fi
-    if ! echo "$PAPERPACKAGE" | grep '\.sh'; then
+    if ! grep -q '\.sh' <<< "$PAPERPACKAGE"; then
         PAPERPACKAGE="$PAPERPACKAGE.sh"
     fi
     pecho "$PAPERPACKAGE"
-    if echo "$PAPERLIST" | grep "${PAPERPACKAGE%.sh} "; then
+    if grep "${PAPERPACKAGE%.sh} " <<< "$PAPERLIST"; then
         pecho "$1 already imported"
         return 0
     fi
 
     if ! [ -e ~/.paperdebug ]; then
         if ! [ -e "~/pb/$PAPERPACKAGE" ] || [ -z "$NOCACHE" ]; then
-            if echo "$PAPERPACKAGE" | grep -q "/"; then
+            if grep -q "/" <<< "$PAPERPACKAGE"; then
                 FILEPATH=${PAPERPACKAGE%/*}
                 mkdir -p ~/pb/"$FILEPATH"
             fi
@@ -108,7 +108,7 @@ pb() {
     else
         pecho "using debugging version"
         if ! [ -e ~/.papersilent ]; then
-            cat ~/workspace/bash/"$PAPERPACKAGE" || (echo "debug package not found" && return 1)
+            cat ~/workspace/bash/"$PAPERPACKAGE" || { echo "debug package not found" && return 1; }
         fi
         source ~/workspace/bash/"$PAPERPACKAGE"
     fi
@@ -120,7 +120,7 @@ pname() {
 }
 
 psilent() {
-    (
+    {
         touch ~/.papersilent
         if [ -n "$1" ]; then
             sleep "$1"
@@ -128,7 +128,7 @@ psilent() {
             sleep 20
         fi
         rm ~/.papersilent
-    ) &
+    } &
 }
 
 pecho() {
@@ -140,8 +140,8 @@ pecho() {
 }
 
 getdistro() {
-    cat /etc/os-release | grep NAME | egrep -o '".*"'
+    grep "NAME" /etc/os-release | egrep -o '".*"'
 }
 
-SCRIPTDIR=$(echo "$0" | egrep -o '.*/')
+SCRIPTDIR=$(egrep -o '.*/' <<< "$0")
 pb bash
