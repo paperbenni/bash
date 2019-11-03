@@ -19,7 +19,7 @@ aurinstall() {
         git pull
     fi
 
-    for i in $(grep 'provides' <.SRCINFO | egrep -o '=.*' | egrep -o '[^ =]*'); do
+    for i in $(grep 'provides' <.SRCINFO | grep -Eo '=.*' | grep -Eo '[^ =]*'); do
         if command -v $i; then
             echo "program already installed"
             return 0
