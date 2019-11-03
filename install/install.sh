@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 pname install/install
+
 # install the package with the package manager $1
 altinstall() {
     ALTIFS="$IFS"
@@ -60,5 +61,22 @@ pinstall() {
     if command -v yum &>/dev/null; then
         altinstall "yum install -y" "$@"
     fi
+
+}
+
+# sets up an executable like a global program
+usrbin() {
+    if ! [ -e "$1" ]; then
+        echo "target not existing"
+        return 1
+    fi
+    if command -v "$1" &>/dev/null; then
+        echo "conflicting command name"
+        return 1
+    fi
+
+    sudo mv "$1" /usr/bin/"$1"
+    sudo chmod 755 /usr/bin/"$1"
+    sudo chown 0:0 /usr/bin/"$1"
 
 }
