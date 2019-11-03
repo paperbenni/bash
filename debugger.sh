@@ -1,11 +1,17 @@
-#!/usr/bin/env bash
-if ! [ "${SHELL##*/}" == 'bash' ]; then
-    echo "only for bash"
-    exit 1
-fi
+# paperbegin
+#################################
+## paperbash debugging utility ##
+#################################
 
-if [ -e ~/workspace/bash/import.sh ]; then
+papertest() {
+    if ! [ -e ~/workspace/bash/import.sh ]; then
+        if ! curl cht.sh &>/dev/null; then
+            echo "no internet"
+            return 1
+        fi
+        mkdir -p ~/workspace/bash
+        curl "https://raw.githubusercontent.com/paperbenni/bash/master/import.sh" >~/workspace/bash/import.sh
+    fi
     source ~/workspace/bash/import.sh
-else
-    source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
-fi
+}
+# paperend

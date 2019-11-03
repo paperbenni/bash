@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+
+########################
+## paperbash importer ##
+########################
+
 if ! [ "${SHELL##*/}" == 'bash' ]; then
     echo "error: shell is not bash"
     return 0
@@ -24,50 +29,50 @@ pb() {
 
     PAPERENABLE="false"
     case "$1" in
-        clear)
-            echo clearing the cache
-            rm -rf ~/pb
-            ;;
-        help)
-            echo "usage: pb filelocationonmygithubbashrepo"
-            ;;
-        nocache)
-            echo "disabling cache"
-            NOCACHE="true"
-            ;;
-        list)
-            echo "imported packages:"
-            echo "$PAPERLIST"
-            ;;
-        debug)
-            if [ "$2" = "all" ]; then
-                PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
-                echo "refreshing $PPACKAGES"
-                for i in "$PPACKAGES"; do
-                    echo "source $i"
-                    source ~/workspace/bash/"$i.sh"
-                done
-            else
-                cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
-                source ~/workspace/bash/"$2.sh"
-            fi
+    clear)
+        echo clearing the cache
+        rm -rf ~/pb
+        ;;
+    help)
+        echo "usage: pb filelocationonmygithubbashrepo"
+        ;;
+    nocache)
+        echo "disabling cache"
+        NOCACHE="true"
+        ;;
+    list)
+        echo "imported packages:"
+        echo "$PAPERLIST"
+        ;;
+    debug)
+        if [ "$2" = "all" ]; then
+            PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
+            echo "refreshing $PPACKAGES"
+            for i in "$PPACKAGES"; do
+                echo "source $i"
+                source ~/workspace/bash/"$i.sh"
+            done
+        else
+            cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
+            source ~/workspace/bash/"$2.sh"
+        fi
+        return 0
+        ;;
+    offupdate)
+        echo "updating offline install"
+        cd
+        cd workspace
+        rm -rf bash
+        git clone --depth=1 https://github.com/paperbenni/bash.git
+        ;;
+    *)
+        PAPERENABLE="true"
+        if [ -z "$@" ]; then
+            echo "usage: pb bashfile"
             return 0
-            ;;
-        offupdate)
-            echo "updating offline install"
-            cd
-            cd workspace
-            rm -rf bash
-            git clone --depth=1 https://github.com/paperbenni/bash.git
-            ;;
-        *)
-            PAPERENABLE="true"
-            if [ -z "$@" ]; then
-                echo "usage: pb bashfile"
-                return 0
-            fi
-            pecho "importing $@"
-            ;;
+        fi
+        pecho "importing $@"
+        ;;
     esac
 
     if [ "$PAPERENABLE" = "false" ]; then
@@ -76,21 +81,21 @@ pb() {
     fi
 
     PAPERPACKAGE="$1"
-    if ! grep -q '/' <<< "$PAPERPACKAGE"; then
+    if ! grep -q '/' <<<"$PAPERPACKAGE"; then
         PAPERPACKAGE="$PAPERPACKAGE/$PAPERPACKAGE"
     fi
-    if ! grep -q '\.sh' <<< "$PAPERPACKAGE"; then
+    if ! grep -q '\.sh' <<<"$PAPERPACKAGE"; then
         PAPERPACKAGE="$PAPERPACKAGE.sh"
     fi
     pecho "$PAPERPACKAGE"
-    if grep -q "${PAPERPACKAGE%.sh} " <<< "$PAPERLIST"; then
+    if grep -q "${PAPERPACKAGE%.sh} " <<<"$PAPERLIST"; then
         pecho "$1 already imported"
         return 0
     fi
 
     if ! [ -e ~/.paperdebug ]; then
         if ! [ -e "~/pb/$PAPERPACKAGE" ] || [ -z "$NOCACHE" ]; then
-            if grep -q "/" <<< "$PAPERPACKAGE"; then
+            if grep -q "/" <<<"$PAPERPACKAGE"; then
                 FILEPATH=${PAPERPACKAGE%/*}
                 mkdir -p ~/pb/"$FILEPATH"
             fi
@@ -143,5 +148,5 @@ getdistro() {
     grep "NAME" /etc/os-release | egrep -o '".*"'
 }
 
-SCRIPTDIR=$(egrep -o '.*/' <<< "$0")
+SCRIPTDIR=$(egrep -o '.*/' <<<"$0")
 pb bash
