@@ -6,7 +6,7 @@
 
 cd
 
-if grep -i 'papertest' <.bashrc; then
+if grep -qi 'papertest' <.bashrc; then
     echo "papertest already installed"
     exit
 fi
