@@ -2,10 +2,8 @@
 pname arch/arch
 
 aurinstall() {
-    if ! {command -v "makepkg" &&
-        {grep -q -i 'arch' </etc/os-release ||
-        grep -q -i 'manjaro' </etc/os-release}}; then
-        echo "your os doesn't support the AUR"
+    if ! command -v "makepkg" > /dev/null 2>&1 && grep -qiE '(arch|manjaro)' </etc/os-release; then
+        echo "your os doesn't support the AUR" >&2
         return 1
     fi
     pushd . &>/dev/null
