@@ -27,7 +27,7 @@ aurinstall() {
     done
 
     makepkg .
-    sudo pacman -U --noconfirm *.pkg.tar.xz
+    sudo pacman -U --noconfirm ./*.pkg.tar.xz
     cd ..
     rm -rf "$1"
 
