@@ -29,7 +29,7 @@ unpack
 
 ### Demo
 
-[![asciicast](https://asciinema.org/a/ieoK56ZmQlXtttQyAOrF2pP8R.svg)](https://asciinema.org/a/ieoK56ZmQlXtttQyAOrF2pP8R)
+[![asciicast](https://asciinema.org/a/uLkrlqR36UwAe5MJIXtGjH6uV.svg)](https://asciinema.org/a/uLkrlqR36UwAe5MJIXtGjH6uV)
 
 These my personal scripts.
 
