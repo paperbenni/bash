@@ -10,11 +10,11 @@ ubuntusetup() {
     if [ -e .paperbenni/setup/programs.txt ]; then
         echo "program list found"
     else
-        echo "no list found"
+        echo "no list found" >&2
         return 1
     fi
 
-    for THISPROGRAM in $(cat .paperbenni/setup/programs.txt); do
+    for THISPROGRAM in $(< .paperbenni/setup/programs.txt); do
         sudo apt install -y $THISPROGRAM
     done
     popd
