@@ -2,10 +2,23 @@
 pname wget/wget
 pb wget/fakebrowser
 
+# download all files of a given format from an index
 downloadformat() {
-    if grep "$1" <index.html; then
-        INDEX="${2:-index.html}"
-        wget -i $(egrep -o 'src=".*/.*\.'"$1"'"' <index.html | egrep -o '".*"' | egrep -o '[^"]*')
+    INDEX="${2:-index.html}"
+    if grep "$1" <"$INDEX"; then
+        egrep -o 'src=".*/.*\.'"$1"'"' <"$INDEX" | egrep -o '".*"' | egrep -o '[^"]*' >cache.html
+
+        while read p; do
+            if echo "$p" | grep -q 'http'; then
+                wget "$p"
+            else
+                if [ -n "$3" ]; then
+                    echo "$3$p"
+                    #wget "$3$p"
+                fi
+            fi
+        done <cache.html
+        rm cache.html
     fi
 }
 
@@ -14,11 +27,13 @@ downloadimages() {
     mkdir .imagecache
     cd .imagecache
     fakebrowser "$1"
+    DOMAIN2=$(echo "$1" | egrep -o 'http[s:]{,3}//[^/]*/')
+    DOMAIN="${DOMAIN2%/}"
     SINDEX="$(ls)"
-    downloadformat "jpg" "$SINDEX"
-    downloadformat "png" "$SINDEX"
-    downloadformat "jpeg" "$SINDEX"
-    downloadformat "gif" "$SINDEX"
+    downloadformat "jpg" "$SINDEX" "$DOMAIN"
+    downloadformat "png" "$SINDEX" "$DOMAIN"
+    downloadformat "jpeg" "$SINDEX" "$DOMAIN"
+    downloadformat "gif" "$SINDEX" "$DOMAIN"
     rm "$SINDEX"
     mv ./* ../
     cd ..
