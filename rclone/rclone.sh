@@ -3,10 +3,14 @@
 #check if a file is a directory
 pname rclone/rclone
 
+# check if remote path is folder or file
+# return 0 = folder
+# return 1 = file
 rcheck() {
     rclone rmdir -vv --dry-run "$RCLOUD":"$RNAME/$1" &>/dev/null
 }
 
+# check if folder or file exists on logged in remote
 rexists() {
     if rclone ls "$RCLOUD":"$RNAME/$1" &>/dev/null; then
         echo "$1 exists"
@@ -23,6 +27,7 @@ rdl() {
         echo "file does not exist on remote"
         return 1
     fi
+
     if rcheck "$1"; then
         echo "downloading folder $1"
         if [ -z "$2" ]; then
@@ -87,6 +92,7 @@ rupl() {
 rupls() {
     if ! [ -e "$1" ]; then
         echo "file or directory not found"
+        return 1
     fi
 
     if [ -z "$2" ]; then
@@ -140,11 +146,8 @@ rmega() {
 rmount() {
     echo "$@" || (echo "usage: rcmount dir dest" && return 0)
 
-    if [ -z "$2" ]; then
-        DESTDIR="$1"
-    else
-        DESTDIR="$2"
-    fi
+    DESTDIR=${1:-$2}
+    zerocheck "$DESTDIR"
 
     if ! [ -e "$DESTDIR" ]; then
         mkdir "$DESTDIR"
@@ -162,6 +165,8 @@ rmove() {
     rclone moveto "$RCLOUD:$RNAME/$1" "$RCLOUD:$RNAME/$2"
 }
 
+# remove file on remote
+# don't use trash on mega
 rrm() {
     rexists "$1" || (echo "cannot remove this" && return 0)
     if rcheck "$1"; then

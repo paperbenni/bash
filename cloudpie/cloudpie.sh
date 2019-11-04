@@ -49,8 +49,8 @@ function retroupdate() {
     mkdir -p ~/retroarch/"$1"
     pushd ~/retroarch/"$1"
     wget "$2" -q --show-progress
-    unzip -o *.zip &>/dev/null
-    rm *.zip
+    unzip -o ./*.zip &>/dev/null
+    rm ./*.zip
     popd
 }
 

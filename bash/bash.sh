@@ -166,12 +166,13 @@ exists() {
     return 0
 }
 
+# get distro name
+getdistro() {
+    grep "NAME" /etc/os-release | grep -o '".*"' | grep -o '[^"]*' | head -1
+}
+
 isdebian() {
-    if grep -q -i 'debian' </etc/os-release; then
-        return 0
-    else
-        return 1
-    fi
+    getdistro | grep -i -q 'debian'
 }
 
 alias dm='dmenu -l 30'

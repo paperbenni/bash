@@ -22,7 +22,7 @@ if [ -e ~/.paperdebug ]; then
     echo "debugging mode enabled"
 fi
 
-# imports bash functions from paperbenni/bash into the script
+# default fetching url
 PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
 
 pb() {
@@ -34,7 +34,8 @@ pb() {
         rm -rf ~/pb
         ;;
     help)
-        echo "usage: pb filelocationonmygithubbashrepo"
+        echo "usage: pb [package name]"
+        echo "you can find a list of available packages on my github"
         ;;
     nocache)
         echo "disabling cache"
@@ -48,7 +49,7 @@ pb() {
         if [ "$2" = "all" ]; then
             PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
             echo "refreshing $PPACKAGES"
-            for i in "$PPACKAGES"; do
+            for i in $PPACKAGES; do
                 echo "source $i"
                 source ~/workspace/bash/"$i.sh"
             done
@@ -99,7 +100,8 @@ pb() {
                 FILEPATH=${PAPERPACKAGE%/*}
                 mkdir -p ~/pb/"$FILEPATH"
             fi
-            curl -s "https://raw.githubusercontent.com/paperbenni/bash/master/$PAPERPACKAGE" >~/pb/"$PAPERPACKAGE"
+
+            curl -s "$PAPERGIT/$PAPERPACKAGE" >~/pb/"$PAPERPACKAGE"
         else
             pecho "using $PAPERPACKAGE from cache"
         fi
@@ -144,9 +146,6 @@ pecho() {
     fi
 }
 
-getdistro() {
-    grep "NAME" /etc/os-release | egrep -o '".*"'
-}
 
-SCRIPTDIR=$(egrep -o '.*/' <<<"$0")
+SCRIPTDIR=$(grep -o '.*/' <<<"$0")
 pb bash
