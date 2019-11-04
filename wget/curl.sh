@@ -5,7 +5,7 @@ pname wget/curl
 getlinks() {
     echo "$1"
     curl -s "$1" |
-        egrep -o '<a href=".*">.*</a>' |
-        egrep -o '".*"' | egrep -o '[^"]*' |
+        grep -o '<a href=".*">.*</a>' |
+        grep -o '".*"' | grep -E -o '[^"]*' |
         urldecode
 }

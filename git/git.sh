@@ -7,7 +7,7 @@ gitfolder() {
 
 ghrepos() {
     GHUSER="$1"
-    curl -s "https://api.github.com/users/$GHUSER/repos?per_page=100" | grep -o 'git@[^"]*' | egrep -o ':.*' | egrep -o '[^:]*'
+    curl -s "https://api.github.com/users/$GHUSER/repos?per_page=100" | grep -E -o 'git@[^"]*' | grep -o ':.*' | grep -E -o '[^:]*'
 }
 
 ghbackup() {
