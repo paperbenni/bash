@@ -6,7 +6,7 @@ pb wget/fakebrowser
 downloadformat() {
     INDEX="${2:-index.html}"
     if grep "$1" <"$INDEX"; then
-        egrep -o 'src=".*/.*\.'"$1"'"' <"$INDEX" | egrep -o '".*"' | egrep -o '[^"]*' >cache.html
+        grep -Eo 'src=".*/.*\.'"$1"'"' <"$INDEX" | grep -Eo '".*"' | grep -Eo '[^"]*' >cache.html
 
         while read p; do
             if echo "$p" | grep -q 'http'; then
@@ -27,7 +27,7 @@ downloadimages() {
     mkdir .imagecache
     cd .imagecache
     fakebrowser "$1"
-    DOMAIN2=$(echo "$1" | egrep -o 'http[s:]{,3}//[^/]*/')
+    DOMAIN2=$(echo "$1" | grep -Eo 'http[s:]{,3}//[^/]*/')
     DOMAIN="${DOMAIN2%/}"
     SINDEX="$(ls)"
     downloadformat "jpg" "$SINDEX" "$DOMAIN"
