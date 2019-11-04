@@ -2,12 +2,23 @@
 
 pname spigot/mpm
 
+# get a file from the mpm repo
+getmpm() {
+    MMC=${MC:-1.13}
+    MPMRAW="raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MMC"
+    test -e $1 || wget -q "$MPMRAW/$1"
+}
+
 mpm() {
 
     if [ "$1" = "-f" ]; then
         if [ -e "mpmfile" ]; then
             while read p; do
-                mpm "$p"
+                if echo "$p" | grep 'version:'; then
+                    MCVERSION=$(echo "$p" | grep -o ':.*' | grep '[^:]*')
+                else
+                    mpm "$p"
+                fi
                 echo "$p"
             done <mpmfile
         else
@@ -36,8 +47,8 @@ mpm() {
 
     #check for new version if the plugin is installed
     if [ -e "$1.mpm" ]; then
-        OLDVERSION="$(grep version <"$1.mpm" | egrep -o '[0-9]*')"
-        NEWVERSION="$(curl "$MPMLINK/plugins/$1/$MCVERSION/$1.mpm" | grep 'version' | egrep -o '[0-9]*')"
+        OLDVERSION="$(grep version <"$1.mpm" | grep -o '[0-9]*')"
+        NEWVERSION="$(curl "$MPMLINK/plugins/$1/$MCVERSION/$1.mpm" | grep 'version' | grep -o '[0-9]*')"
         if [ "$OLDVERSION" = "$NEWVERSION" ]; then
             echo "newest version of $1 already installed"
             cd ..
@@ -131,7 +142,7 @@ mpupdate() {
         done
     else
         #update existing mpmfile
-        MCVER=$(grep 'version:' <"$2.mpm" | egrep -o '[0-9]*')
+        MCVER=$(grep 'version:' <"$2.mpm" | grep -o '[0-9]*')
         echo "updating to version $((MCVER + 1))"
         sed -i 's/version:.*/'"version:$((MCVER + 1))/g" $2.mpm
         cat "$2.mpm"

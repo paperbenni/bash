@@ -1,20 +1,23 @@
 #!/bin/bash
 
 pname spigot/spigot
+pb mpm
 
 # downloads spigot into the current foder
 spigotdl() {
 
-    if echo "$1" | grep '1.'; then
+    if echo "$1" | grep -q '1.'; then
         MC="$1"
     else
         MC="$(curl -s https://raw.githubusercontent.com/paperbenni/mpm/master/latest)"
     fi
     echo "downloading minecraft version $MC"
-    if ! java -version; then
+
+    if ! command -v java &>/dev/null; then
         pb install
         pinstall openjdk-8-jre:openjdk8:jdk8-openjdk curl
     fi
+
     echo "downloading https://raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.jar"
     if [ -e spigot.jar ]; then
         echo "spigot already existing!"
@@ -27,12 +30,18 @@ spigotdl() {
     mv paperbenni64.png server-icon.png
     cat eula.txt || echo "eula=true" >eula.txt #accept eula
 
-    test -e bukkit.yml || wget -q raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/bukkit.yml
-    test -e paper.yml || wget -q raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/paper.yml
-    test -e spigot.yml || wget -q raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/spigot.yml
-    test -e server.properties || wget -q raw.githubusercontent.com/paperbenni/mpm/master/spigot/$MC/server.properties
+    defaultspigot
     ls *.html &>/dev/null && rm *.html
 
+}
+
+# sets up default config files
+# doesn't override existing config
+defaultspigot() {
+    getmpm bukkit.yml
+    getmpm paper.yml
+    getmpm spigot.yml
+    getmpm server.properties
 }
 
 # usage: spigexe MCVERSION {ammount of memory}
@@ -44,9 +53,9 @@ spigexe() {
     spigotdl "$1"
 
     if [ -z $2 ]; then
-        java -Xmx500m -Xms500m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
+        pjava spigot.jar "500m"
     else
-        java -Xmx${2}m -Xms${2}m -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:InitiatingHeapOccupancyPercent=10 -XX:G1MixedGCLiveThresholdPercent=50 -XX:+AggressiveOpts -jar spigot.jar
+        pjava spigot.jar "${2}"
     fi
 }
 
@@ -118,9 +127,9 @@ spigotversion() {
     #example content: {"currentVersion":"git-Paper-610 (MC: 1.xx.x)"}
 
     cat version_history.json |
-        egrep -o 'currentVersion.*' |
-        egrep -o 'MC: 1\.[0-9]{1,}' |
-        egrep -o '1\.[0-9]{1,}'
+        grep -o 'currentVersion.*' |
+        grep -E -o 'MC: 1\.[0-9]{1,}' |
+        grep -E -o '1\.[0-9]{1,}'
 }
 
 spigotserveo() {
