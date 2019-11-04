@@ -9,7 +9,7 @@ downloadformat() {
         grep -Eo 'src=".*/.*\.'"$1"'"' <"$INDEX" | grep -Eo '".*"' | grep -Eo '[^"]*' >cache.html
 
         while read p; do
-            if echo "$p" | grep -q 'http'; then
+            if grep -q 'http' <<< "$p"; then
                 wget "$p"
             else
                 if [ -n "$3" ]; then
@@ -27,13 +27,14 @@ downloadimages() {
     mkdir .imagecache
     cd .imagecache
     fakebrowser "$1"
-    DOMAIN2=$(echo "$1" | grep -Eo 'http[s:]{,3}//[^/]*/')
+    DOMAIN2=$(grep -Eo 'http[s:]{,3}//[^/]*/' <<< "$1")
     DOMAIN="${DOMAIN2%/}"
     SINDEX="$(ls)"
-    downloadformat "jpg" "$SINDEX" "$DOMAIN"
-    downloadformat "png" "$SINDEX" "$DOMAIN"
-    downloadformat "jpeg" "$SINDEX" "$DOMAIN"
-    downloadformat "gif" "$SINDEX" "$DOMAIN"
+
+    for FMT in jpg png jpeg gif; {
+        downloadformat "$FTM" "$SINDEX" "$DOMAIN"
+    }
+
     rm "$SINDEX"
     mv ./* ../
     cd ..
