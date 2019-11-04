@@ -12,12 +12,10 @@ proton() {
     mkdir -p ~/.proton
     pushd ~/.proton
     if ! (
-        command -v python
-        command -v openvp
-        command -v wget
-        command -v dialog
-        command -v pvpn
-        command -v expect
+        for i in python openvpn wget dialog pvpn expect; do
+            command -v $i
+        done
+
     ); then
         pb install
         pinstall python openvpn dialog wget expect iptables
