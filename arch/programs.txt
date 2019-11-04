@@ -28,3 +28,4 @@ blender
 golang-go
 ruby
 neovim
+mpv
