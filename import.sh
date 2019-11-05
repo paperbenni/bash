@@ -25,6 +25,31 @@ fi
 # default fetching url
 PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
 
+pbname() {
+    if grep -q '\.' <<<"$1"; then
+        if grep -q '/' <<<"$1"; then
+            if grep -q '\.sh' <<<"$1"; then
+                echo "$1"
+            else
+                echo "${1//\./\/}.sh"
+            fi
+        else
+            if grep -q '\.sh' <<<"$1"; then
+                echo "${1%.sh}/$1"
+            else
+                echo "${1//\./\/}.sh"
+            fi
+        fi
+
+    else
+        if grep -q '/' <<<"$1"; then
+            echo "$1.sh"
+        else
+            echo "$1/$1.sh"
+        fi
+    fi
+}
+
 pb() {
     {
         PAPERENABLE="false"
@@ -82,35 +107,11 @@ pb() {
         return 0
     fi
 
-    # process multiple packages
-    if [ -n "$2" ]; then
-        for i in $@; do
-            pb $i
-            return 0
-        done
-    fi
-
-    # one-word notation
-    if ! {grep -q '/' <<<"$PAPERPACKAGE" || grep -q '\.' <<<"$PAPERPACKAGE"}; then
-        PAPERPACKAGE="$PAPERPACKAGE/$PAPERPACKAGE"
-    else
-        # support dot notation
-        if ! grep -q '\.sh$' <<<"$1"; then
-            PAPERPACKAGE="${1//\//.}"
-        else
-            PAPERPACKAGE="$1"
-        fi
-
-    fi
-
-    # append .sh
-    if ! grep -q '\.sh' <<<"$PAPERPACKAGE"; then
-        PAPERPACKAGE="$PAPERPACKAGE.sh"
-    fi
+    PAPERPACKAGE=$(pbname "$1")
     pecho "$PAPERPACKAGE"
 
     # only import once
-    if grep -q "${PAPERPACKAGE%.sh} " <<<"$PAPERLIST"; then
+    if grep -q "$PAPERPACKAGE" <<<"$PAPERLIST"; then
         pecho "$1 already imported"
         return 0
     fi
@@ -143,8 +144,25 @@ pb() {
 
 }
 
+pbb() {
+    # process multiple packages
+    if [ -n "$2" ]; then
+        echo "multi import statement"
+        IFS2="$IFS"
+        IFS=" "
+        for i in "$@"; do
+            echo "importing $i"
+            pb ${i//[[:space:]]/}
+
+        done
+        IFS="$IFS2"
+        return
+
+    fi
+}
+
 pname() {
-    PAPERLIST="$PAPERLIST $1 "$'\n'
+    PAPERLIST="$PAPERLIST $(pbname $1)\n"
 }
 
 psilent() {

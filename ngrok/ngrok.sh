@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pname ngrok/ngrok
+pname ngrok
 
 # installs ngrok binary into ~/ngrok/ngrok
 ngrokdl() {

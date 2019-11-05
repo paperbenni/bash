@@ -1,7 +1,7 @@
 #!/bin/bash
 
-pname spigot/spigot
-pb mpm
+pname spigot
+pb spigot/mpm
 
 # downloads spigot into the current foder
 spigotdl() {
