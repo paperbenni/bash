@@ -20,24 +20,21 @@ function confset() {
     grep "$2" <"$1"
 }
 
-# get vaule from format key:value without a preceding space
+# get value from format key:value without a preceding space
 # if not found rerurn $3
-function confget(){
-    if [ -z "$2" ]
-    then
+function confget() {
+    if [ -z "$2" ]; then
         return 1
     fi
 
-    if ! [ -e "$1" ] || ! grep -i "$2" < "$1"
-    then
-	    if [ -n "$3" ]
-	    then
-		    echo "$3"
-	    else
-		    return 1
-	    fi
+    if ! [ -e "$1" ] || ! grep -i "$2" <"$1"; then
+        if [ -n "$3" ]; then
+            echo "$3"
+        else
+            return 1
+        fi
     fi
 
-    grep "$2" < "$1" | egrep -o ':.*' | egrep -o '[^:]*'
+    grep "$2" <"$1" | egrep -o ':.*' | egrep -o '[^:]*'
 
 }
