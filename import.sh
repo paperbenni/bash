@@ -26,62 +26,77 @@ fi
 PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
 
 pb() {
-
-    PAPERENABLE="false"
-    case "$1" in
-    clear)
-        echo clearing the cache
-        rm -rf ~/pb
-        ;;
-    help)
-        echo "usage: pb [package name]"
-        echo "you can find a list of available packages on my github"
-        ;;
-    nocache)
-        echo "disabling cache"
-        NOCACHE="true"
-        ;;
-    list)
-        echo "imported packages:"
-        echo "$PAPERLIST"
-        ;;
-    debug)
-        if [ "$2" = "all" ]; then
-            PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
-            echo "refreshing $PPACKAGES"
-            for i in $PPACKAGES; do
-                echo "source $i"
-                source ~/workspace/bash/"$i.sh"
-            done
-        else
-            cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
-            source ~/workspace/bash/"$2.sh"
-        fi
-        return 0
-        ;;
-    offupdate)
-        echo "updating offline install"
-        cd
-        cd workspace
-        rm -rf bash
-        git clone --depth=1 https://github.com/paperbenni/bash.git
-        ;;
-    *)
-        PAPERENABLE="true"
-        if [ -z "$@" ]; then
-            echo "usage: pb bashfile"
+    {
+        PAPERENABLE="false"
+        case "$1" in
+        clear)
+            echo clearing the cache
+            rm -rf ~/pb
+            ;;
+        help)
+            echo "usage: pb [package name]"
+            echo "you can find a list of available packages on my github"
+            ;;
+        nocache)
+            echo "disabling cache"
+            NOCACHE="true"
+            ;;
+        list)
+            echo "imported packages:"
+            echo "$PAPERLIST"
+            ;;
+        debug)
+            if [ "$2" = "all" ]; then
+                PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
+                echo "refreshing $PPACKAGES"
+                for i in $PPACKAGES; do
+                    echo "source $i"
+                    source ~/workspace/bash/"$i.sh"
+                done
+            else
+                cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
+                source ~/workspace/bash/"$2.sh"
+            fi
             return 0
-        fi
-        pecho "importing $@"
-        ;;
-    esac
+            ;;
+        offupdate)
+            echo "updating offline install"
+            cd
+            cd workspace
+            rm -rf bash
+            git clone --depth=1 https://github.com/paperbenni/bash.git
+            ;;
+        *)
+            PAPERENABLE="true"
+            if [ -z "$@" ]; then
+                echo "usage: pb bashfile"
+                return 0
+            fi
+            pecho "importing $@"
+            ;;
+        esac
+    }
 
     if [ "$PAPERENABLE" = "false" ]; then
         pecho "done, exiting"
         return 0
     fi
 
-    PAPERPACKAGE="$1"
+    # process multiple packages
+    if [ -n "$2" ]; then
+        for i in $@; do
+            pb $i
+            return 0
+        done
+    fi
+
+    # support dot notation
+    if ! grep -q '\.sh$' <<<"$1"; then
+        PAPERPACKAGE="${1//\//.}"
+    else
+        PAPERPACKAGE="$1"
+    fi
+
     if ! grep -q '/' <<<"$PAPERPACKAGE"; then
         PAPERPACKAGE="$PAPERPACKAGE/$PAPERPACKAGE"
     fi
@@ -145,7 +160,6 @@ pecho() {
         echo "$@"
     fi
 }
-
 
 SCRIPTDIR=$(grep -o '.*/' <<<"$0")
 pb bash
