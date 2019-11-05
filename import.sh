@@ -152,7 +152,6 @@ pbb() {
             echo "importing $i"
             pb $i
         done
-        return
     fi
 }
 
