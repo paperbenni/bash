@@ -90,20 +90,26 @@ pb() {
         done
     fi
 
-    # support dot notation
-    if ! grep -q '\.sh$' <<<"$1"; then
-        PAPERPACKAGE="${1//\//.}"
+    # one-word notation
+    if ! {grep -q '/' <<<"$PAPERPACKAGE" || grep -q '\.' <<<"$PAPERPACKAGE"}; then
+        PAPERPACKAGE="$PAPERPACKAGE/$PAPERPACKAGE"
     else
-        PAPERPACKAGE="$1"
+        # support dot notation
+        if ! grep -q '\.sh$' <<<"$1"; then
+            PAPERPACKAGE="${1//\//.}"
+        else
+            PAPERPACKAGE="$1"
+        fi
+
     fi
 
-    if ! grep -q '/' <<<"$PAPERPACKAGE"; then
-        PAPERPACKAGE="$PAPERPACKAGE/$PAPERPACKAGE"
-    fi
+    # append .sh
     if ! grep -q '\.sh' <<<"$PAPERPACKAGE"; then
         PAPERPACKAGE="$PAPERPACKAGE.sh"
     fi
     pecho "$PAPERPACKAGE"
+
+    # only import once
     if grep -q "${PAPERPACKAGE%.sh} " <<<"$PAPERLIST"; then
         pecho "$1 already imported"
         return 0
