@@ -148,16 +148,11 @@ pbb() {
     # process multiple packages
     if [ -n "$2" ]; then
         echo "multi import statement"
-        IFS2="$IFS"
-        IFS=" "
-        for i in "$@"; do
+        for i in $*; do
             echo "importing $i"
-            pb ${i//[[:space:]]/}
-
+            pb $i
         done
-        IFS="$IFS2"
         return
-
     fi
 }
 
