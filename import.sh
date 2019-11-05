@@ -26,23 +26,23 @@ fi
 PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
 
 pbname() {
-    if grep -q '\.' <<<"$1"; then
-        if grep -q '/' <<<"$1"; then
-            if grep -q '\.sh' <<<"$1"; then
+    if [[ "$1" == *.* ]]; then
+        if [[ "$1" == */* ]]; then
+            if [[ "$1" == *.sh* ]]; then
                 echo "$1"
             else
-                echo "${1//\./\/}.sh"
+                echo "${1//.//}.sh"
             fi
         else
-            if grep -q '\.sh' <<<"$1"; then
+            if [[ "$1" == *.sh* ]]; then
                 echo "${1%.sh}/$1"
             else
-                echo "${1//\./\/}.sh"
+                echo "${1//.//}.sh"
             fi
         fi
 
     else
-        if grep -q '/' <<<"$1"; then
+        if [[ "$1" == */* ]]; then
             echo "$1.sh"
         else
             echo "$1/$1.sh"
