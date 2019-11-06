@@ -3,13 +3,13 @@ pname config/config
 
 function confset() {
     if ! [ -e "$1" ]; then
-        echo "target config file $1 not existing!"
+        echo "target config file '$1' not existing!" >&2
         return 1
     fi
     if [ -z "$3" ]; then
         echo "usage: confset file option value"
     fi
-    if grep -q "$2=$3" <"$1"; then
+    if [[ "$1" == *"$2=$3"* ]]; then
         echo "value $2=$3 already set"
         return 0
     else
