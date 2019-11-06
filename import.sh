@@ -147,10 +147,12 @@ pb() {
 pbb() {
     # process multiple packages
     if [ -n "$2" ]; then
-        echo "multi import statement"
-        for i in $*; do
+        echo "multi-import statement"
+
+        # The "$@" allows for correct handling of input containing spaces.
+        for i in "$@"; do
             echo "importing $i"
-            pb $i
+            pb "$i"
         done
     fi
 }
