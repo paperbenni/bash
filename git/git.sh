@@ -16,6 +16,21 @@ ghbackup() {
     done
 }
 
-papergit(){
-	git clone --depth 1 "https://github.com/paperbenni/$1"
+# clone one of my repos. just here for backwards compatibility
+papergit() {
+    git clone --depth 1 "https://github.com/paperbenni/$1"
+}
+
+# clone repo, default to github, default to my username
+gitclone() {
+    zerocheck "$1"
+    if grep ':' <<<"$1"; then
+        git clone --depth=1 "$1"
+    else
+        if grep '/' <<<"$1"; then
+            git clone --depth=1 "https://github.com/$1.git"
+        else
+            git clone --depth 1 "https://github.com/paperbenni/$1"
+        fi
+    fi
 }
