@@ -50,7 +50,7 @@ pbname() {
     fi
 }
 
-pb() {
+pbimport() {
     {
         PAPERENABLE="false"
         case "$1" in
@@ -144,16 +144,24 @@ pb() {
 
 }
 
-pbb() {
+pb() {
     # process multiple packages
     if [ -n "$2" ]; then
-        echo "multi-import statement"
-
-        # The "$@" allows for correct handling of input containing spaces.
+        echo "multi import statement"
+        IFS2="$IFS"
+        IFS=" "
         for i in "$@"; do
-            echo "importing $i"
-            pb "$i"
+            # remove trailing and leading space
+            PKGNAME=$(sed 's/^[ \t]*//;s/[ \t]*$//' <<<"$i")
+            echo "importing $PKGNAME"
+            pbimport "$PKGNAME"
         done
+        IFS="$IFS2"
+        return
+
+    else
+        PKGNAME=$(sed 's/^[ \t]*//;s/[ \t]*$//' <<<"$1")
+        pbimport "$PKGNAME"
     fi
 }
 
