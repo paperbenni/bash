@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 pname config/config
 
+# used for spigot options
 function confset() {
     if ! [ -e "$1" ]; then
         echo "target config file '$1' not existing!" >&2
@@ -27,7 +28,7 @@ function confget() {
         return 1
     fi
 
-    if ! [ -e "$1" ] || ! grep -i "$2" <"$1"; then
+    if ! [ -e "$1" ] || ! {grep -i "$2" <"$1" &>/dev/null}; then
         if [ -n "$3" ]; then
             echo "$3"
         else

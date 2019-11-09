@@ -41,12 +41,12 @@ pjava() {
     if [ -e ./"$1" ]; then
         MEMORY=${2:-650m}
         java -Xmx$MEMORY -Xms$MEMORY -XX:+AlwaysPreTouch -XX:+DisableExplicitGC \
-            XX:+UseG1GC -XX:+UnlockExperimentalVMOptions \
-            XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 \
-            XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 \
-            XX:InitiatingHeapOccupancyPercent=10 \
-            XX:G1MixedGCLiveThresholdPercent=50 \
-            XX:+AggressiveOpts -jar "$1"
+            -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions \
+            -XX:MaxGCPauseMillis=45 -XX:TargetSurvivorRatio=90 \
+            -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 \
+            -XX:InitiatingHeapOccupancyPercent=10 \
+            -XX:G1MixedGCLiveThresholdPercent=50 \
+            -XX:+AggressiveOpts -jar "$1"
     else
         echo "file not existing, trying out other jar files!"
         pjava ./*.jar
