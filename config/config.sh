@@ -4,7 +4,7 @@ pname config/config
 # used for spigot options
 function confset() {
     # File must exist, be a file, and have read and write access.
-    if ! [ -f "$1" -a -r "$1" -a -w "$1" ]; then
+    if ! [ -f "$1" ] || ! [ -r "$1" ] || ! [ -w "$1" ]; then
         echo "target config file '$1' missing or inaccessible!" >&2
         return 1
     fi
@@ -27,10 +27,10 @@ function confset() {
 # optional delimiter $4, default :
 function confget() {
     # File and key required.
-    [ -z "$1" -o -z "$2" ] && return 1
+    { [ -z "$1" ] || [ -z "$2" ]; } && return 1
 
     # File must exist, be a file, and have read access.
-    [ -f "$1" -a -r "$1" ] || return 2
+    { [ -f "$1" ] && [ -r "$1" ]; } || return 2
 
     while IFS="${4:-:}" read -a ARRAY; do
         if [ "${ARRAY[0]}" == "$2" ]; then
