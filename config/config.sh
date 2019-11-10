@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#pname config/config
+pname config/config
 
 # used for spigot options
 function confset() {
