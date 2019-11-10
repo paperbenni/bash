@@ -22,20 +22,21 @@ function confset() {
 }
 
 # get value from format key:value without a preceding space
-# if not found rerurn $3
+# if not found return $3
+# optional delimiter $4, default :
 function confget() {
-    if [ -z "$2" ]; then
-        return 1
-    fi
-
-    if ! [ -e "$1" ] || ! {grep -i "$2" <"$1" &>/dev/null}; then
+    [ -z "$2" ] && return 1
+    if [ -e "$1" ] && grep -i -q "$2" <"$1"; then
+        DELIMITER=${4:-:}
+        VALUE=$(grep "^$2$DELIMITER" <"$1" |
+            grep -o "$DELIMITER"'.*')
+        echo "${VALUE##$DELIMITER}"
+    else
+        # return default value if value is not set in the file
         if [ -n "$3" ]; then
             echo "$3"
         else
             return 1
         fi
     fi
-
-    grep "$2" <"$1" | egrep -o ':.*' | egrep -o '[^:]*'
-
 }
