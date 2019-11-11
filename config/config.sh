@@ -3,8 +3,9 @@ pname config/config
 
 # used for spigot options
 function confset() {
-    if ! [ -e "$1" ]; then
-        echo "target config file '$1' not existing!" >&2
+    # File must exist, be a file, and have read and write access.
+    if ! [ -f "$1" ] || ! [ -r "$1" ] || ! [ -w "$1" ]; then
+        echo "target config file '$1' missing or inaccessible!" >&2
         return 1
     fi
     if [ -z "$3" ]; then
@@ -25,18 +26,23 @@ function confset() {
 # if not found return $3
 # optional delimiter $4, default :
 function confget() {
-    [ -z "$2" ] && return 1
-    if [ -e "$1" ] && grep -i -q "$2" <"$1"; then
-        DELIMITER=${4:-:}
-        VALUE=$(grep "^$2$DELIMITER" <"$1" |
-            grep -o "$DELIMITER"'.*')
-        echo "${VALUE##$DELIMITER}"
-    else
-        # return default value if value is not set in the file
-        if [ -n "$3" ]; then
-            echo "$3"
-        else
-            return 1
+    # File and key required.
+    { [ -z "$1" ] || [ -z "$2" ]; } && return 1
+
+    # File must exist, be a file, and have read access.
+    { [ -f "$1" ] && [ -r "$1" ]; } || return 2
+
+    while IFS="${4:-:}" read -a ARRAY; do
+        if [ "${ARRAY[0]}" == "$2" ]; then
+            # Use extended globbing to match any number of spaces.
+            shopt -s extglob
+            echo "${ARRAY[1]##+([[:space:]])}"
+            shopt -u extglob
+
+            return 0
         fi
-    fi
+    done < "$1"
+
+    # return default value if value is not set in the file
+    [ -n "$3" ] && echo "$3"
 }
