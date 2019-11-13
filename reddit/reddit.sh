@@ -19,7 +19,7 @@ rdsubmissions() {
     #get the last time
     for i in $(seq $RDCOUNT); do
         #statements
-        LASTTIME=$(cat push.txt | tail -8 | grep '"created_utc"' | egrep -o '[0-9]*')
+        LASTTIME=$(tail -8 push.txt | grep '"created_utc"' | grep -Eo '[0-9]*')
         echo "after $LASTTIME"
         curl "$PUSHSHIFT=$1&num_comments=>10&sort=desc&filter=created_utc,id,score&size=1000&before=$LASTTIME" >>push.txt
         sleep 1
@@ -27,7 +27,7 @@ rdsubmissions() {
 }
 
 rdid() {
-    cat "$1" | egrep '"id"' | egrep -o ':.*' | betweenquotes >"$2.2"
+    grep -E '"id"' "$1" | grep -Eo ':.*' | betweenquotes >"$2.2"
     sort -u "$2.2" >"$2"
     rm "$2.2"
 }
