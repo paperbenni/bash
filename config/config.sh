@@ -30,7 +30,10 @@ function confget() {
     { [ -z "$1" ] || [ -z "$2" ]; } && return 1
 
     # File must exist, be a file, and have read access.
-    { [ -f "$1" ] && [ -r "$1" ]; } || return 2
+    if { [ -f "$1" ] && [ -r "$1" ]; }; then
+        [ -n "$3" ] || return 2
+        echo "$3"
+    fi
 
     while IFS="${4:-:}" read -a ARRAY; do
         if [ "${ARRAY[0]}" == "$2" ]; then
@@ -41,7 +44,7 @@ function confget() {
 
             return 0
         fi
-    done < "$1"
+    done <"$1"
 
     # return default value if value is not set in the file
     [ -n "$3" ] && echo "$3"
