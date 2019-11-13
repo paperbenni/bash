@@ -71,6 +71,7 @@ yess() {
     done
 }
 
+# loop command oneliner
 loop() {
     if [ "$1" -eq "$1" ] &>/dev/null; then
         LOOPI="$1"

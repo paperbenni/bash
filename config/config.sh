@@ -32,7 +32,7 @@ function confget() {
     # File must exist, be a file, and have read access.
     if { [ -f "$1" ] && [ -r "$1" ]; }; then
         [ -n "$3" ] || return 2
-        echo "$3"
+        echo "$3" && return 0
     fi
 
     while IFS="${4:-:}" read -a ARRAY; do

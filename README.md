@@ -10,7 +10,7 @@ Meant for use in Scripting
 Add the following line to the top of your bash script to get started using my functions
 
 ```sh
-source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
+source <(curl -Ls https://git.io/JerLG)
 ```
 
 Then do the following to import functions into your script
@@ -41,4 +41,9 @@ If you want to contribute, feel free to send pull requests.
 debugger:
 ```sh
 source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/setup.sh)
+```
+
+### Alternative sourcing oneliner
+```sh
+{ command -v papertest && papertest; } || source <(curl -Ls https://git.io/JerLG)
 ```
