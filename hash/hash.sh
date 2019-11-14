@@ -2,7 +2,9 @@
 pname hash/hash
 
 different() {
+    local LINE
     declare -i LINE_COUNT=0
+
     while read -a LINE; do
         LINE_COUNT+=1
         if [ $LINE_COUNT -eq 1 ]; then
