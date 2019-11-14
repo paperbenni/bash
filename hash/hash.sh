@@ -2,12 +2,23 @@
 pname hash/hash
 
 different() {
-    HASH1=$(sha256sum "$1" | cut -d ' ' -f 1)
-    HASH2=$(sha256sum "$2" | cut -d ' ' -f 1)
-    if [ "$HASH1" = "$HASH2" ]; then
-        echo "files '$1' and '$2' are identical"
+    declare -i LINE_COUNT=0
+    while read -a LINE; do
+        LINE_COUNT+=1
+        if [ $LINE_COUNT -eq 1 ]; then
+            local HASH1=${LINE%% *}
+        elif [ $LINE_COUNT -eq 2 ]; then
+            local HASH2=${LINE%% *}
+
+            # In-case more files are given by accident.
+            break
+        fi
+    done < "$(sha256sum "$1" "$2" 2>&-)"
+
+    if [ "$HASH1" == "$HASH2" ]; then
+        echo "Files '$1' and '$2' are identical."
         return 1
     else
-        echo "files '$1' and '$2' differ"
+        echo "Files '$1' and '$2' differ."
     fi
 }
