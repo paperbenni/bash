@@ -122,6 +122,17 @@ function zerocheck() {
     done
 }
 
+cmdcheck() {
+    for i in "$@"; do
+        if ! command -v "$i" &>/dev/null; then
+            echo "please install $i"
+            exit
+        else
+            echo "dependencies found"
+        fi
+    done
+}
+
 function checkexit() {
     if [ $? -eq 0 ]; then
         echo 'OK'
