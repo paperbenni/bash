@@ -222,12 +222,13 @@ if [ -e ~/.paperdebug ]; then
                 for sh in ./*.sh; do
                     echo "#### ${sh#./}"
                 done
+                echo ".."
                 cd ..
             done
         )
     }
 
     pbls() {
-        pbls | less
+        pblsraw | less
     }
 fi
