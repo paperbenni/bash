@@ -76,11 +76,11 @@ pbimport() {
                 echo "refreshing $PPACKAGES"
                 for i in $PPACKAGES; do
                     echo "source $i"
-                    source ~/workspace/bash/"$i.sh"
+                    psource ~/workspace/bash/"$i.sh"
                 done
             else
                 cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
-                source ~/workspace/bash/"$2.sh"
+                psource ~/workspace/bash/"$2.sh"
             fi
             return 0
             ;;
@@ -130,7 +130,7 @@ pbimport() {
 
         if grep -q 'pname' <~/pb/"$PAPERPACKAGE"; then
             pecho "script is valid"
-            source ~/pb/"$PAPERPACKAGE"
+            psource ~/pb/"$PAPERPACKAGE"
         else
             pecho "$PAPERPACKAGE not a pb package"
         fi
@@ -139,9 +139,18 @@ pbimport() {
         if ! [ -e ~/.papersilent ]; then
             cat ~/workspace/bash/"$PAPERPACKAGE" || { echo "debug package not found" && return 1; }
         fi
-        source ~/workspace/bash/"$PAPERPACKAGE"
+        psource ~/workspace/bash/"$PAPERPACKAGE"
     fi
 
+}
+
+psource() {
+    if [ -n "$PAPERSOURCE" ]; then
+        grep '.*().*\{' <"$1" | less
+        unset PAPERSOURCE
+    else
+        source "$1"
+    fi
 }
 
 pb() {
@@ -189,5 +198,36 @@ pecho() {
     fi
 }
 
+pdoc() {
+    PAPERSOURCE="True"
+    pb $@
+}
+
 SCRIPTDIR=$(grep -o '.*/' <<<"$0")
 pb bash
+
+# functions only available in debug mode
+if [ -e ~/.paperdebug ]; then
+
+    # list all packages in pretty format
+    pblsraw() {
+        (
+            cd ~/workspace/bash
+            for i in ./*; do
+                if ! [ -d "$i" ]; then
+                    continue
+                fi
+                echo "${i#./}"
+                cd "$i"
+                for sh in ./*.sh; do
+                    echo "#### ${sh#./}"
+                done
+                cd ..
+            done
+        )
+    }
+
+    pbls() {
+        pbls | less
+    }
+fi
