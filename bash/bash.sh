@@ -122,6 +122,40 @@ function zerocheck() {
     done
 }
 
+tout() {
+    if [ "$1" -eq "$1" ]; then
+        TOUT="$1"
+        shift
+    else
+        TOUT="10"
+    fi
+
+    if timeout -t 3 echo test &>/dev/null; then
+        if timeout -t "$TOUT" $@; then
+            return 0
+        else
+            return 1
+        fi
+    else
+        if timeout "$TOUT" $@; then
+            return 0
+        else
+            return 1
+        fi
+    fi
+}
+
+cmdcheck() {
+    for i in "$@"; do
+        if ! command -v "$i" &>/dev/null; then
+            echo "please install $i"
+            exit
+        else
+            echo "dependencies found"
+        fi
+    done
+}
+
 function checkexit() {
     if [ $? -eq 0 ]; then
         echo 'OK'
