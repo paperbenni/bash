@@ -25,6 +25,7 @@ fi
 # default fetching url
 PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
 
+# turn argument into proper pb package name
 pbname() {
     if [[ "$1" == *.* ]]; then
         if [[ "$1" == */* ]]; then
@@ -50,6 +51,7 @@ pbname() {
     fi
 }
 
+# raw import function
 pbimport() {
     {
         PAPERENABLE="false"
@@ -144,6 +146,7 @@ pbimport() {
 
 }
 
+# source or list functions
 psource() {
     if [ -n "$PAPERSOURCE" ]; then
         grep '.*().*\{' <"$1" | less
@@ -153,6 +156,7 @@ psource() {
     fi
 }
 
+# main importer function
 pb() {
     # process multiple packages
     if [ -n "$2" ]; then
@@ -174,6 +178,7 @@ pb() {
     fi
 }
 
+# set package name inside function script
 pname() {
     PAPERLIST="$PAPERLIST $(pbname $1)\n"
 }
@@ -190,6 +195,7 @@ psilent() {
     } &
 }
 
+# silentable echo
 pecho() {
     if [ -e ~/.papersilent ]; then
         return 0
@@ -198,6 +204,7 @@ pecho() {
     fi
 }
 
+# list package functions
 pdoc() {
     PAPERSOURCE="True"
     pb $@
@@ -228,6 +235,15 @@ if [ -e ~/.paperdebug ]; then
         )
     }
 
+    # grep the repo
+    pbgrep() {
+        (
+            cd ~/workspace/bash
+            git grep $@ | less
+        )
+    }
+
+    # less wrapper ffor pblsraw
     pbls() {
         pblsraw | less
     }
