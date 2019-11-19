@@ -49,3 +49,18 @@ function confget() {
     # return default value if value is not set in the file
     [ -n "$3" ] && echo "$3"
 }
+
+# set gtk theme
+# only works with gnome-settings-daemon or mate-settings-daemon running
+gtktheme() {
+    MATETHEME=$(dconf read "/org/mate/desktop/interface/gtk-theme")
+    GNOMETHEME=$(dconf read "/org/gnome/desktop/interface/gtk-theme")
+
+    if [ -n "$GNOMETHEME" ]; then
+        dconf write /org/gnome/desktop/interface/gtk-theme "'$1'"
+    fi
+
+    if [ -n "$MATETHEME" ]; then
+        dconf write /org/mate/desktop/interface/gtk-theme "'$1'"
+    fi
+}
