@@ -56,7 +56,7 @@ gtkicons() {
     fi
 }
 
-iconsexist() {
+icons_exist() {
     if { gtkloop "~/.icons" "$1" || gtkloop '/usr/share/icons' "$1"; }; then
         echo "icons $1 exist"
         return 0
