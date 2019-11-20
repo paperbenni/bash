@@ -65,3 +65,26 @@ icons_exist() {
         return 1
     fi
 }
+
+### font utilities ###
+
+fontexists() {
+    if convert -list font | grep -iq "$1"; then
+        echo "font $1 exists"
+        return 0
+    else
+        echo "font $1 not found"
+        return 1
+    fi
+}
+
+installfont() {
+    [ -n "$2" ] && fontexists $2 && return 0
+
+    if [ -e ~/.local/share/fonts/"${1##*/}" ]; then
+        echo "font file conflict"
+        return 1
+    fi
+    mv "$1" ~/.local/share/fonts/
+    echo "installed font $1"
+}
