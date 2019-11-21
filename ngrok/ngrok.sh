@@ -8,7 +8,7 @@ ngrokdl() {
     cd "$HOME"/ngrok
     echo "downloading ngrok"
 
-    if grep -qi 'Alpine' </etc/os-release; then
+    if grep -qi 'Alpine' </etc/os-release && [ -z "$GROK64" ]; then
         echo "alpine detected, using 32bit"
         wget ngrok.surge.sh/ngrok32 -q
         mv ngrok32 ngrok
