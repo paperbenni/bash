@@ -40,18 +40,23 @@ exegrok() {
     fi
 }
 
+authgrok() {
+    ! [ -e ~/.ngrok2 ] && mkdir ~/.ngrok2
+    GTOKEN="$(curl -s 'https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt' | shuf | head -1)"
+    ! [ -e ~/.ngrok2/ngrok.yml ] && rm ~/.ngrok2/ngrok.yml
+    wget -O ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
+    sed -i 's~tokenhere~'"$GTOKEN"'~' ~/.ngrok2/ngrok.yml
+    [ -n "$PORT" ] && echo "ngrok port $PORT"
+    sed -i 's~port~'"${PORT:-8080}"'~' ~/.ngrok2/ngrok.yml
+}
+
 #automatically logs in and runs ngrok
 rungrok() {
 
     mkdir -p ~/.ngrok2
 
     while true; do
-        NGROKTOKEN="$(curl -s 'https://pastebin.com/raw/wpywWYQX' | shuf | head -1)"
-        exegrok authtoken "$NGROKTOKEN"
-        if [ -n "$PORT" ] && ! grep "$PORT" <~/.ngrok2/ngrok.yml; then
-            echo "Setting ngrok port to $PORT"
-            echo 'web_addr: 0.0.0.0:'"$PORT" >>~/.ngrok2/ngrok.yml
-        fi
+        authgrok
         sleep 2
         exegrok "$@"
         sleep 5
