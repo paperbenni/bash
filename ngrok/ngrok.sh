@@ -15,7 +15,7 @@ ngrokdl() {
     else
         wget ngrok.surge.sh/ngrok -q
     fi
-    
+
     if [ "$1" = "nochmod" ]; then
         echo "skipping chmod"
     else
@@ -47,7 +47,7 @@ rungrok() {
 
     while true; do
         NGROKTOKEN="$(curl -s 'https://pastebin.com/raw/wpywWYQX' | shuf | head -1)"
-        echo "authtoken: $NGROKTOKEN" >~/.ngrok2/ngrok.yml
+        exegrok authtoken "$NGROKTOKEN"
         if [ -n "$PORT" ] && ! grep "$PORT" <~/.ngrok2/ngrok.yml; then
             echo "Setting ngrok port to $PORT"
             echo 'web_addr: 0.0.0.0:'"$PORT" >>~/.ngrok2/ngrok.yml
