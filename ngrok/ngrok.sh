@@ -4,6 +4,9 @@ pname ngrok
 
 # installs ngrok binary into ~/ngrok/ngrok
 ngrokdl() {
+
+    pushd . &>/dev/null
+
     mkdir "$HOME"/ngrok &>/dev/null
     cd "$HOME"/ngrok
     echo "downloading ngrok"
@@ -15,14 +18,25 @@ ngrokdl() {
 
     if grep -qi 'alpine' </etc/os-release && [ -z "$GROK64" ]; then
         echo "alpine detected, using 32bit"
-        wget ngrok.surge.sh/ngrok32 -q
-        mv ngrok32 ngrok
+        if [ -n "$1" ]; then
+            wget ngrok.surge.sh/ngrok32 -q
+            mv ngrok32 ngrok
+        else
+            wget -q "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip"
+        fi
     else
-        wget ngrok.surge.sh/ngrok -q
+        [ -n "$1" ] || wget "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
+        [ -n "$1" ] && wget ngrok.surge.sh/ngrok -q
     fi
 
-    [ "$1" = "nochmod" ] || chmod +x "$HOME"/ngrok/ngrok
+    if ls *.zip &>/dev/null; then
+        unzip *.zip
+        rm *.zip
+    fi
+
+    [ "$1" = "nochmod" ] || chmod +x ./ngrok
     echo "done downloading ngrok"
+    popd &>/dev/null
 
 }
 
