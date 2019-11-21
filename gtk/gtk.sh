@@ -88,3 +88,11 @@ installfont() {
     mv "$1" ~/.local/share/fonts/
     echo "installed font $1"
 }
+
+gtkfont() {
+    dconf write '/org/mate/desktop/interface/font-name' "'$1'"
+}
+
+gtkdocumentfont() {
+    dconf write '/org/mate/desktop/interface/document-font-name' "'$1'"
+}
