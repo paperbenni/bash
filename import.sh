@@ -5,8 +5,12 @@
 ########################
 
 if ! [ "${SHELL##*/}" == 'bash' ]; then
-    echo "error: shell is not bash"
-    return 0
+    if grep -iq 'alpine' </etc/os-release; then
+        echo "it's alpine, you probably know what youre doing..."
+    else
+        echo "error: shell is not bash"
+        return 0
+    fi
 fi
 
 # pb already sourced?
