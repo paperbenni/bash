@@ -8,6 +8,11 @@ ngrokdl() {
     cd "$HOME"/ngrok
     echo "downloading ngrok"
 
+    if command -v ngrok &>/dev/null || [ -e ~/ngrok/ngrok ]; then
+        echo "ngrok found"
+        return 0
+    fi
+
     if grep -qi 'Alpine' </etc/os-release && [ -z "$GROK64" ]; then
         echo "alpine detected, using 32bit"
         wget ngrok.surge.sh/ngrok32 -q
@@ -49,7 +54,7 @@ authgrok() {
 #automatically logs in and runs ngrok
 rungrok() {
 
-    mkdir -p ~/.ngrok2
+    ngrokdl
 
     while true; do
         authgrok
