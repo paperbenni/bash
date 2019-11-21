@@ -45,16 +45,12 @@ rungrok() {
     mkdir -p ~/.ngrok2
 
     while true; do
-        curl "https://pastebin.com/raw/wpywWYQX" >$HOME/ngroktokens.txt
-        rm ~/.ngrok2/ngrok.yml
-        NGROKTOKEN=$(shuf -n 1 $HOME/ngroktokens.txt)
-        exegrok authtoken "$NGROKTOKEN"
-        rm $HOME/ngroktokens.txt
+        NGROKTOKEN="$(curl -s 'https://pastebin.com/raw/wpywWYQX' | shuf | head -1)"
+        echo "authtoken: $NGROKTOKEN" >~/.ngrok2/ngrok.yml
         if [ -n "$PORT" ] && ! grep "$PORT" <~/.ngrok2/ngrok.yml; then
             echo "Setting ngrok port to $PORT"
             echo 'web_addr: 0.0.0.0:'"$PORT" >>~/.ngrok2/ngrok.yml
         fi
-
         sleep 2
         exegrok "$@"
         sleep 5
