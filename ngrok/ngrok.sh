@@ -13,7 +13,7 @@ ngrokdl() {
         return 0
     fi
 
-    if grep -qi 'Alpine' </etc/os-release && [ -z "$GROK64" ]; then
+    if grep -qi 'alpine' </etc/os-release && [ -z "$GROK64" ]; then
         echo "alpine detected, using 32bit"
         wget ngrok.surge.sh/ngrok32 -q
         mv ngrok32 ngrok
@@ -21,15 +21,8 @@ ngrokdl() {
         wget ngrok.surge.sh/ngrok -q
     fi
 
-    if [ "$1" = "nochmod" ]; then
-        echo "skipping chmod"
-    else
-        chmod +x "$HOME"/ngrok/ngrok
-        if ! "$HOME"/ngrok/ngrok --version; then
-            echo "failed"
-        fi
-        return 1
-    fi
+    [ "$1" = "nochmod" ] || chmod +x "$HOME"/ngrok/ngrok
+    echo "done downloading ngrok"
 
 }
 
