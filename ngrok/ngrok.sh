@@ -67,31 +67,26 @@ rungrok() {
 
 #gets your ngrok adress into stdout
 getgrok() {
-    NGROKPROTOCOLL="${1:-tcp}"
-    NGROKWEBPORT=4040
-    echoerr "trying 4040"
-    if ! curl -s localhost:4040 &>/dev/null; then
-        echoerr "switching ngrok to 8080"
-        NGROKWEBPORT=8080
-    fi
 
-    curl -s localhost:$NGROKWEBPORT &>/dev/null || (echoerr "web interface not found, exiting" && return 1)
+    nc -vz localhost 4040 &>/dev/null && NGROKPORT=4040
+    [ -z "$NGROKPORT" ] && nc -vz localhost 8080 &>/dev/null && NGROKPORT=8080
+    [ -z "$NGROKPORT" ] && return 1
+
+    NGROKPROTOCOLL=$(curl -s localhost:$NGROKPORT/api/tunnels | grep -oE '[a-z]{1,5}://' | grep -o '[a-z]*' | head -1)
+
     case "$NGROKPROTOCOLL" in
     tcp)
-        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep 'ngrok' | grep -oP 'tcp://.*?:[0-9]*'
+        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep -o 'tcp\.ngrok.io:[0-9]*'
         ;;
-    http)
-        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'http://[a-zA-Z0-9]*\.ngrok\.io'
-        ;;
-    https)
-        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'https://[a-zA-Z0-9]*\.ngrok\.io'
+    http*)
+        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'https://.{,15}\.ngrok\.io'
         ;;
     esac
 
 }
 
 waitgrok() {
-    while ! curl -s "localhost:8080/api/tunnels"; do
+    while ! { curl -s "localhost:8080/api/tunnels" || curl -s "localhost:4040/api/tunnels"; }; do
         echo "waiting for ngrok"
         sleep 4
     done
