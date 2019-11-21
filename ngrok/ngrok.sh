@@ -8,13 +8,14 @@ ngrokdl() {
     cd "$HOME"/ngrok
     echo "downloading ngrok"
 
-    if grep -q -i 'Alpine' </etc/os-release; then
+    if grep -qi 'Alpine' </etc/os-release; then
         echo "alpine detected, using 32bit"
-        wget ngrok.surge.sh/ngrok32 -q --show-progress
+        wget ngrok.surge.sh/ngrok32 -q
         mv ngrok32 ngrok
     else
-        wget ngrok.surge.sh/ngrok -q --show-progress
+        wget ngrok.surge.sh/ngrok -q
     fi
+    
     if [ "$1" = "nochmod" ]; then
         echo "skipping chmod"
     else
@@ -74,18 +75,17 @@ getgrok() {
         curl localhost:$NGROKWEBPORT/api/tunnels | grep 'ngrok' | grep -oP 'tcp://.*?:[0-9]*'
         ;;
     http)
-        curl localhost:$NGROKWEBPORT/api/tunnels | egrep -o 'http://[a-zA-Z0-9]*\.ngrok\.io'
+        curl localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'http://[a-zA-Z0-9]*\.ngrok\.io'
         ;;
     https)
-        curl localhost:$NGROKWEBPORT/api/tunnels | egrep -o 'https://[a-zA-Z0-9]*\.ngrok\.io'
+        curl localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'https://[a-zA-Z0-9]*\.ngrok\.io'
         ;;
     esac
 
 }
 
 waitgrok() {
-    test -z "$PORT" && PORT=4040
-    while ! curl localhost:"$PORT"/api/tunnels; do
+    while ! curl "localhost:${PORT:-4040}/api/tunnels"; do
         echo "waiting for ngrok"
         sleep 4
     done
