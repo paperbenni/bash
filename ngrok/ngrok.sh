@@ -48,7 +48,7 @@ authgrok() {
     wget -O ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
     sed -i 's~tokenhere~'"$GTOKEN"'~' ~/.ngrok2/ngrok.yml
     [ -n "$PORT" ] && echo "ngrok port $PORT"
-    sed -i 's~port~'"${PORT:-8080}"'~' ~/.ngrok2/ngrok.yml
+    sed -i 's~port~8080~' ~/.ngrok2/ngrok.yml
 }
 
 #automatically logs in and runs ngrok
@@ -58,7 +58,7 @@ rungrok() {
 
     while true; do
         authgrok
-        sleep 2
+        sleep 5
         exegrok "$@"
         sleep 5
     done
@@ -70,28 +70,28 @@ getgrok() {
     NGROKPROTOCOLL="${1:-tcp}"
     NGROKWEBPORT=4040
     echoerr "trying 4040"
-    if ! curl localhost:4040; then
+    if ! curl -s localhost:4040 &>/dev/null; then
         echoerr "switching ngrok to 8080"
         NGROKWEBPORT=8080
     fi
 
-    curl localhost:$NGROKWEBPORT &>/dev/null || (echoerr "web interface not found, exiting" && return 1)
+    curl -s localhost:$NGROKWEBPORT &>/dev/null || (echoerr "web interface not found, exiting" && return 1)
     case "$NGROKPROTOCOLL" in
     tcp)
-        curl localhost:$NGROKWEBPORT/api/tunnels | grep 'ngrok' | grep -oP 'tcp://.*?:[0-9]*'
+        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep 'ngrok' | grep -oP 'tcp://.*?:[0-9]*'
         ;;
     http)
-        curl localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'http://[a-zA-Z0-9]*\.ngrok\.io'
+        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'http://[a-zA-Z0-9]*\.ngrok\.io'
         ;;
     https)
-        curl localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'https://[a-zA-Z0-9]*\.ngrok\.io'
+        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'https://[a-zA-Z0-9]*\.ngrok\.io'
         ;;
     esac
 
 }
 
 waitgrok() {
-    while ! curl "localhost:${PORT:-4040}/api/tunnels"; do
+    while ! curl -s "localhost:8080/api/tunnels"; do
         echo "waiting for ngrok"
         sleep 4
     done
