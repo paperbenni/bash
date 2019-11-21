@@ -30,14 +30,9 @@ ngrokdl() {
 
 #finds and executes ngrok with the specified arguments
 exegrok() {
-    if ngrok --version &>/dev/null; then
-        ngrok "$@"
-    else
-        if ! ~/ngrok/ngrok --version &>/dev/null; then
-            ngrokdl
-        fi
-        ~/ngrok/ngrok "$@"
-    fi
+    command -v ngrok &>/dev/null && ngrok $@ && return 0
+    [ -e ~/ngrok/ngrok ] || ngrokdl
+    ~/ngrok/ngrok $@
 }
 
 authgrok() {
