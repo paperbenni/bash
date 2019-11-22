@@ -4,6 +4,9 @@ pname ngrok
 
 # installs ngrok binary into ~/ngrok/ngrok
 ngrokdl() {
+
+    pushd . &>/dev/null
+
     mkdir "$HOME"/ngrok &>/dev/null
     cd "$HOME"/ngrok
     echo "downloading ngrok"
@@ -13,23 +16,27 @@ ngrokdl() {
         return 0
     fi
 
-    if grep -qi 'Alpine' </etc/os-release && [ -z "$GROK64" ]; then
+    if grep -qi 'alpine' </etc/os-release && [ -z "$GROK64" ]; then
         echo "alpine detected, using 32bit"
-        wget ngrok.surge.sh/ngrok32 -q
-        mv ngrok32 ngrok
+        if [ -n "$1" ]; then
+            wget ngrok.surge.sh/ngrok32 -q
+            mv ngrok32 ngrok
+        else
+            wget -q "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip"
+        fi
     else
-        wget ngrok.surge.sh/ngrok -q
+        [ -n "$1" ] || wget "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
+        [ -n "$1" ] && wget ngrok.surge.sh/ngrok -q
     fi
 
-    if [ "$1" = "nochmod" ]; then
-        echo "skipping chmod"
-    else
-        chmod +x "$HOME"/ngrok/ngrok
-        if ! "$HOME"/ngrok/ngrok --version; then
-            echo "failed"
-        fi
-        return 1
+    if ls *.zip &>/dev/null; then
+        unzip *.zip
+        rm *.zip
     fi
+
+    [ "$1" = "nochmod" ] || chmod +x ./ngrok
+    echo "done downloading ngrok"
+    popd &>/dev/null
 
 }
 
@@ -48,7 +55,7 @@ authgrok() {
     wget -O ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
     sed -i 's~tokenhere~'"$GTOKEN"'~' ~/.ngrok2/ngrok.yml
     [ -n "$PORT" ] && echo "ngrok port $PORT"
-    sed -i 's~port~8080~' ~/.ngrok2/ngrok.yml
+    sed -i 's~port~'"${GROKWEBPORT:-8080}"'~' ~/.ngrok2/ngrok.yml
 }
 
 #automatically logs in and runs ngrok
@@ -67,33 +74,29 @@ rungrok() {
 
 #gets your ngrok adress into stdout
 getgrok() {
-    NGROKPROTOCOLL="${1:-tcp}"
-    NGROKWEBPORT=4040
-    echoerr "trying 4040"
-    if ! curl -s localhost:4040 &>/dev/null; then
-        echoerr "switching ngrok to 8080"
-        NGROKWEBPORT=8080
-    fi
+    NGROKPORT=$(ngrokport)
+    NGROKPROTOCOLL=$(curl -s localhost:$NGROKPORT/api/tunnels | grep -oE '[a-z]{1,5}://' | grep -o '[a-z]*' | head -1)
 
-    curl -s localhost:$NGROKWEBPORT &>/dev/null || (echoerr "web interface not found, exiting" && return 1)
     case "$NGROKPROTOCOLL" in
     tcp)
-        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep 'ngrok' | grep -oP 'tcp://.*?:[0-9]*'
+        curl -s localhost:$NGROKPORT/api/tunnels | grep -Eo 'tcp\.ngrok.io:[0-9]*'
         ;;
-    http)
-        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'http://[a-zA-Z0-9]*\.ngrok\.io'
-        ;;
-    https)
-        curl -s localhost:$NGROKWEBPORT/api/tunnels | grep -Eo 'https://[a-zA-Z0-9]*\.ngrok\.io'
+    http*)
+        curl -s localhost:$NGROKPORT/api/tunnels | grep -Eo 'https://.{,15}\.ngrok\.io'
         ;;
     esac
 
 }
 
+ngrokport() {
+    nc -vz localhost 4040 &>/dev/null && NGROKPORT=4040
+    [ -z "$NGROKPORT" ] && nc -vz localhost 8080 &>/dev/null && NGROKPORT=8080
+    [ -z "$NGROKPORT" ] && return 1
+    echo "$NGROKPORT"
+}
+
 waitgrok() {
-    while ! curl -s "localhost:8080/api/tunnels"; do
-        echo "waiting for ngrok"
+    while ! ngrokport; do
         sleep 4
     done
-    echo "ngrok found"
 }
