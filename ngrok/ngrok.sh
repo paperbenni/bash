@@ -55,7 +55,7 @@ authgrok() {
     wget -O ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
     sed -i 's~tokenhere~'"$GTOKEN"'~' ~/.ngrok2/ngrok.yml
     [ -n "$PORT" ] && echo "ngrok port $PORT"
-    sed -i 's~port~8080~' ~/.ngrok2/ngrok.yml
+    sed -i 's~port~'"${GROKWEBPORT:-8080}"'~' ~/.ngrok2/ngrok.yml
 }
 
 #automatically logs in and runs ngrok
@@ -79,7 +79,7 @@ getgrok() {
 
     case "$NGROKPROTOCOLL" in
     tcp)
-        curl -s localhost:$NGROKPORT/api/tunnels | grep -o 'tcp\.ngrok.io:[0-9]*'
+        curl -s localhost:$NGROKPORT/api/tunnels | grep -Eo 'tcp\.ngrok.io:[0-9]*'
         ;;
     http*)
         curl -s localhost:$NGROKPORT/api/tunnels | grep -Eo 'https://.{,15}\.ngrok\.io'

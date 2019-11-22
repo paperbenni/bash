@@ -25,7 +25,7 @@ preappend() {
 
 # replaces $1 with $2 in file $3
 rpstring() {
-    if echo "$1$2" | egrep '[/~]'; then
+    if echo "$1$2" | grep -q '[/~]'; then
         sed -i -e "s/$1/$2/g" $3
     else
         sed -i -e "s#$1#$2#g" $3
