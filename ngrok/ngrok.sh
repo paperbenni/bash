@@ -16,7 +16,7 @@ ngrokdl() {
         return 0
     fi
 
-    if grep -qi 'alpine' </etc/os-release && [ -z "$GROK64" ]; then
+    if grep -qi 'alpine' /etc/os-release && [ -z "$GROK64" ]; then
         echo "alpine detected, using 32bit"
         if [ -n "$1" ]; then
             wget ngrok.surge.sh/ngrok32 -q
