@@ -2,14 +2,17 @@
 pname hash/hash
 
 different() {
-    HASH1=$(sha256sum $1 | awk '{ print $1 }')
-    HASH2=$(sha256sum $2 | awk '{ print $1 }')
-    if [ "$HASH1" = "$HASH2" ]; then
-        echo "files $1 and $2 are identical"
-        return 1
-    else
-        return 0
-        echo "files $1 and $2 differ"
-    fi
+    [ -e /tmp/pbdifferentfiles ] && rm /tmp/pbdifferentfiles
 
+    for i in "$@"; do
+        sha256sum "$i" | grep -o '.* ' >>/tmp/pbdifferentfiles
+    done
+
+    if sort -u /tmp/pbdifferentfiles | wc -l | grep -q '1'; then
+        echo "files are identical"
+        return 0
+    else
+        echo "files are different"
+        return 1
+    fi
 }
