@@ -34,3 +34,8 @@ gitclone() {
         fi
     fi
 }
+
+# get only the addition lines of a .diff file
+diffadditions() {
+    cat "$1" | grep '^+' | grep -o '[^+].*'
+}
