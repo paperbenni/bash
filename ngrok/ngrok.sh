@@ -50,7 +50,7 @@ exegrok() {
 authgrok() {
     exegrok authtoken eNwAtCA3rrWZexCnZ1zH_5CDAMiN9RiwmXpzAJk74m
     ! [ -e ~/.ngrok2 ] && mkdir ~/.ngrok2
-    GTOKEN="$(curl -s 'https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt' | shuf -n 1)"
+    GTOKEN=$(curl -s 'https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt' | shuf -n 1)
     ! [ -e ~/.ngrok2/ngrok.yml ] && rm ~/.ngrok2/ngrok.yml
     wget -O ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
     sed -i 's~tokenhere~'"$GTOKEN"'~' ~/.ngrok2/ngrok.yml
@@ -77,7 +77,7 @@ getgrok() {
     NGROKPORT=$(ngrokport)
     NGROKPROTOCOLL=$(curl -s localhost:$NGROKPORT/api/tunnels | grep -oE '[a-z]{1,5}://' | grep -o '[a-z]*' | head -1)
 
-    case "$NGROKPROTOCOLL" in
+    case $NGROKPROTOCOLL in
     tcp)
         curl -s localhost:$NGROKPORT/api/tunnels | grep -Eo 'tcp\.ngrok.io:[0-9]*'
         ;;
