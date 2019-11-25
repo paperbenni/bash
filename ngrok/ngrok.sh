@@ -75,7 +75,7 @@ rungrok() {
 #gets your ngrok adress into stdout
 getgrok() {
     NGROKPORT=$(ngrokport)
-    NGROKPROTOCOLL=$(curl -s localhost:$NGROKPORT/api/tunnels | sed -r 's/([a-z]{1,5}):/\1/' | head -1)
+    NGROKPROTOCOLL=$(curl -s localhost:$NGROKPORT/api/tunnels | sed -r 's|([a-z]{1,5})://|\1|' | head -1)
 
     case $NGROKPROTOCOLL in
     tcp)
