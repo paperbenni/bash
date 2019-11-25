@@ -12,8 +12,8 @@ appledmg() {
     mv "$1" .cache/apple
     cd .cache/apple
     7z x "$1" && rm "$1"
-    cd *
-    xar -xvf *.pkg
+    cd ./*
+    xar -xvf ./*.pkg
     find -type f -name 'PayLoad' -exec mv {} . \;
     cat Payload | gzip -d | cpio -id
     cd ../../../
