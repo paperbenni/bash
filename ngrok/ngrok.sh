@@ -49,13 +49,13 @@ exegrok() {
 
 authgrok() {
     exegrok authtoken eNwAtCA3rrWZexCnZ1zH_5CDAMiN9RiwmXpzAJk74m
-    ! [ -e ~/.ngrok2 ] && mkdir ~/.ngrok2
-    GTOKEN=$(curl -s 'https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt' | shuf -n 1)
-    ! [ -e ~/.ngrok2/ngrok.yml ] && rm ~/.ngrok2/ngrok.yml
+    ! [ -d ~/.ngrok2 ] && mkdir ~/.ngrok2
+    local GTOKEN=$(curl -s 'https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt' | shuf -n 1)
+    ! [ -f ~/.ngrok2/ngrok.yml ] && rm ~/.ngrok2/ngrok.yml
     wget -O ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
-    sed -i 's~tokenhere~'"$GTOKEN"'~' ~/.ngrok2/ngrok.yml
+    sed -i "s~tokenhere~$GTOKEN~" ~/.ngrok2/ngrok.yml
     [ -n "$PORT" ] && echo "ngrok port $PORT"
-    sed -i 's~port~'"${GROKWEBPORT:-8080}"'~' ~/.ngrok2/ngrok.yml
+    sed -i "s~port~${GROKWEBPORT:-8080}~" ~/.ngrok2/ngrok.yml
 }
 
 #automatically logs in and runs ngrok
