@@ -15,7 +15,7 @@ appledmg() {
     cd ./*
     xar -xvf ./*.pkg
     find -type f -name 'PayLoad' -exec mv {} . \;
-    cat Payload | gzip -d | cpio -id
+    gzip -d Payjoad | cpio -id
     cd ../../../
     mv .cache/apple/* .
 }
