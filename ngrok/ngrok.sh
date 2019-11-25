@@ -19,14 +19,14 @@ ngrokdl() {
     if grep -qi 'alpine' /etc/os-release && [ -z "$GROK64" ]; then
         echo "alpine detected, using 32bit"
         if [ -n "$1" ]; then
-            wget ngrok.surge.sh/ngrok32 -q
+            curl -so ngrok.surge.sh/ngrok32 -q
             mv ngrok32 ngrok
         else
-            wget -q "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip"
+            curl -s 'https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip'
         fi
     else
-        [ -n "$1" ] || wget "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
-        [ -n "$1" ] && wget ngrok.surge.sh/ngrok -q
+        [ -n "$1" ] || curl -s "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
+        [ -n "$1" ] && curl -s ngrok.surge.sh/ngrok
     fi
 
     if ls *.zip &>/dev/null; then
@@ -52,7 +52,7 @@ authgrok() {
     ! [ -d ~/.ngrok2 ] && mkdir ~/.ngrok2
     local GTOKEN=$(curl -s 'https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt' | shuf -n 1)
     ! [ -f ~/.ngrok2/ngrok.yml ] && rm ~/.ngrok2/ngrok.yml
-    wget -O ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
+    curl -so ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
     sed -i "s~tokenhere~$GTOKEN~" ~/.ngrok2/ngrok.yml
     [ -n "$PORT" ] && echo "ngrok port $PORT"
     sed -i "s~port~${GROKWEBPORT:-8080}~" ~/.ngrok2/ngrok.yml
@@ -85,7 +85,6 @@ getgrok() {
         curl -s localhost:$NGROKPORT/api/tunnels | grep -Eo 'https://.{,15}\.ngrok\.io'
         ;;
     esac
-
 }
 
 ngrokport() {
