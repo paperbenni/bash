@@ -81,7 +81,7 @@ getgrok() {
     tcp)
         curl -s localhost:$NGROKPORT/api/tunnels | grep -Eo 'tcp\.ngrok.io:[0-9]*'
         ;;
-    http*)
+    http|https)
         curl -s localhost:$NGROKPORT/api/tunnels | grep -Eo 'https://.{,15}\.ngrok\.io'
         ;;
     esac
