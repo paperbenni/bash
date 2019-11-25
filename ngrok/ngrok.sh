@@ -29,9 +29,9 @@ ngrokdl() {
         [ -n "$1" ] && curl -s ngrok.surge.sh/ngrok
     fi
 
-    if ls *.zip &>/dev/null; then
-        unzip *.zip
-        rm *.zip
+    if ls ./*.zip &>/dev/null; then
+        unzip ./*.zip
+        rm ./*.zip
     fi
 
     [ "$1" = "nochmod" ] || chmod +x ./ngrok
