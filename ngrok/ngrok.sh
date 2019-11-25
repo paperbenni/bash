@@ -51,7 +51,7 @@ authgrok() {
     exegrok authtoken eNwAtCA3rrWZexCnZ1zH_5CDAMiN9RiwmXpzAJk74m
     ! [ -d ~/.ngrok2 ] && mkdir ~/.ngrok2
     local GTOKEN=$(curl -s 'https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/tokens.txt' | shuf -n 1)
-    ! [ -f ~/.ngrok2/ngrok.yml ] && rm ~/.ngrok2/ngrok.yml
+    [ -f ~/.ngrok2/ngrok.yml ] && rm ~/.ngrok2/ngrok.yml
     curl -so ~/.ngrok2/ngrok.yml "https://raw.githubusercontent.com/paperbenni/bash/master/ngrok/ngrok.yml"
     sed -i "s~tokenhere~$GTOKEN~" ~/.ngrok2/ngrok.yml
     [ -n "$PORT" ] && echo "ngrok port $PORT"
