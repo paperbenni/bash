@@ -31,7 +31,7 @@ spigotdl() {
     cat eula.txt || echo "eula=true" >eula.txt #accept eula
 
     defaultspigot
-    ls *.html &>/dev/null && rm *.html
+    ls ./*.html &>/dev/null && rm *.html
 
 }
 
