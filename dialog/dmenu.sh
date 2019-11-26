@@ -6,7 +6,7 @@ dconfirm() {
     echo "yes" >~/.doptions
     echo "no" >>~/.doptions
     CHOICE=$(dmenu <~/.doptions)
-    case "$CHOICE" in
+    case $CHOICE in
     yes)
         return 0
         ;;
@@ -25,13 +25,11 @@ dsudo() {
 # I have no idea
 dpop() {
     touch ~/.dpopped
-    yres=$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/' | egrep -o '[^x]*$')
+    yres=$(awk '/dimensions:/ {sub(/[0-9]+x/, ""); print($2); exit 0}' <(xdpyinfo))
 
     while [ -e ~/.dpopped ]; do
-        CLOUDMENU=$(echo "$1" | dmenu -y $(expr $yres / 2) -p "please wait" -l 10)
-        if [ "$CLOUDMENU" = "pb" ]; then
-            break
-        fi
+        CLOUDMENU=$(echo "$1" | dmenu -y $[yres / 2] -p "please wait" -l 10)
+        [ "$CLOUDMENU" = "pb" ] && break
         sleep 0.5
     done &
 
@@ -55,15 +53,8 @@ dfile() {
     cd
     newdir='.'
     while [ -n "$newdir" ]; do
-        if echo "$newdir" | grep -q -i '[:,-]'; then
-            break
-        fi
-        if [ -e "$newdir" ]; then
-            cd "$newdir"
-        else
-            break
-        fi
-        newdir=$(ls | egrep '^[^\$].*' | dmenu -l 30)
+        [[ -d $newdir && $newdir != *[:,-]* ]] && cd "$newdir" || break
+        newdir=$(ls | grep -E '^[^\$].*' | dmenu -l 30)
     done
     realpath "$newdir"
     popd &>/dev/null

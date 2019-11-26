@@ -166,5 +166,5 @@ getconsole() {
     if ! test -e ~/cloudpie/consoles/$1.conf; then
         return 1
     fi
-    grep "$2" <~/cloudpie/consoles/${1%.*}.conf | egrep -o '".*"' | egrep -o '[^"]*'
+    grep "$2" <~/cloudpie/consoles/${1%.*}.conf | grep -Eo '".*"' | grep -Eo '[^"]*'
 }

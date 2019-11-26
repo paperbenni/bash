@@ -17,23 +17,23 @@ function vimm() {
 }
 
 getvimm2() {
-    egrep -o 'name="t2" value=".{,33}"><input' |
+    grep -Eo 'name="t2" value=".{,33}"><input' |
         head -1 |
-        egrep -o 'value=.*' |
-        egrep -o '".*"' |
-        egrep -o '[^"]*'
+        grep -Eo 'value=.*' |
+        grep -Eo '".*"' |
+        grep -Eo '[^"]*'
 }
 
 getvimm1() {
-    egrep -o 'name="t1" value=".{,33}"><input' |
+    grep -Eo 'name="t1" value=".{,33}"><input' |
         head -1 |
-        egrep -o 'value=.*' |
-        egrep -o '".*"' |
-        egrep -o '[^"]*'
+        grep -Eo 'value=.*' |
+        grep -Eo '".*"' |
+        grep -Eo '[^"]*'
 }
 
 vimmmedia() {
-    egrep -o 'name="mediaId" value="[0-9]{4,}"' | egrep -o '[0-9]*' | head -1
+    grep -Eo 'name="mediaId" value="[0-9]{4,}"' | grep -Eo '[0-9]*' | head -1
 }
 
 vimmlink() {
@@ -48,5 +48,5 @@ function curlvimm() {
         curl 'https://vimm.net/vault/?p=list&system='"$1"'&section='"$CHARACTER" >>"$1"2.txt
     done
 
-    egrep -i 'mouse' <"$1"2.txt | egrep -o '>[^<>/]{6,}</a' | egrep -o '[^>].*' | egrep -o '.*[^</a]' >"$1.txt"
+    grep -Ei 'mouse' <"$1"2.txt | grep -Eo '>[^<>/]{6,}</a' | grep -Eo '[^>].*' | grep -Eo '.*[^</a]' >"$1.txt"
 }
