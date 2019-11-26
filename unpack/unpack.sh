@@ -23,7 +23,7 @@ unpack() {
     fi
 
     if ls "$1"; then
-        case "$1" in
+        case $1 in
         *.tar.bz2) tar xjf "$1" ;;
         *.tar.gz) tar xzf "$1" ;;
         *.tar.xz) tar xvf "$1" ;;
@@ -54,7 +54,7 @@ unpack() {
 unpackdir() {
     pushd "$1"
     for i in ./*; do
-        case "$i" in
+        case $i in
         *.tar.bz2) tar xjf "$i" ;;
         *.tar.gz) tar xzf "$i" ;;
         *.tar.xz) tar xvf "$i" ;;
