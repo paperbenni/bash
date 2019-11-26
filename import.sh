@@ -59,7 +59,7 @@ pbname() {
 pbimport() {
     {
         PAPERENABLE="false"
-        case "$1" in
+        case $1 in
         clear)
             echo clearing the cache
             rm -rf ~/pb
@@ -78,7 +78,7 @@ pbimport() {
             ;;
         debug)
             if [ "$2" = "all" ]; then
-                PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
+                PPACKAGES="$(echo "$PAPERLIST" | grep -Eo '[^ :]*')"
                 echo "refreshing $PPACKAGES"
                 for i in $PPACKAGES; do
                     echo "source $i"
