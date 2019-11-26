@@ -2,8 +2,8 @@
 pname hash/hash
 
 different() {
-	if type -fP awk sha256sum &>-; then
-		local I=`awk '{!A[$1]++} END{print(NR)}' <(sha256sum "$@" 2>&-)`
+	if type -fP awk sha256sum &>/dev/null; then
+		local I=`awk '{!A[$1]++} END{print(NR)}' <(sha256sum "$@" 2>/dev/null)`
 		if [ $I -eq 0 ]; then
 			printf "Usage: different [FILE_1] [FILE_2] ...\n" >&2
 			return 2
