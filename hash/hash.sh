@@ -2,25 +2,19 @@
 pname hash/hash
 
 different() {
-    local LINE
-    declare -i LINE_COUNT=0
-
-    while read -a LINE; do
-        LINE_COUNT+=1
-        if [ $LINE_COUNT -eq 1 ]; then
-            local HASH1=${LINE%% *}
-        elif [ $LINE_COUNT -eq 2 ]; then
-            local HASH2=${LINE%% *}
-
-            # In-case more files are given by accident.
-            break
-        fi
-    done < "$(sha256sum "$1" "$2" 2>&-)"
-
-    if [ "$HASH1" == "$HASH2" ]; then
-        echo "Files '$1' and '$2' are identical."
-        return 1
-    else
-        echo "Files '$1' and '$2' differ."
-    fi
+	if type -fP awk sha256sum &>-; then
+		local I=`awk '{!A[$1]++} END{print(NR)}' <(sha256sum "$@" 2>&-)`
+		if [ $I -eq 0 ]; then
+			printf "Usage: different [FILE_1] [FILE_2] ...\n" >&2
+			return 2
+		elif [ $I -eq 1 ]; then
+			printf "Files are identical.\n"
+		elif [ $I -eq 1 ]; then
+			printf "Files are different!\n" >&2
+			return 1
+		fi
+	else
+		printf "Dependency 'awk' and/or 'sha256sum' not met.\n" >&2
+		return 3
+	fi
 }
