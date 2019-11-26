@@ -15,7 +15,7 @@ mediafire() {
         command -v grep
     ) &>/dev/null
 
-    LAST="$?"
+    LAST=$?
     if ! [ "$LAST" = 0 ]; then
         echo "not all dependencies installed"
         return
