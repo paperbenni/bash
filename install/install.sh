@@ -66,17 +66,28 @@ pinstall() {
 
 # sets up an executable like a global program
 usrbin() {
+
+    if [ "$1" = "-f" ]; then
+        FORCEBIN="True"
+        shift
+    fi
+
     if ! [ -e "$1" ]; then
         echo "target not existing"
         return 1
     fi
-    if command -v "$1" &>/dev/null; then
-        echo "conflicting command name"
-        return 1
-    fi
 
-    sudo mv "$1" /usr/bin/"$1"
-    sudo chmod 755 /usr/bin/"$1"
-    sudo chown 0:0 /usr/bin/"$1"
+    if ! [ -n "$FORCEBIN" ]; then
+        if command -v "${1##*/}" &>/dev/null; then
+            echo "conflicting command name"
+            return 1
+        fi
+    else
+        unset FORCEBIN
+    fi
+    
+    sudo mv "$1" /usr/bin/"${1##*/}"
+    sudo chmod 755 /usr/bin/"${1##*/}"
+    sudo chown 0:0 /usr/bin/"${1##*/}"
 
 }
