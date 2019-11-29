@@ -5,6 +5,14 @@ pname gtk/gtk
 # only works with gnome-settings-daemon or mate-settings-daemon running
 
 ### general utilities ###
+
+gtk3settings() {
+    [ -e ~/.config/gtk-3.0/settings.ini ] ||
+        mkdir -p ~/.config/gtk-3.0 &>/dev/null &&
+        echo "[Settings]" >>~/.config/gtk-3.0/settings.ini
+
+}
+
 gtkloop() {
     pushd "$1" &>/dev/null
     for i in ./*; do
@@ -32,10 +40,10 @@ gtktheme() {
     fi
 
     # set gtk3 settings
-    if grep -q 'gtk-theme-name' $XDG_CONFIG_HOME/gtk-3.0/settings.ini; then
-        sed -i 's/gtk-theme-name=.*/gtk-theme-name='"$1"'/g' $XDG_CONFIG_HOME/gtk-3.0/settings.ini
+    if grep -q 'gtk-theme-name' ~/.config/gtk-3.0/settings.ini; then
+        sed -i 's/gtk-theme-name=.*/gtk-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
     else
-        echo "gtk-theme-name=$1" >>$XDG_CONFIG_HOME/gtk-3.0/settings.ini
+        echo "gtk-theme-name=$1" >>~/.config/gtk-3.0/settings.ini
     fi
 
     if grep -q 'gtk-theme-name' ~/.gtkrc-2.0; then
@@ -67,6 +75,18 @@ gtkicons() {
     MATEICONS=$(dconf read "/org/mate/desktop/interface/icon-theme")
     if [ -n "$MATEICONS" ]; then
         dconf write /org/mate/desktop/interface/icon-theme "'$1'"
+    fi
+
+    if grep -q 'gtk-icon-theme-name' ~/.config/gtk-3.0/settings.ini; then
+        sed -i 's/gtk-icon-theme-name=.*/gtk-icon-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
+    else
+        echo "gtk-icon-theme-name=$1" >>~/.config/gtk-3.0/settings.ini
+    fi
+
+    if grep -q 'gtk-icon-theme-name' ~/.gtkrc-2.0; then
+        sed -i 's/gtk-icon-theme-name =.*/gtk-icon-theme-name = "'"$1"'"/g' ~/.gtkrc-2.0
+    else
+        echo 'gtk-icon-theme-name = "'"$1"'"' >>~/.gtkrc-2.0
     fi
 
 }
@@ -108,15 +128,12 @@ gtkfont() {
     dconf write '/org/mate/desktop/interface/font-name' "'$1'"
 
     # check for / create gtk 3 settings
-    [ -e $XDG_CONFIG_HOME/gtk-3.0/settings.ini ] ||
-        mkdir -p $XDG_CONFIG_HOME/gtk-3.0 &>/dev/null &&
-        echo "[Settings]" >>$XDG_CONFIG_HOME/gtk-3.0/settings.ini
-
+    gtk3settings
     # set gtk3 settings
-    if grep -q 'gtk-font-name' $XDG_CONFIG_HOME/gtk-3.0/settings.ini; then
-        sed -i 's/gtk-font-name=.*/gtk-font-name='"$1"'/g' $XDG_CONFIG_HOME/gtk-3.0/settings.ini
+    if grep -q 'gtk-font-name' ~/.config/gtk-3.0/settings.ini; then
+        sed -i 's/gtk-font-name=.*/gtk-font-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
     else
-        echo "gtk-font-name=$1" >>$XDG_CONFIG_HOME/gtk-3.0/settings.ini
+        echo "gtk-font-name=$1" >>~/.config/gtk-3.0/settings.ini
     fi
 
     if grep -q 'gtk-font-name' ~/.gtkrc-2.0; then
