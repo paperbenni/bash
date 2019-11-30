@@ -76,3 +76,30 @@ unpackdir() {
     done
     popd
 }
+
+# extract an apple dmg file
+appledmg() {
+    zerocheck "$1"
+    [ -e "$1" ] || { echo "input file not found" && return 1; }
+    checkcmd "7z cpio"
+
+    mkdir -p .cache/apple
+    mv "$1" .cache/apple
+    cd .cache/apple
+
+    7z x "$1"
+    rm "$1"
+
+    cd *
+    mv * ../
+    cd ..
+
+    mv *.pkg file.xar
+    7z x file.xar
+
+    mv *Payload Payload
+    cpio -i -F Payload
+
+    mv ./* ../../
+    cd ../../
+}
