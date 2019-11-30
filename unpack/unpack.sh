@@ -90,14 +90,12 @@ appledmg() {
     7z x "$1"
     rm "$1"
 
-    cd *
-    mv * ../
-    cd ..
+    mv "$(find . | grep '\.pkg')" .
 
     mv *.pkg file.xar
     7z x file.xar
 
-    mv *Payload Payload
+    mv *Payload* Payload
     cpio -i -F Payload
 
     mv ./* ../../
