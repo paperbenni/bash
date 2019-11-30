@@ -6,6 +6,7 @@ pname gtk/gtk
 
 ### general utilities ###
 
+# initializes gtk3 config files
 gtk3settings() {
     [ -e ~/.config/gtk-3.0/settings.ini ] ||
         mkdir -p ~/.config/gtk-3.0 &>/dev/null &&
@@ -13,6 +14,7 @@ gtk3settings() {
 
 }
 
+# checks if either a theme or icon set exists in folder $1
 gtkloop() {
     pushd .
     cd "$1"
@@ -24,8 +26,8 @@ gtkloop() {
             return 0
         fi
     done
-    return 1
     popd
+    return 1
 }
 
 #### Theme utilities ####
@@ -56,6 +58,7 @@ gtktheme() {
 
 }
 
+# does gtk theme exist in any valid folder
 themeexists() {
     if { gtkloop "~/.themes" "$1" || gtkloop '/usr/share/themes' "$1"; }; then
         echo "theme $1 exists"
@@ -78,7 +81,7 @@ gtkicons() {
     if [ -n "$MATEICONS" ]; then
         dconf write /org/mate/desktop/interface/icon-theme "'$1'"
     fi
-    
+
     gtk3settings
     if grep -q 'gtk-icon-theme-name' ~/.config/gtk-3.0/settings.ini; then
         sed -i 's/gtk-icon-theme-name=.*/gtk-icon-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
