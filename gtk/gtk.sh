@@ -14,16 +14,18 @@ gtk3settings() {
 }
 
 gtkloop() {
-    pushd "$1" &>/dev/null
+    pushd .
+    cd "$1"
     for i in ./*; do
         echo "$i"
         [ -e "$i"/index.theme ] || continue
         if grep -q "Name.*=$2.*" <./"$i"/index.theme; then
+            popd
             return 0
         fi
     done
     return 1
-    popd &>/dev/null
+    popd
 }
 
 #### Theme utilities ####
@@ -38,7 +40,7 @@ gtktheme() {
     if [ -n "$MATETHEME" ]; then
         dconf write /org/mate/desktop/interface/gtk-theme "'$1'"
     fi
-
+    gtk3settings
     # set gtk3 settings
     if grep -q 'gtk-theme-name' ~/.config/gtk-3.0/settings.ini; then
         sed -i 's/gtk-theme-name=.*/gtk-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
@@ -76,7 +78,8 @@ gtkicons() {
     if [ -n "$MATEICONS" ]; then
         dconf write /org/mate/desktop/interface/icon-theme "'$1'"
     fi
-
+    
+    gtk3settings
     if grep -q 'gtk-icon-theme-name' ~/.config/gtk-3.0/settings.ini; then
         sed -i 's/gtk-icon-theme-name=.*/gtk-icon-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
     else
