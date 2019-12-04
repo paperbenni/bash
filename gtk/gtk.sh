@@ -60,7 +60,8 @@ gtktheme() {
 
 # does gtk theme exist in any valid folder
 themeexists() {
-    if { gtkloop "$HOME/.themes" "$1" || gtkloop '/usr/share/themes' "$1"; }; then
+    if { gtkloop "$HOME/.themes" "$1" ||
+        gtkloop '/usr/share/themes' "$1"; }; then
         echo "theme $1 exists"
         return 0
     else
@@ -98,7 +99,10 @@ gtkicons() {
 }
 
 icons_exist() {
-    if { gtkloop "$HOME/.icons" "$1" || gtkloop '/usr/share/icons' "$1"; }; then
+    if { gtkloop "$HOME/.icons" "$1" ||
+        gtkloop '/usr/share/icons' "$1" ||
+        gtkloop "$HOME/.local/share/icons" "$1"; }; then
+
         echo "icons $1 exist"
         return 0
     else
