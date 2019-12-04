@@ -16,17 +16,17 @@ gtk3settings() {
 
 # checks if either a theme or icon set exists in folder $1
 gtkloop() {
-    pushd .
-    cd "$1"
+    pushd . &>/dev/null
+    cd $1
+    echo $1
     for i in ./*; do
-        echo "$i"
         [ -e "$i"/index.theme ] || continue
-        if grep -q "Name.*=$2.*" <./"$i"/index.theme; then
+        if grep -iq "Name.*=$2.*" <./"$i"/index.theme; then
             popd
             return 0
         fi
     done
-    popd
+    popd &>/dev/null
     return 1
 }
 
@@ -60,7 +60,7 @@ gtktheme() {
 
 # does gtk theme exist in any valid folder
 themeexists() {
-    if { gtkloop "~/.themes" "$1" || gtkloop '/usr/share/themes' "$1"; }; then
+    if { gtkloop "$HOME/.themes" "$1" || gtkloop '/usr/share/themes' "$1"; }; then
         echo "theme $1 exists"
         return 0
     else
@@ -98,7 +98,7 @@ gtkicons() {
 }
 
 icons_exist() {
-    if { gtkloop "~/.icons" "$1" || gtkloop '/usr/share/icons' "$1"; }; then
+    if { gtkloop "$HOME/.icons" "$1" || gtkloop '/usr/share/icons' "$1"; }; then
         echo "icons $1 exist"
         return 0
     else
