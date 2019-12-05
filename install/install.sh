@@ -86,7 +86,12 @@ usrbin() {
         unset FORCEBIN
     fi
     
-    sudo mv "$1" /usr/bin/"${1##*/}"
+    if [ "$2" = "-c" ]; then
+        sudo cp "$1" /usr/bin/"${1##*/}"
+    else
+        sudo mv "$1" /usr/bin/"${1##*/}"
+    fi
+
     sudo chmod 755 /usr/bin/"${1##*/}"
     sudo chown 0:0 /usr/bin/"${1##*/}"
 
