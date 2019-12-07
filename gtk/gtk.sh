@@ -157,3 +157,13 @@ gtkfont() {
 gtkdocumentfont() {
     dconf write '/org/mate/desktop/interface/document-font-name' "'$1'"
 }
+
+setcursor() {
+    mkdir -p ~/.icons/default &>/dev/null
+    APPENDFILE=~/.icons/default/index.theme
+    echo "# This file is written by pb-suckless. Do not edit." >$APPENDFILE
+    app "[Icon Theme]"
+    app "Name=Default"
+    app "Comment=Default Cursor Theme"
+    app "Inherits=$1"
+}
