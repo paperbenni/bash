@@ -2,6 +2,8 @@
 
 pname spigot/mpm
 
+pb spigot
+
 # get a file from the mpm repo
 getmpm() {
     MMC=${MC:-1.13}
@@ -9,7 +11,11 @@ getmpm() {
     test -e $1 || wget -q "$MPMRAW/$1"
 }
 
+# main mpm command
 mpm() {
+
+    MPMLINK="https://raw.githubusercontent.com/paperbenni/mpm/master"
+    checkspigot || echo "warning: no spigot installation found"
 
     if [ "$1" = "-f" ]; then
         if [ -e "mpmfile" ]; then
@@ -27,22 +33,11 @@ mpm() {
         return 0
     fi
 
-    pb spigot
-
-    MPMLINK="https://raw.githubusercontent.com/paperbenni/mpm/master"
-    echo "starting mpm"
-
-    checkspigot || return 1
-
-    if [ -z "$2" ]; then
-        MCVERSION="$(spigotversion)"
-    else
-        MCVERSION="$2"
-    fi
-
+    MCVERSION="${2:-$(spigotversion)}"
     echo "minecaft version $MCVERSION"
     SPIGOTVERSION="$(spigotversion)"
 
+    mkdir plugins &> /dev/null
     cd plugins
 
     #check for new version if the plugin is installed
