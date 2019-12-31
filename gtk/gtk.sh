@@ -167,3 +167,9 @@ setcursor() {
     app "Comment=Default Cursor Theme"
     app "Inherits=$1"
 }
+
+rofitheme() {
+    mkdir -p ~/.config/rofi &>/dev/null
+    curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/rofi/$1.rasi" >~/.config/rofi/$1.rasi
+    echo "rofi.theme: ~/.config/rofi/$1.rasi" >~/.config/rofi/config
+}
