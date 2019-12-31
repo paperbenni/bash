@@ -173,3 +173,9 @@ rofitheme() {
     curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/rofi/$1.rasi" >~/.config/rofi/$1.rasi
     echo "rofi.theme: ~/.config/rofi/$1.rasi" >~/.config/rofi/config
 }
+
+dunsttheme() {
+    [ -e ~/.config/dunst ] || mkdir -p ~/.config/dunst
+    curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunstrc" >~/.config/dunst/dunstrc
+    curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunst/$1" >>~/.config/dunst/dunstrc
+}
