@@ -67,10 +67,16 @@ pinstall() {
 # sets up an executable like a global program
 usrbin() {
 
-    if [ "$1" = "-f" ]; then
+    case "$1" in
+    -f)
         FORCEBIN="True"
         shift
-    fi
+        ;;
+    -c)
+        COPYFILE=True
+        shift
+        ;;
+    esac
 
     if ! [ -e "$1" ]; then
         echo "target not existing"
@@ -85,8 +91,8 @@ usrbin() {
     else
         unset FORCEBIN
     fi
-    
-    if [ "$2" = "-c" ]; then
+
+    if [ -n "$COPYFILE" ] || [ "$2" = "-c" ]; then
         sudo cp "$1" /usr/bin/"${1##*/}"
     else
         sudo mv "$1" /usr/bin/"${1##*/}"
