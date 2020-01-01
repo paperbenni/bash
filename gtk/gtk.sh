@@ -83,6 +83,10 @@ gtkicons() {
         dconf write /org/mate/desktop/interface/icon-theme "'$1'"
     fi
 
+    if [ -e ~/.config/qt5ct/qt5ct.conf ]; then
+        sed -i 's/icon_theme=.*/icon_theme='"$1"'/g' ~/.config/qt5ct/qt5ct.conf
+    fi
+
     gtk3settings
     if grep -q 'gtk-icon-theme-name' ~/.config/gtk-3.0/settings.ini; then
         sed -i 's/gtk-icon-theme-name=.*/gtk-icon-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
