@@ -183,11 +183,3 @@ dunsttheme() {
     curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunstrc" >~/.config/dunst/dunstrc
     curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunst/$1" >>~/.config/dunst/dunstrc
 }
-
-instanttheme() {
-    [ -n "$1" ] || return
-    mkdir -p ~/instant-os/themes &>/dev/null
-    curl -s "https://raw.githubusercontent.com/instant-OS/instant-THEMES/master/colors/$1.theme" > \
-        ~/instant-os/themes/"$1.theme"
-    echo "$1" >~/instant-os/themes/config
-}

@@ -43,7 +43,7 @@ mpm() {
     #check for new version if the plugin is installed
     if [ -e "$1.mpm" ]; then
         OLDVERSION="$(grep version <"$1.mpm" | grep -o '[0-9]*')"
-        NEWVERSION="$(curl "$MPMLINK/plugins/$1/$MCVERSION/$1.mpm" | grep 'version' | grep -o '[0-9]*')"
+        NEWVERSION="$(curl -s "$MPMLINK/plugins/$1/$MCVERSION/$1.mpm" | grep 'version' | grep -o '[0-9]*')"
         if [ "$OLDVERSION" = "$NEWVERSION" ]; then
             echo "newest version of $1 already installed"
             cd ..
@@ -56,7 +56,7 @@ mpm() {
 
     #download metadata
     echo "$MPMLINK/plugins/$1/$MCVERSION/$1.mpm"
-    curl "$MPMLINK/plugins/$1/$MCVERSION/$1.mpm" >"$1.mpm"
+    curl -s "$MPMLINK/plugins/$1/$MCVERSION/$1.mpm" >"$1.mpm"
     #cat "$1.mpm"
     #check if the plugin exists
     if ! grep -q 'describe' <"$1.mpm"; then
@@ -69,7 +69,7 @@ mpm() {
     if grep -q "$SPIGOTVERSION" <"$1.mpm"; then
         echo "version check sucessful"
     fi
-    wget "$MPMLINK/plugins/$1/$MCVERSION/$1.jar"
+    wget -q "$MPMLINK/plugins/$1/$MCVERSION/$1.jar"
     echo "installed $1.jar"
 
     if grep -q 'depend' <"$1.mpm"; then
