@@ -1,25 +1,25 @@
 #!/bin/bash
-# instant-OS related utilities
+# instantOS related utilities
 
 pname instantos
 
 instanttheme() {
     [ -n "$1" ] || return
-    mkdir -p ~/instant-os/themes &>/dev/null
-    curl -s "https://raw.githubusercontent.com/instant-OS/instant-THEMES/master/colors/$1.theme" > \
-        ~/instant-os/themes/"$1.theme"
-    echo "$1" >~/instant-os/themes/config
+    mkdir -p ~/instantos/themes &>/dev/null
+    curl -s "https://raw.githubusercontent.com/instantOS/instant-THEMES/master/colors/$1.theme" > \
+        ~/instantos/themes/"$1.theme"
+    echo "$1" >~/instantos/themes/config
 }
 
 instantthemecheck() {
-    if ! [ -e ~/instant-os/themes/config ]; then
+    if ! [ -e ~/instantos/themes/config ]; then
         instanttheme dracula
     fi
 }
 
 getinstanttheme() {
     instantthemecheck
-    cat ~/instant-os/themes/config
+    cat ~/instantos/themes/config
 }
 
 instantforeground() {

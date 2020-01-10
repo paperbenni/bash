@@ -3,6 +3,15 @@
 pname spigot
 pb spigot.mpm
 
+# sets up default config files
+# doesn't override existing config
+defaultspigot() {
+    getmpm bukkit.yml
+    getmpm paper.yml
+    getmpm spigot.yml
+    getmpm server.properties
+}
+
 # downloads spigot into the current foder
 spigotdl() {
 
@@ -33,15 +42,6 @@ spigotdl() {
     defaultspigot
     ls *.html &>/dev/null && rm *.html
 
-}
-
-# sets up default config files
-# doesn't override existing config
-defaultspigot() {
-    getmpm bukkit.yml
-    getmpm paper.yml
-    getmpm spigot.yml
-    getmpm server.properties
 }
 
 # usage: spigexe MCVERSION {ammount of memory}
