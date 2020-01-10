@@ -22,10 +22,12 @@ getinstanttheme() {
     cat ~/instantos/themes/config
 }
 
+# rgb foreground color
 instantforeground() {
-    cat "$(getinstanttheme)" | grep 'foreground' | grep -Eo '.{7}$'
+    cat ~/instantos/themes/"$(getinstanttheme)".theme | grep 'foreground' | grep -Eo '.{7}$'
 }
 
+# rgb background color
 instantbackground() {
-    cat "$(getinstanttheme)" | grep 'background' | grep -Eo '.{7}$'
+    cat ~/instantos/themes/"$(getinstanttheme)".theme | grep 'background' | grep -Eo '.{7}$'
 }
