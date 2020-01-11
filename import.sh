@@ -145,7 +145,11 @@ pbimport() {
         if ! [ -e ~/.papersilent ]; then
             cat ~/workspace/bash/"$PAPERPACKAGE" || { echo "debug package not found" && return 1; }
         fi
-        psource ~/workspace/bash/"$PAPERPACKAGE"
+        if [ -e ~/workspace/bash/"$PAPERPACKAGE" ]; then
+            psource ~/workspace/bash/"$PAPERPACKAGE"
+        else
+            echo "paperpackage $PAPERPACKAGE not found"
+        fi
     fi
 
 }
