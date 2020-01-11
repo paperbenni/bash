@@ -5,8 +5,10 @@
 ########################
 
 if ! [ -e ~/paperbenni/import.sh ]; then
-    mkdir ~/paperbenni
-    curl https://raw.githubusercontent.com/paperbenni/bash/master/import.sh >~/paperbenni/import.sh
+    # cache import script
+    echo "caching import script"
+    mkdir ~/paperbenni &>/dev/null
+    curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh >~/paperbenni/import.sh
 fi
 
 if ! [ "${SHELL##*/}" == 'bash' ]; then
