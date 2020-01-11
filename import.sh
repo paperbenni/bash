@@ -4,6 +4,11 @@
 ## paperbash importer ##
 ########################
 
+if ! [ -e ~/paperbenni/import.sh ]; then
+    mkdir ~/paperbenni
+    curl https://raw.githubusercontent.com/paperbenni/bash/master/import.sh >~/paperbenni/import.sh
+fi
+
 if ! [ "${SHELL##*/}" == 'bash' ]; then
     if grep -iq 'alpine' </etc/os-release; then
         echo "it's alpine, you probably know what youre doing..."
