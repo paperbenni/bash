@@ -93,12 +93,12 @@ usrbin() {
     fi
 
     if [ -n "$COPYFILE" ] || [ "$2" = "-c" ]; then
-        sudo cp "$1" /usr/bin/"${1##*/}"
+        sudo cp "$1" /usr/local/bin/"${1##*/}"
     else
-        sudo mv "$1" /usr/bin/"${1##*/}"
+        sudo mv "$1" /usr/local/bin/"${1##*/}"
     fi
 
-    sudo chmod 755 /usr/bin/"${1##*/}"
-    sudo chown 0:0 /usr/bin/"${1##*/}"
+    sudo chmod 755 /usr/local/bin/"${1##*/}"
+    sudo chown 0:0 /usr/local/bin/"${1##*/}"
 
 }
