@@ -6,16 +6,16 @@
 
 if ! [ -e ~/paperbenni/import.sh ]; then
     # cache import script
-    echo "caching import script"
+    pecho "caching import script"
     mkdir ~/paperbenni &>/dev/null
     curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh >~/paperbenni/import.sh
 fi
 
 if ! [ "${SHELL##*/}" == 'bash' ]; then
     if grep -iq 'alpine' </etc/os-release; then
-        echo "it's alpine, you probably know what youre doing..."
+        pecho "it's alpine, you probably know what youre doing..."
     else
-        echo "error: shell is not bash"
+        pecho "error: shell is not bash"
         return 0
     fi
 fi
@@ -23,14 +23,14 @@ fi
 # pb already sourced?
 if [ -z "$PAPERIMPORT" ]; then
     PAPERIMPORT="paperbenni.github.io/bash"
-    echo "paperbenni bash importer ready for use!"
+    pecho "paperbenni bash importer ready for use!"
 else
-    echo "paperbenni importer found"
+    pecho "paperbenni importer found"
     return 0
 fi
 
 if [ -e ~/.paperdebug ]; then
-    echo "debugging mode enabled"
+    pecho "debugging mode enabled"
 fi
 
 # default fetching url
@@ -41,23 +41,23 @@ pbname() {
     if [[ "$1" == *.* ]]; then
         if [[ "$1" == */* ]]; then
             if [[ "$1" == *.sh* ]]; then
-                echo "$1"
+                pecho "$1"
             else
-                echo "${1//.//}.sh"
+                pecho "${1//.//}.sh"
             fi
         else
             if [[ "$1" == *.sh* ]]; then
-                echo "${1%.sh}/$1"
+                pecho "${1%.sh}/$1"
             else
-                echo "${1//.//}.sh"
+                pecho "${1//.//}.sh"
             fi
         fi
 
     else
         if [[ "$1" == */* ]]; then
-            echo "$1.sh"
+            pecho "$1.sh"
         else
-            echo "$1/$1.sh"
+            pecho "$1/$1.sh"
         fi
     fi
 }
@@ -68,37 +68,37 @@ pbimport() {
         PAPERENABLE="false"
         case "$1" in
         clear)
-            echo clearing the cache
+            pecho clearing the cache
             rm -rf ~/pb
             ;;
         help)
-            echo "usage: pb [package name]"
-            echo "you can find a list of available packages on my github"
+            pecho "usage: pb [package name]"
+            pecho "you can find a list of available packages on my github"
             ;;
         nocache)
-            echo "disabling cache"
+            pecho "disabling cache"
             NOCACHE="true"
             ;;
         list)
-            echo "imported packages:"
-            echo "$PAPERLIST"
+            pecho "imported packages:"
+            pecho "$PAPERLIST"
             ;;
         debug)
             if [ "$2" = "all" ]; then
-                PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
-                echo "refreshing $PPACKAGES"
+                PPACKAGES="$(pecho "$PAPERLIST" | egrep -o '[^ :]*')"
+                pecho "refreshing $PPACKAGES"
                 for i in $PPACKAGES; do
-                    echo "source $i"
+                    pecho "source $i"
                     psource ~/workspace/bash/"$i.sh"
                 done
             else
-                cat ~/workspace/bash/"$2.sh" || (echo "debug package not found" && return 1)
+                cat ~/workspace/bash/"$2.sh" || (pecho "debug package not found" && return 1)
                 psource ~/workspace/bash/"$2.sh"
             fi
             return 0
             ;;
         offupdate)
-            echo "updating offline install"
+            pecho "updating offline install"
             cd
             cd workspace
             rm -rf bash
@@ -107,7 +107,7 @@ pbimport() {
         *)
             PAPERENABLE="true"
             if [ -z "$@" ]; then
-                echo "usage: pb bashfile"
+                pecho "usage: pb bashfile"
                 return 0
             fi
             pecho "importing $@"
@@ -150,12 +150,12 @@ pbimport() {
     else
         pecho "using debugging version"
         if ! [ -e ~/.papersilent ]; then
-            cat ~/workspace/bash/"$PAPERPACKAGE" || { echo "debug package not found" && return 1; }
+            cat ~/workspace/bash/"$PAPERPACKAGE" || { pecho "debug package not found" && return 1; }
         fi
         if [ -e ~/workspace/bash/"$PAPERPACKAGE" ]; then
             psource ~/workspace/bash/"$PAPERPACKAGE"
         else
-            echo "paperpackage $PAPERPACKAGE not found"
+            pecho "paperpackage $PAPERPACKAGE not found"
         fi
     fi
 
@@ -175,13 +175,13 @@ psource() {
 pb() {
     # process multiple packages
     if [ -n "$2" ]; then
-        echo "multi import statement"
+        pecho "multi import statement"
         IFS2="$IFS"
         IFS=" "
         for i in "$@"; do
             # remove trailing and leading space
             PKGNAME=$(sed 's/^[ \t]*//;s/[ \t]*$//' <<<"$i")
-            echo "importing $PKGNAME"
+            pecho "importing $PKGNAME"
             pbimport "$PKGNAME"
         done
         IFS="$IFS2"
@@ -201,18 +201,20 @@ pname() {
 psilent() {
     {
         touch ~/.papersilent
+        export PAPERSILENT="true"
         if [ -n "$1" ]; then
             sleep "$1"
         else
             sleep 20
         fi
+        unset PAPERSILENT
         rm ~/.papersilent
     } &
 }
 
 # silentable echo
 pecho() {
-    if [ -e ~/.papersilent ]; then
+    if [ -e ~/.papersilent ] || [ -n "$PAPERSILENT" ]; then
         return 0
     else
         echo "$@"
@@ -239,12 +241,12 @@ if [ -e ~/.paperdebug ]; then
                 if ! [ -d "$i" ]; then
                     continue
                 fi
-                echo "${i#./}"
+                pecho "${i#./}"
                 cd "$i"
                 for sh in ./*.sh; do
-                    echo "#### ${sh#./}"
+                    pecho "#### ${sh#./}"
                 done
-                echo ".."
+                pecho ".."
                 cd ..
             done
         )
