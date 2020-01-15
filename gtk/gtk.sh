@@ -158,6 +158,14 @@ gtkdocumentfont() {
     pbdconf write '/org/mate/desktop/interface/document-font-name' "'$1'"
 }
 
+papercursor() {
+    if ! [ -e ~/.icons/$1 ]; then
+        mkdir ~/.icons &>/dev/null
+        cd ~/.icons
+        svn export "https://github.com/paperbenni/cursors.git/trunk/$1"
+    fi
+}
+
 setcursor() {
     mkdir -p ~/.icons/default &>/dev/null
     APPENDFILE=~/.icons/default/index.theme

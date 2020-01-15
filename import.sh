@@ -260,7 +260,7 @@ if [ -e ~/.paperdebug ]; then
         )
     }
 
-    # less wrapper ffor pblsraw
+    # less wrapper for pblsraw
     pbls() {
         pblsraw | less
     }
