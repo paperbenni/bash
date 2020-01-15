@@ -6,6 +6,15 @@ pname gtk/gtk
 
 ### general utilities ###
 
+# dconf in case its not running as the logged in user
+pbdconf() {
+    if [ "$(whoami)" = "$(w | tail -1 | grep -o '^[^ ]*')" ]; then
+        dconf $@
+    else
+        echo "$@" >>~/pbdconfcache
+    fi
+}
+
 # initializes gtk3 config files
 gtk3settings() {
     [ -e ~/.config/gtk-3.0/settings.ini ] ||
@@ -33,15 +42,9 @@ gtkloop() {
 #### Theme utilities ####
 gtktheme() {
 
-    GNOMETHEME=$(dconf read "/org/gnome/desktop/interface/gtk-theme")
-    if [ -n "$GNOMETHEME" ]; then
-        dconf write /org/gnome/desktop/interface/gtk-theme "'$1'"
-    fi
+    pbdconf write /org/gnome/desktop/interface/gtk-theme "'$1'"
+    pbdconf write /org/mate/desktop/interface/gtk-theme "'$1'"
 
-    MATETHEME=$(dconf read "/org/mate/desktop/interface/gtk-theme")
-    if [ -n "$MATETHEME" ]; then
-        dconf write /org/mate/desktop/interface/gtk-theme "'$1'"
-    fi
     gtk3settings
     # set gtk3 settings
     if grep -q 'gtk-theme-name' ~/.config/gtk-3.0/settings.ini; then
@@ -73,15 +76,8 @@ themeexists() {
 ### Icon set utilities ###
 gtkicons() {
 
-    GNOMEICONS=$(dconf read "/org/gnome/desktop/interface/icon-theme")
-    if [ -n "$GNOMEICONS" ]; then
-        dconf write /org/gnome/desktop/interface/icon-theme "'$1'"
-    fi
-
-    MATEICONS=$(dconf read "/org/mate/desktop/interface/icon-theme")
-    if [ -n "$MATEICONS" ]; then
-        dconf write /org/mate/desktop/interface/icon-theme "'$1'"
-    fi
+    pbdconf write /org/gnome/desktop/interface/icon-theme "'$1'"
+    pbdconf write /org/mate/desktop/interface/icon-theme "'$1'"
 
     if [ -e ~/.config/qt5ct/qt5ct.conf ]; then
         sed -i 's/icon_theme=.*/icon_theme='"$1"'/g' ~/.config/qt5ct/qt5ct.conf
@@ -139,7 +135,7 @@ installfont() {
 }
 
 gtkfont() {
-    dconf write '/org/mate/desktop/interface/font-name' "'$1'"
+    pbdconf write '/org/mate/desktop/interface/font-name' "'$1'"
 
     # check for / create gtk 3 settings
     gtk3settings
@@ -159,7 +155,7 @@ gtkfont() {
 }
 
 gtkdocumentfont() {
-    dconf write '/org/mate/desktop/interface/document-font-name' "'$1'"
+    pbdconf write '/org/mate/desktop/interface/document-font-name' "'$1'"
 }
 
 setcursor() {
