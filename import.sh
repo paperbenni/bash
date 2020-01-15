@@ -4,6 +4,15 @@
 ## paperbash importer ##
 ########################
 
+# silentable echo
+pecho() {
+    if [ -e ~/.papersilent ] || [ -n "$PAPERSILENT" ]; then
+        return 0
+    else
+        echo "$@"
+    fi
+}
+
 if ! [ -e ~/paperbenni/import.sh ]; then
     # cache import script
     pecho "caching import script"
@@ -210,15 +219,6 @@ psilent() {
         unset PAPERSILENT
         rm ~/.papersilent
     } &
-}
-
-# silentable echo
-pecho() {
-    if [ -e ~/.papersilent ] || [ -n "$PAPERSILENT" ]; then
-        return 0
-    else
-        echo "$@"
-    fi
 }
 
 # list package functions
