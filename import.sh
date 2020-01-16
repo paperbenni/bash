@@ -50,23 +50,23 @@ pbname() {
     if [[ "$1" == *.* ]]; then
         if [[ "$1" == */* ]]; then
             if [[ "$1" == *.sh* ]]; then
-                pecho "$1"
+                echo "$1"
             else
-                pecho "${1//.//}.sh"
+                echo "${1//.//}.sh"
             fi
         else
             if [[ "$1" == *.sh* ]]; then
-                pecho "${1%.sh}/$1"
+                echo "${1%.sh}/$1"
             else
-                pecho "${1//.//}.sh"
+                echo "${1//.//}.sh"
             fi
         fi
 
     else
         if [[ "$1" == */* ]]; then
-            pecho "$1.sh"
+            echo "$1.sh"
         else
-            pecho "$1/$1.sh"
+            echo "$1/$1.sh"
         fi
     fi
 }
@@ -94,7 +94,7 @@ pbimport() {
             ;;
         debug)
             if [ "$2" = "all" ]; then
-                PPACKAGES="$(pecho "$PAPERLIST" | egrep -o '[^ :]*')"
+                PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
                 pecho "refreshing $PPACKAGES"
                 for i in $PPACKAGES; do
                     pecho "source $i"
@@ -241,12 +241,12 @@ if [ -e ~/.paperdebug ]; then
                 if ! [ -d "$i" ]; then
                     continue
                 fi
-                pecho "${i#./}"
+                echo "${i#./}"
                 cd "$i"
                 for sh in ./*.sh; do
-                    pecho "#### ${sh#./}"
+                    echo "#### ${sh#./}"
                 done
-                pecho ".."
+                echo ".."
                 cd ..
             done
         )
