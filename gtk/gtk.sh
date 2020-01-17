@@ -6,21 +6,12 @@ pname gtk/gtk
 
 ### general utilities ###
 
-# dconf in case its not running as the logged in user
-pbdconf() {
-    if [ "$(whoami)" = "$(w | tail -1 | grep -o '^[^ ]*')" ]; then
-        dconf $@
-    else
-        echo "$@" >>~/pbdconfcache
-    fi
-}
-
 # initializes gtk3 config files
 gtk3settings() {
-    [ -e ~/.config/gtk-3.0/settings.ini ] ||
-        mkdir -p ~/.config/gtk-3.0 &>/dev/null &&
-        echo "[Settings]" >>~/.config/gtk-3.0/settings.ini
-
+    if ! [ -e ~/.config/gtk-3.0/settings.ini ]; then
+        mkdir -p ~/.config/gtk-3.0
+        echo "[Settings]" >~/.config/gtk-3.0/settings.ini
+    fi
 }
 
 # checks if either a theme or icon set exists in folder $1
@@ -40,11 +31,8 @@ gtkloop() {
 }
 
 #### Theme utilities ####
+
 gtktheme() {
-
-    pbdconf write /org/gnome/desktop/interface/gtk-theme "'$1'"
-    pbdconf write /org/mate/desktop/interface/gtk-theme "'$1'"
-
     gtk3settings
     # set gtk3 settings
     if grep -q 'gtk-theme-name' ~/.config/gtk-3.0/settings.ini; then
@@ -75,10 +63,6 @@ themeexists() {
 
 ### Icon set utilities ###
 gtkicons() {
-
-    pbdconf write /org/gnome/desktop/interface/icon-theme "'$1'"
-    pbdconf write /org/mate/desktop/interface/icon-theme "'$1'"
-
     if [ -e ~/.config/qt5ct/qt5ct.conf ]; then
         sed -i 's/icon_theme=.*/icon_theme='"$1"'/g' ~/.config/qt5ct/qt5ct.conf
     fi
@@ -113,6 +97,10 @@ icons_exist() {
 
 ### font utilities ###
 
+listtermfonts() {
+    fc-list -f "%{family} : %{file}\n" :spacing=100 | sort | less
+}
+
 fontexists() {
     if convert -list font | grep -iq "$1"; then
         echo "font $1 exists"
@@ -135,7 +123,6 @@ installfont() {
 }
 
 gtkfont() {
-    pbdconf write '/org/mate/desktop/interface/font-name' "'$1'"
 
     # check for / create gtk 3 settings
     gtk3settings
@@ -155,7 +142,7 @@ gtkfont() {
 }
 
 gtkdocumentfont() {
-    pbdconf write '/org/mate/desktop/interface/document-font-name' "'$1'"
+    dconf write '/org/mate/desktop/interface/document-font-name' "'$1'"
 }
 
 papercursor() {
