@@ -4,7 +4,6 @@
 ## paperbash importer ##
 ########################
 
-
 if ! [ "${SHELL##*/}" == 'bash' ] && ! [ -e ~/.paperforce ]; then
     pecho "error: shell is not bash"
     return 0
@@ -19,8 +18,7 @@ pecho() {
     fi
 }
 
-if ! [ "$0" = "bash" ]; then
-    echo "Null: $0"
+if ! [ "$0" = "-bash" ] && ! [ "$0" = "bash" ]; then
     SCRIPTPATH="$(
         cd "$(dirname "$0")" >/dev/null 2>&1
         pwd -P
