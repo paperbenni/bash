@@ -4,6 +4,12 @@
 ## paperbash importer ##
 ########################
 
+
+if ! [ "${SHELL##*/}" == 'bash' ] && ! [ -e ~/.paperforce ]; then
+    pecho "error: shell is not bash"
+    return 0
+fi
+
 # silentable echo
 pecho() {
     if [ -e ~/.papersilent ] || [ -n "$PAPERSILENT" ]; then
@@ -13,12 +19,8 @@ pecho() {
     fi
 }
 
-if ! [ "${SHELL##*/}" == 'bash' ] && ! [ -e ~/.paperforce ]; then
-    pecho "error: shell is not bash"
-    return 0
-fi
-
 if ! [ "$0" = "bash" ]; then
+    echo "Null: $0"
     SCRIPTPATH="$(
         cd "$(dirname "$0")" >/dev/null 2>&1
         pwd -P
