@@ -18,16 +18,7 @@ pecho() {
     fi
 }
 
-if ! [ "$0" = "-bash" ] && ! [ "$0" = "bash" ]; then
-    SCRIPTPATH="$(
-        cd "$(dirname "$0")" >/dev/null 2>&1
-        pwd -P
-    )"
-fi
-
-if [ -n "$SCRIPTPATH" ] &&
-    [ -e "$SCRIPTPATH/install" ] &&
-    [ -e "$SCRIPTPATH/titlesite" ]; then
+if [ -e /usr/share/paperbash/import.sh ]; then
     OFFLINEINSTALL=true
 fi
 
@@ -115,7 +106,7 @@ pbimport() {
     if [ -e ~/.paperdebug ]; then
         psource ~/workspace/bash/$PAPERPACKAGE
     elif [ -n "$OFFLINEINSTALL" ]; then
-        psource $SCRIPTPATH/$PAPERPACKAGE
+        psource /usr/share/paperbash/$PAPERPACKAGE
     else
         curl -s "$PAPERGIT/$PAPERPACKAGE" >/tmp/papercache
         psource /tmp/papercache
