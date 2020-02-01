@@ -18,12 +18,16 @@ if ! [ "${SHELL##*/}" == 'bash' ] && ! [ -e ~/.paperforce ]; then
     return 0
 fi
 
-SCRIPTPATH="$(
-    cd "$(dirname "$0")" >/dev/null 2>&1
-    pwd -P
-)"
+if ! [ "$0" = "bash" ]; then
+    SCRIPTPATH="$(
+        cd "$(dirname "$0")" >/dev/null 2>&1
+        pwd -P
+    )"
+fi
 
-if [ -e "$SCRIPTPATH/install" ] && [ -e "$SCRIPTPATH/titlesite" ]; then
+if [ -n "$SCRIPTPATH" ] &&
+    [ -e "$SCRIPTPATH/install" ] &&
+    [ -e "$SCRIPTPATH/titlesite" ]; then
     OFFLINEINSTALL=true
 fi
 
@@ -115,6 +119,7 @@ pbimport() {
     else
         curl -s "$PAPERGIT/$PAPERPACKAGE" >/tmp/papercache
         psource /tmp/papercache
+        rm /tmp/papercache
     fi
 }
 
