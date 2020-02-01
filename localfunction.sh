@@ -1,8 +1,7 @@
 # paperbegin
 
-pb() {
+if test "$BASH"; then
     source /usr/share/paperbash/import.sh
-    pb $@
-}
+fi
 
 # paperend
