@@ -13,34 +13,29 @@ pecho() {
     fi
 }
 
-if ! [ -e ~/paperbenni/import.sh ]; then
-    # cache import script
-    pecho "caching import script"
-    mkdir ~/paperbenni &>/dev/null
-    curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh >~/paperbenni/import.sh
+if ! [ "${SHELL##*/}" == 'bash' ] && ! [ -e ~/.paperforce ]; then
+    pecho "error: shell is not bash"
+    return 0
 fi
 
-if ! [ "${SHELL##*/}" == 'bash' ]; then
-    if grep -iq 'alpine' </etc/os-release; then
-        pecho "it's alpine, you probably know what youre doing..."
-    else
-        pecho "error: shell is not bash"
-        return 0
-    fi
+SCRIPTPATH="$(
+    cd "$(dirname "$0")" >/dev/null 2>&1
+    pwd -P
+)"
+
+if [ -e "$SCRIPTPATH/install" ] && [ -e "$SCRIPTPATH/titlesite" ]; then
+    OFFLINEINSTALL=true
 fi
 
 # pb already sourced?
 if [ -z "$PAPERIMPORT" ]; then
     PAPERIMPORT="paperbenni.github.io/bash"
-    pecho "paperbenni bash importer ready for use!"
 else
     pecho "paperbenni importer found"
     return 0
 fi
 
-if [ -e ~/.paperdebug ]; then
-    pecho "debugging mode enabled"
-fi
+[ -e ~/.paperdebug ] && pecho "debugging mode enabled"
 
 # default fetching url
 PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
@@ -92,42 +87,17 @@ pbimport() {
             pecho "imported packages:"
             pecho "$PAPERLIST"
             ;;
-        debug)
-            if [ "$2" = "all" ]; then
-                PPACKAGES="$(echo "$PAPERLIST" | egrep -o '[^ :]*')"
-                pecho "refreshing $PPACKAGES"
-                for i in $PPACKAGES; do
-                    pecho "source $i"
-                    psource ~/workspace/bash/"$i.sh"
-                done
-            else
-                cat ~/workspace/bash/"$2.sh" || (pecho "debug package not found" && return 1)
-                psource ~/workspace/bash/"$2.sh"
-            fi
-            return 0
-            ;;
-        offupdate)
-            pecho "updating offline install"
-            cd
-            cd workspace
-            rm -rf bash
-            git clone --depth=1 https://github.com/paperbenni/bash.git
-            ;;
         *)
             PAPERENABLE="true"
             if [ -z "$@" ]; then
                 pecho "usage: pb bashfile"
                 return 0
             fi
-            pecho "importing $@"
             ;;
         esac
     }
 
-    if [ "$PAPERENABLE" = "false" ]; then
-        pecho "done, exiting"
-        return 0
-    fi
+    [ "$PAPERENABLE" = "false" ] && return 0
 
     PAPERPACKAGE=$(pbname "$1")
     pecho "$PAPERPACKAGE"
@@ -138,43 +108,22 @@ pbimport() {
         return 0
     fi
 
-    if ! [ -e ~/.paperdebug ]; then
-        if ! [ -e "~/pb/$PAPERPACKAGE" ] || [ -z "$NOCACHE" ]; then
-            if grep -q "/" <<<"$PAPERPACKAGE"; then
-                FILEPATH=${PAPERPACKAGE%/*}
-                mkdir -p ~/pb/"$FILEPATH"
-            fi
-
-            curl -s "$PAPERGIT/$PAPERPACKAGE" >~/pb/"$PAPERPACKAGE"
-        else
-            pecho "using $PAPERPACKAGE from cache"
-        fi
-
-        if grep -q 'pname' <~/pb/"$PAPERPACKAGE"; then
-            pecho "script is valid"
-            psource ~/pb/"$PAPERPACKAGE"
-        else
-            pecho "$PAPERPACKAGE not a pb package"
-        fi
+    if [ -e ~/.paperdebug ]; then
+        psource ~/workspace/bash/$PAPERPACKAGE
+    elif [ -n "$OFFLINEINSTALL" ]; then
+        psource $SCRIPTPATH/$PAPERPACKAGE
     else
-        pecho "using debugging version"
-        if ! [ -e ~/.papersilent ]; then
-            cat ~/workspace/bash/"$PAPERPACKAGE" || { pecho "debug package not found" && return 1; }
-        fi
-        if [ -e ~/workspace/bash/"$PAPERPACKAGE" ]; then
-            psource ~/workspace/bash/"$PAPERPACKAGE"
-        else
-            pecho "paperpackage $PAPERPACKAGE not found"
-        fi
+        curl -s "$PAPERGIT/$PAPERPACKAGE" >/tmp/papercache
+        psource /tmp/papercache
     fi
-
 }
 
 # source or list functions
 psource() {
-    if [ -n "$PAPERSOURCE" ]; then
-        grep '.*().*\{' <"$1" | less
-        unset PAPERSOURCE
+    [ -e "$1" ] || return 1
+    if [ -n "$PAPERDOC" ]; then
+        unset PAPERDOC
+        cat "$1" | egrep -o '^.*\(\).*{' | grep -o '^[^(]*'
     else
         source "$1"
     fi
@@ -223,11 +172,10 @@ psilent() {
 
 # list package functions
 pdoc() {
-    PAPERSOURCE="True"
+    PAPERDOC="True"
     pb $@
 }
 
-SCRIPTDIR=$(grep -o '.*/' <<<"$0")
 pb bash
 
 # functions only available in debug mode
