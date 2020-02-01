@@ -165,12 +165,28 @@ setcursor() {
 
 rofitheme() {
     mkdir -p ~/.config/rofi &>/dev/null
-    curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/rofi/$1.rasi" >~/.config/rofi/$1.rasi
+    if [ -e /usr/share/instantdotfiles/rofi/$1.rasi ]; then
+        cp /usr/share/instantdotfiles/rofi/$1.rasi ~/.config/rofi/$1.rasi
+    else
+        curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/rofi/$1.rasi" >~/.config/rofi/$1.rasi
+    fi
     echo "rofi.theme: ~/.config/rofi/$1.rasi" >~/.config/rofi/config
 }
 
 dunsttheme() {
     [ -e ~/.config/dunst ] || mkdir -p ~/.config/dunst
-    curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunstrc" >~/.config/dunst/dunstrc
-    curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunst/$1" >>~/.config/dunst/dunstrc
+    if [ -e /usr/share/instantdotfiles/dunst ]; then
+        cat /usr/share/instantdotfiles/dunstrc >~/.config/dunst/dunstrc
+        cat /usr/share/instantthemes/dunst/$1 >>~/.config/dunst/dunstrc
+    else
+        curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunstrc" >~/.config/dunst/dunstrc
+        curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunst/$1" >>~/.config/dunst/dunstrc
+    fi
+}
+
+xtheme() {
+    if [ -e /usr/share/instantthemes ] && [ -e /usr/share/instantdotfiles ]; then
+        cat /usr/share/instantthemes/xresources/$1 >~/.Xresources
+        cat /usr/share/instantdotfiles/Xresources >>~/.Xresources
+    fi
 }
