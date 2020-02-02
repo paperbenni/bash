@@ -35,13 +35,13 @@ gtkloop() {
 gtktheme() {
     gtk3settings
     # set gtk3 settings
-    if grep -q 'gtk-theme-name' ~/.config/gtk-3.0/settings.ini; then
+    if [ -e ~/.config/gtk-3.0/settings.ini ] && grep -q 'gtk-theme-name' ~/.config/gtk-3.0/settings.ini; then
         sed -i 's/gtk-theme-name=.*/gtk-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
     else
         echo "gtk-theme-name=$1" >>~/.config/gtk-3.0/settings.ini
     fi
 
-    if grep -q 'gtk-theme-name' ~/.gtkrc-2.0; then
+    if [ -e ~/.gtkrc-2.0 ] && grep -q 'gtk-theme-name' ~/.gtkrc-2.0; then
         sed -i 's/gtk-theme-name =.*/gtk-theme-name = "'"$1"'"/g' ~/.gtkrc-2.0
     else
         echo 'gtk-theme-name = "'"$1"'"' >>~/.gtkrc-2.0
