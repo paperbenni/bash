@@ -37,12 +37,12 @@ rclogin() {
     #save creds in ~/.rclogin
     if [ -e "$RCLOUD".conf ]; then
         echo "using existing credentials"
-        RNAME=$(grep "username:" <"$RCLOUD.conf" | egrep -o ':.*' |
-            egrep -o "[^:].*")
+        RNAME=$(grep "username:" <"$RCLOUD.conf" | grep -o ':.*' |
+            grep -o "[^:].*")
         echo "$RNAME"
 
-        RPASS=$(grep "password:" <"$RCLOUD.conf" | egrep -o ':.*' |
-            egrep -o "[^:].*")
+        RPASS=$(grep "password:" <"$RCLOUD.conf" | grep -o ':.*' |
+            grep -Eo "[^:].*")
     else
         if [ -z "$3" ]; then
             pb dialog

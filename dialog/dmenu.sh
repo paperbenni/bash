@@ -25,7 +25,7 @@ dsudo() {
 # I have no idea
 dpop() {
     touch ~/.dpopped
-    yres=$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/' | egrep -o '[^x]*$')
+    yres=$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+x[0-9]+).*$/\1/' | grep -Eo '[^x]*$')
 
     while [ -e ~/.dpopped ]; do
         CLOUDMENU=$(echo "$1" | dmenu -y $(expr $yres / 2) -p "please wait" -l 10)
@@ -63,7 +63,7 @@ dfile() {
         else
             break
         fi
-        newdir=$(ls | egrep '^[^\$].*' | dmenu -l 30)
+        newdir=$(ls | grep '^[^\$].*' | dmenu -l 30)
     done
     realpath "$newdir"
     popd &>/dev/null

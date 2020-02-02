@@ -20,6 +20,7 @@ Then do the following to import functions into your script
 pb unpack # just the name if there are no other scripts in the category
 pb rclone/login.sh # full name with file extension
 pb spigot/op # full name without file extension
+pb rclone.login # full name without file extension and dot as seperator
 
 #lets try them out
 unpack

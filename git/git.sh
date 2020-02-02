@@ -58,9 +58,9 @@ diffadditions() {
 
 ghcommit() {
     if [[ "$1" =~ '/' ]]; then
-        git ls-remote git://github.com/$1.git | grep 'refs/heads/master' | egrep -o '^[a-zA-Z0-9]*'
+        git ls-remote git://github.com/$1.git | grep 'refs/heads/master' | grep -Eo '^[a-zA-Z0-9]*'
     else
-        git ls-remote git://github.com/paperbenni/$1.git | grep 'refs/heads/master' | egrep -o '^[a-zA-Z0-9]*'
+        git ls-remote git://github.com/paperbenni/$1.git | grep 'refs/heads/master' | grep -Eo '^[a-zA-Z0-9]*'
     fi
 
 }
