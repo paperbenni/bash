@@ -1,8 +1,8 @@
 #!/bin/bash
 pname gtk/gtk
 
-# set gtk theme
-# only works with gnome-settings-daemon or mate-settings-daemon running
+DOTRAW="https://raw.githubusercontent.com/paperbenni/dotfiles/master"
+THEMERAW="https://raw.githubusercontent.com/instantos/instantthemes/master"
 
 ### general utilities ###
 
@@ -168,7 +168,7 @@ rofitheme() {
     if [ -e /usr/share/instantdotfiles/rofi/$1.rasi ]; then
         cp /usr/share/instantdotfiles/rofi/$1.rasi ~/.config/rofi/$1.rasi
     else
-        curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/rofi/$1.rasi" >~/.config/rofi/$1.rasi
+        curl -s "$DOTRAW/rofi/$1.rasi" >~/.config/rofi/$1.rasi
     fi
     echo "rofi.theme: ~/.config/rofi/$1.rasi" >~/.config/rofi/config
 }
@@ -179,8 +179,8 @@ dunsttheme() {
         cat /usr/share/instantdotfiles/dunstrc >~/.config/dunst/dunstrc
         cat /usr/share/instantthemes/dunst/$1 >>~/.config/dunst/dunstrc
     else
-        curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunstrc" >~/.config/dunst/dunstrc
-        curl -s "https://raw.githubusercontent.com/paperbenni/dotfiles/master/dunst/$1" >>~/.config/dunst/dunstrc
+        curl -s "$DOTRAW/dunstrc" >~/.config/dunst/dunstrc
+        curl -s "$THEMERAW/dunst/$1" >>~/.config/dunst/dunstrc
     fi
 }
 
@@ -188,5 +188,9 @@ xtheme() {
     if [ -e /usr/share/instantthemes ] && [ -e /usr/share/instantdotfiles ]; then
         cat /usr/share/instantthemes/xresources/$1 >~/.Xresources
         cat /usr/share/instantdotfiles/Xresources >>~/.Xresources
+    else
+        curl -s "$THEMERAW/xresources/$1" >~/.Xresources
+        curl -s "$DOTRAW/Xresources" >>~/.Xresources
+        echo "please install instantthemes and instantdotfiles"
     fi
 }
