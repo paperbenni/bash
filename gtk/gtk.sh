@@ -156,11 +156,19 @@ papercursor() {
 setcursor() {
     mkdir -p ~/.icons/default &>/dev/null
     APPENDFILE=~/.icons/default/index.theme
-    echo "# This file is written by pb-suckless. Do not edit." >$APPENDFILE
+    echo "# This file is written by instantthemes. Do not edit." >$APPENDFILE
     app "[Icon Theme]"
     app "Name=Default"
     app "Comment=Default Cursor Theme"
     app "Inherits=$1"
+
+    if [ -e ~/.Xresources ]; then
+        if grep -q 'Xcursor.theme: ' ~/.Xresources; then
+            sed -i 's/Xcursor.theme: .*/Xcursor.theme: '"$1"'/g'
+        else
+            echo "Xcursor.theme: $1" >>~/.Xresources
+        fi
+    fi
 }
 
 rofitheme() {
