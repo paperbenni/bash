@@ -36,7 +36,12 @@ gtktheme() {
     gtk3settings
     # set gtk3 settings
     if [ -e ~/.config/gtk-3.0/settings.ini ] && grep -q 'gtk-theme-name' ~/.config/gtk-3.0/settings.ini; then
-        sed -i 's/gtk-theme-name=.*/gtk-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
+        if grep -q "gtk-theme-name=$1" ~/.config/gtk-3.0/settings.ini; then
+            echo "gtk theme already applied"
+            return
+        else
+            sed -i 's/gtk-theme-name=.*/gtk-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
+        fi
     else
         echo "gtk-theme-name=$1" >>~/.config/gtk-3.0/settings.ini
     fi
@@ -63,8 +68,14 @@ themeexists() {
 
 ### Icon set utilities ###
 gtkicons() {
+
     if [ -e ~/.config/qt5ct/qt5ct.conf ]; then
-        sed -i 's/icon_theme=.*/icon_theme='"$1"'/g' ~/.config/qt5ct/qt5ct.conf
+        if grep -q "icon_theme=$1" ~/.config/qt5ct/qt5ct.conf; then
+            echo "icons already applied"
+            return
+        else
+            sed -i 's/icon_theme=.*/icon_theme='"$1"'/g' ~/.config/qt5ct/qt5ct.conf
+        fi
     fi
 
     gtk3settings
