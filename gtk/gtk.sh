@@ -36,7 +36,7 @@ gtktheme() {
     gtk3settings
     # set gtk3 settings
     if [ -e ~/.config/gtk-3.0/settings.ini ] && grep -q 'gtk-theme-name' ~/.config/gtk-3.0/settings.ini; then
-        if grep -q "gtk-theme-name=$1" ~/.config/gtk-3.0/settings.ini; then
+        if grep -q "gtk-theme-name=$1$" ~/.config/gtk-3.0/settings.ini; then
             echo "gtk theme already applied"
             return
         else
@@ -70,7 +70,7 @@ themeexists() {
 gtkicons() {
 
     if [ -e ~/.config/qt5ct/qt5ct.conf ]; then
-        if grep -q "icon_theme=$1" ~/.config/qt5ct/qt5ct.conf; then
+        if grep -q "icon_theme=$1$" ~/.config/qt5ct/qt5ct.conf; then
             echo "icons already applied"
             return
         else
