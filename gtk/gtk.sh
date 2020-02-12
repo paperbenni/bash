@@ -71,8 +71,7 @@ gtkicons() {
 
     if [ -e ~/.config/qt5ct/qt5ct.conf ]; then
         if grep -q "icon_theme=$1$" ~/.config/qt5ct/qt5ct.conf; then
-            echo "icons already applied"
-            return
+            echo "qt icons already applied"
         else
             sed -i 's/icon_theme=.*/icon_theme='"$1"'/g' ~/.config/qt5ct/qt5ct.conf
         fi
@@ -80,13 +79,21 @@ gtkicons() {
 
     gtk3settings
     if grep -q 'gtk-icon-theme-name' ~/.config/gtk-3.0/settings.ini; then
-        sed -i 's/gtk-icon-theme-name=.*/gtk-icon-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
+        if grep -q "gtk-icon-theme-name=$1$" ~/.config/gtk-3.0/settings.ini; then
+            echo "gtk icons already applied"
+        else
+            sed -i 's/gtk-icon-theme-name=.*/gtk-icon-theme-name='"$1"'/g' ~/.config/gtk-3.0/settings.ini
+        fi
     else
         echo "gtk-icon-theme-name=$1" >>~/.config/gtk-3.0/settings.ini
     fi
 
     if grep -q 'gtk-icon-theme-name' ~/.gtkrc-2.0; then
-        sed -i 's/gtk-icon-theme-name =.*/gtk-icon-theme-name = "'"$1"'"/g' ~/.gtkrc-2.0
+        if grep -q 'gtk-icon-theme-name = "'"$1"'"$'; then
+            echo "gtk2 theme already applied"
+        else
+            sed -i 's/gtk-icon-theme-name =.*/gtk-icon-theme-name = "'"$1"'"/g' ~/.gtkrc-2.0
+        fi
     else
         echo 'gtk-icon-theme-name = "'"$1"'"' >>~/.gtkrc-2.0
     fi
