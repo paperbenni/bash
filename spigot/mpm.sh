@@ -14,6 +14,11 @@ getmpm() {
 # main mpm command
 mpm() {
 
+    if [ -z "$@" ]; then
+        echo "usage: mpm pluginname"
+        return
+    fi
+
     MPMLINK="https://raw.githubusercontent.com/paperbenni/mpm/master"
     checkspigot || echo "warning: no spigot installation found"
 
@@ -37,7 +42,7 @@ mpm() {
     echo "minecaft version $MCVERSION"
     SPIGOTVERSION="$(spigotversion)"
 
-    mkdir plugins &> /dev/null
+    mkdir plugins &>/dev/null
     cd plugins
 
     #check for new version if the plugin is installed
