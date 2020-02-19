@@ -5,8 +5,7 @@
 ########################
 
 if ! [ "${SHELL##*/}" == 'bash' ] && ! [ -e ~/.paperforce ]; then
-    pecho "error: shell is not bash"
-    return 0
+    echo "warning: shell is not bash"
 fi
 
 # silentable echo
