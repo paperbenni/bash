@@ -8,6 +8,11 @@ if ! [ "${SHELL##*/}" == 'bash' ] && ! [ -e ~/.paperforce ]; then
     echo "warning: shell is not bash"
 fi
 
+if ! [ -e /tmp ] && command -v termux-setup-storage &>/dev/null; then
+    echo "termux detected"
+    export TERMUX="true"
+fi
+
 # silentable echo
 pecho() {
     if [ -e ~/.papersilent ] || [ -n "$PAPERSILENT" ]; then
@@ -107,9 +112,15 @@ pbimport() {
     elif [ -n "$OFFLINEINSTALL" ]; then
         psource /usr/share/paperbash/$PAPERPACKAGE
     else
-        curl -s "$PAPERGIT/$PAPERPACKAGE" >/tmp/papercache
-        psource /tmp/papercache
-        rm /tmp/papercache
+        if [ -z "$TERMUX" ]; then
+            curl -s "$PAPERGIT/$PAPERPACKAGE" >/tmp/papercache
+            psource /tmp/papercache
+            rm /tmp/papercache
+        else
+            curl -s "$PAPERGIT/$PAPERPACKAGE" >$PREFIX/tmp/papercache
+            psource $PREFIX/tmp/papercache
+            rm $PREFIX/tmp/papercache
+        fi
     fi
 }
 
