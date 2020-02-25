@@ -17,8 +17,14 @@ installpip() {
 
 }
 
-# download and compile a python version to use in a virtualenv
+# virtualenv wrapper that downloads, compiles and installs a python version before using it
 pyenv() {
+
+    if ! command -v virtualenv &>/dev/null; then
+        echo "please install virtualenv"
+        echo "sudo pip3 install virtualenv"
+        return
+    fi
 
     # scrape version numbers from website
     if [ -z "$@" ]; then
@@ -60,17 +66,16 @@ pyenv() {
     fi
 
     # create virtualenv and source activation script
-    if [ -e ./bin/activate ]; then
-        echo "virtualenv already found"
-        source ./bin/activate
-    else
+    if ! [ -e ./bin/activate ]; then
         if [ -e "$HOME"/.cache/pyenv/$1/mybuild/bin/python3 ]; then
-            virtualenv --python "$HOME"/.cache/pyenv/$1/mybuild/bin/python3
+            virtualenv --python "$HOME"/.cache/pyenv/$1/mybuild/bin/python3 .
         elif [ -e "$HOME"/.cache/pyenv/$1/mybuild/bin/python2 ]; then
-            virtualenv --python "$HOME"/.cache/pyenv/$1/mybuild/bin/python3
+            virtualenv --python "$HOME"/.cache/pyenv/$1/mybuild/bin/python3 .
         else
             echo "error: no python binary in "$HOME"/.cache/pyenv/$1/mybuild/bin/"
+            return
         fi
     fi
+    source ./bin/activate
 
 }
