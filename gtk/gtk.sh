@@ -164,6 +164,7 @@ gtkdocumentfont() {
 }
 
 papercursor() {
+    echo "fetching paper cursor"
     if ! [ -e ~/.icons/$1 ]; then
         mkdir ~/.icons &>/dev/null
         cd ~/.icons
@@ -172,6 +173,7 @@ papercursor() {
 }
 
 setcursor() {
+    echo "setting cursors to $1"
     mkdir -p ~/.icons/default &>/dev/null
     APPENDFILE=~/.icons/default/index.theme
     echo "# This file is written by instantthemes. Do not edit." >$APPENDFILE
@@ -190,6 +192,7 @@ setcursor() {
 }
 
 rofitheme() {
+    echo "Setting rofi theme to $1"
     mkdir -p ~/.config/rofi &>/dev/null
     if [ -e /usr/share/instantdotfiles/rofi/$1.rasi ]; then
         cp /usr/share/instantdotfiles/rofi/$1.rasi ~/.config/rofi/$1.rasi
@@ -200,6 +203,7 @@ rofitheme() {
 }
 
 dunsttheme() {
+    echo "setting dunst theme to $1"
     [ -e ~/.config/dunst ] || mkdir -p ~/.config/dunst
     if [ -e /usr/share/instantdotfiles/dunst ]; then
         cat /usr/share/instantdotfiles/dunstrc >~/.config/dunst/dunstrc
@@ -211,6 +215,7 @@ dunsttheme() {
 }
 
 xtheme() {
+    echo "Setting xorg theme to $1"
     if [ -e /usr/share/instantthemes ] && [ -e /usr/share/instantdotfiles ]; then
         cat /usr/share/instantthemes/xresources/$1 >~/.Xresources
         cat /usr/share/instantdotfiles/Xresources >>~/.Xresources
