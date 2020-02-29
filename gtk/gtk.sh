@@ -163,6 +163,7 @@ gtkdocumentfont() {
     dconf write '/org/mate/desktop/interface/document-font-name' "'$1'"
 }
 
+# install cursor from github
 papercursor() {
     echo "fetching paper cursor"
     if ! [ -e ~/.icons/$1 ]; then
@@ -172,6 +173,7 @@ papercursor() {
     fi
 }
 
+# set cursor in gtk and xorg
 setcursor() {
     echo "setting cursors to $1"
     mkdir -p ~/.icons/default &>/dev/null
@@ -191,6 +193,7 @@ setcursor() {
     fi
 }
 
+# copies a rofi theme config
 rofitheme() {
     echo "Setting rofi theme to $1"
     mkdir -p ~/.config/rofi &>/dev/null
@@ -202,18 +205,21 @@ rofitheme() {
     echo "rofi.theme: ~/.config/rofi/$1.rasi" >~/.config/rofi/config
 }
 
+# download regular dunstrc and append color config
 dunsttheme() {
     echo "setting dunst theme to $1"
     [ -e ~/.config/dunst ] || mkdir -p ~/.config/dunst
-    if [ -e /usr/share/instantdotfiles/dunst ]; then
+    if [ -e /usr/share/instantdotfiles/dunstrc ]; then
         cat /usr/share/instantdotfiles/dunstrc >~/.config/dunst/dunstrc
         cat /usr/share/instantthemes/dunst/$1 >>~/.config/dunst/dunstrc
     else
+        echo "falling back to online dunst theme"
         curl -s "$DOTRAW/dunstrc" >~/.config/dunst/dunstrc
         curl -s "$THEMERAW/dunst/$1" >>~/.config/dunst/dunstrc
     fi
 }
 
+# set up xresources
 xtheme() {
     echo "Setting xorg theme to $1"
     if [ -e /usr/share/instantthemes ] && [ -e /usr/share/instantdotfiles ]; then
