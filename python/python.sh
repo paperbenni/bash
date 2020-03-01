@@ -72,7 +72,7 @@ pyenv() {
         elif [ -e "$HOME"/.cache/pyenv/$1/mybuild/bin/python2 ]; then
             virtualenv --python "$HOME"/.cache/pyenv/$1/mybuild/bin/python3 .
         else
-            echo "error: no python binary in "$HOME"/.cache/pyenv/$1/mybuild/bin/"
+            echo "error: no python binary in $HOME/.cache/pyenv/$1/mybuild/bin/"
             return
         fi
     fi

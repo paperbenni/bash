@@ -129,7 +129,7 @@ psource() {
     [ -e "$1" ] || return 1
     if [ -n "$PAPERDOC" ]; then
         unset PAPERDOC
-        cat "$1" | grep -Eo '^.*\(\).*{' | grep -o '^[^(]*'
+        grep -Eo '^.*\(\).*{' <"$1" | grep -o '^[^(]*'
     else
         source "$1"
     fi
