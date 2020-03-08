@@ -30,6 +30,7 @@ unpack
 
 ### Demo
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2edb0989a07f40919cd0472a6a91fdaf)](https://app.codacy.com/manual/paperbenni/bash?utm_source=github.com&utm_medium=referral&utm_content=paperbenni/bash&utm_campaign=Badge_Grade_Settings)
 [![asciicast](https://asciinema.org/a/uLkrlqR36UwAe5MJIXtGjH6uV.svg)](https://asciinema.org/a/uLkrlqR36UwAe5MJIXtGjH6uV)
 
 These my personal scripts.
