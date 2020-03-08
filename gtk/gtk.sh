@@ -188,7 +188,8 @@ setcursor() {
         if grep -q 'Xcursor.theme: ' ~/.Xresources; then
             sed -i 's/Xcursor.theme: .*/Xcursor.theme: '"$1"'/g'
         else
-            echo "Xcursor.theme: $1" >>~/.Xresources
+            # newline is needed because its missing in the default Xresources
+            echo "\nXcursor.theme: $1" >>~/.Xresources
         fi
     fi
 }
