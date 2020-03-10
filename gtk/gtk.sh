@@ -89,7 +89,7 @@ gtkicons() {
     fi
 
     if grep -q 'gtk-icon-theme-name' ~/.gtkrc-2.0; then
-        if grep -q 'gtk-icon-theme-name = "'"$1"'"$'; then
+        if grep -q 'gtk-icon-theme-name = "'"$1"'"$' ~/.gtkrc-2.0; then
             echo "gtk2 theme already applied"
         else
             sed -i 's/gtk-icon-theme-name =.*/gtk-icon-theme-name = "'"$1"'"/g' ~/.gtkrc-2.0
