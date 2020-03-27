@@ -36,7 +36,7 @@ function confget() {
     fi
 
     while IFS="${4:-:}" read -a ARRAY; do
-        if [ "${ARRAY[0]}" == "$2" ]; then
+        if [ "${ARRAY[0]}" = "$2" ]; then
             # Use extended globbing to match any number of spaces.
             shopt -s extglob
             echo "${ARRAY[1]##+([[:space:]])}"

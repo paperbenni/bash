@@ -4,7 +4,7 @@
 ## paperbash importer ##
 ########################
 
-if ! [ "${SHELL##*/}" == 'bash' ] && ! [ -e ~/.paperforce ]; then
+if ! [ "${SHELL##*/}" = 'bash' ] && ! [ -e ~/.paperforce ]; then
     echo "warning: shell is not bash"
 fi
 
