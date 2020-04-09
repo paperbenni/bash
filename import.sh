@@ -84,7 +84,7 @@ pbimport() {
             ;;
         list)
             pecho "imported packages:"
-            pecho "$PAPERLIST"
+            pecho $(grep -o '[^\n]*\\n' <<<"$PAPERLIST" | grep -o '^[^\\]*' | grep -o '[^ ]*$')
             ;;
         *)
             PAPERENABLE="true"
