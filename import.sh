@@ -157,6 +157,18 @@ pb() {
     fi
 }
 
+# import packages with fzf
+fpb() {
+    if ! [ -e /usr/share/paperbash ]; then
+        echo "please install the paperbash package"
+        return 1
+    fi
+    pushd .
+    cd /usr/share/paperbash
+    pb "$(ls */* | grep '.*/.*' | fzf)"
+    popd
+}
+
 # set package name inside function script
 pname() {
     PAPERLIST="$PAPERLIST $(pbname $1)\n"
