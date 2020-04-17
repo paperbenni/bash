@@ -34,7 +34,18 @@ else
     return 0
 fi
 
-[ -e ~/.paperdebug ] && pecho "debugging mode enabled"
+if [ -e ~/.paperdebug ]
+then
+	pecho "debugging mode enabled"
+	if ! [ -e ~/workspace/bash ]
+	then
+		mkdir workspace
+		pushd .
+		cd ~/workspace
+		git clone --depth=10 https://github.com/paperbenni/bash
+		popd
+	fi
+fi
 
 # default fetching url
 PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
@@ -107,7 +118,7 @@ pbimport() {
         return 0
     fi
 
-    if [ -e ~/.paperdebug ]; then
+    if [ -e ~/.paperdebug ] && [ -e ~/workspace/bash ]; then
         psource ~/workspace/bash/$PAPERPACKAGE
     elif [ -n "$OFFLINEINSTALL" ]; then
         psource /usr/share/paperbash/$PAPERPACKAGE
