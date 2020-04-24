@@ -203,7 +203,11 @@ rofitheme() {
     else
         curl -s "$DOTRAW/rofi/$1.rasi" >~/.config/rofi/$1.rasi
     fi
-    echo "rofi.theme: ~/.config/rofi/$1.rasi" >~/.config/rofi/config
+
+    echo "configuration {" >~/.config/rofi/config.rasi
+    echo "theme: \"~/.config/rofi/$1.rasi\";" >>~/.config/rofi/config.rasi
+    echo "}" >>~/.config/rofi/config.rasi
+
 }
 
 # download regular dunstrc and append color config
