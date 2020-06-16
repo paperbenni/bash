@@ -25,7 +25,7 @@ ngrokdl() {
             wget -q "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip"
         fi
     else
-        [ -n "$1" ] || wget "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
+        [ -n "$1" ] || wget -q "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
         [ -n "$1" ] && wget ngrok.surge.sh/ngrok -q
     fi
 
