@@ -12,6 +12,14 @@ gtk3settings() {
         mkdir -p ~/.config/gtk-3.0
         echo "[Settings]" >~/.config/gtk-3.0/settings.ini
     fi
+
+    # disable maximize/close/minimize button on instantWM
+    if pgrep instantwm &>/dev/null; then
+        if ! grep -q 'gtk-decoration-layout' ~/.config/gtk-3.0/settings.ini; then
+            echo 'gtk-decoration-layout=appmenu:none' >>~/.config/gtk-3.0/settings.ini
+        fi
+    fi
+
 }
 
 # checks if either a theme or icon set exists in folder $1
