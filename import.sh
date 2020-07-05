@@ -34,7 +34,18 @@ else
     return 0
 fi
 
-[ -e ~/.paperdebug ] && pecho "debugging mode enabled"
+if [ -e ~/.paperdebug ]
+then
+	pecho "debugging mode enabled"
+	if ! [ -e ~/workspace/bash ]
+	then
+		mkdir workspace
+		pushd .
+		cd ~/workspace
+		git clone --depth=10 https://github.com/paperbenni/bash
+		popd
+	fi
+fi
 
 # default fetching url
 PAPERGIT="https://raw.githubusercontent.com/paperbenni/bash/master"
@@ -84,7 +95,7 @@ pbimport() {
             ;;
         list)
             pecho "imported packages:"
-            pecho "$PAPERLIST"
+            pecho $(grep -o '[^\n]*\\n' <<<"$PAPERLIST" | grep -o '^[^\\]*' | grep -o '[^ ]*$')
             ;;
         *)
             PAPERENABLE="true"
@@ -107,7 +118,7 @@ pbimport() {
         return 0
     fi
 
-    if [ -e ~/.paperdebug ]; then
+    if [ -e ~/.paperdebug ] && [ -e ~/workspace/bash ]; then
         psource ~/workspace/bash/$PAPERPACKAGE
     elif [ -n "$OFFLINEINSTALL" ]; then
         psource /usr/share/paperbash/$PAPERPACKAGE
@@ -155,6 +166,18 @@ pb() {
         PKGNAME=$(sed 's/^[ \t]*//;s/[ \t]*$//' <<<"$1")
         pbimport "$PKGNAME"
     fi
+}
+
+# import packages with fzf
+fpb() {
+    if ! [ -e /usr/share/paperbash ]; then
+        echo "please install the paperbash package"
+        return 1
+    fi
+    pushd .
+    cd /usr/share/paperbash
+    pb "$(ls */* | grep '.*/.*' | fzf)"
+    popd
 }
 
 # set package name inside function script
