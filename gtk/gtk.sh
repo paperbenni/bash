@@ -1,7 +1,7 @@
 #!/bin/bash
 pname gtk/gtk
 
-DOTRAW="https://raw.githubusercontent.com/paperbenni/dotfiles/master"
+DOTRAW="https://raw.githubusercontent.com/instantos/dotfiles/master"
 THEMERAW="https://raw.githubusercontent.com/instantos/instantthemes/master"
 
 ### general utilities ###
@@ -17,8 +17,8 @@ gtk3settings() {
 # checks if either a theme or icon set exists in folder $1
 gtkloop() {
     pushd . &>/dev/null
-    cd $1
-    echo $1
+    cd "$1" || exit
+    echo "$1"
     for i in ./*; do
         [ -e "$i"/index.theme ] || continue
         if grep -iq "Name.*=$2.*" <./"$i"/index.theme; then
@@ -130,7 +130,7 @@ fontexists() {
 }
 
 installfont() {
-    [ -n "$2" ] && fontexists $2 && return 0
+    [ -n "$2" ] && fontexists "$2" && return 0
 
     if [ -e ~/.local/share/fonts/"${1##*/}" ]; then
         echo "font file conflict"
@@ -166,9 +166,9 @@ gtkdocumentfont() {
 # install cursor from github
 papercursor() {
     echo "fetching paper cursor"
-    if ! [ -e ~/.icons/$1 ]; then
+    if ! [ -e ~/.icons/"$1" ]; then
         mkdir ~/.icons &>/dev/null
-        cd ~/.icons
+        cd ~/.icons || exit
         svn export "https://github.com/paperbenni/cursors.git/trunk/$1"
     fi
 }
@@ -198,10 +198,10 @@ setcursor() {
 rofitheme() {
     echo "Setting rofi theme to $1"
     mkdir -p ~/.config/rofi &>/dev/null
-    if [ -e /usr/share/instantdotfiles/rofi/$1.rasi ]; then
-        cp /usr/share/instantdotfiles/rofi/$1.rasi ~/.config/rofi/$1.rasi
+    if [ -e /usr/share/instantdotfiles/rofi/"$1".rasi ]; then
+        cp /usr/share/instantdotfiles/rofi/"$1".rasi ~/.config/rofi/"$1".rasi
     else
-        curl -s "$DOTRAW/rofi/$1.rasi" >~/.config/rofi/$1.rasi
+        curl -s "$DOTRAW/rofi/$1.rasi" >~/.config/rofi/"$1".rasi
     fi
 
     echo "configuration {" >~/.config/rofi/config.rasi
@@ -216,7 +216,7 @@ dunsttheme() {
     [ -e ~/.config/dunst ] || mkdir -p ~/.config/dunst
     if [ -e /usr/share/instantdotfiles/dunstrc ]; then
         cat /usr/share/instantdotfiles/dunstrc >~/.config/dunst/dunstrc
-        cat /usr/share/instantthemes/dunst/$1 >>~/.config/dunst/dunstrc
+        cat /usr/share/instantthemes/dunst/"$1" >>~/.config/dunst/dunstrc
     else
         echo "falling back to online dunst theme"
         curl -s "$DOTRAW/dunstrc" >~/.config/dunst/dunstrc
@@ -228,7 +228,7 @@ dunsttheme() {
 xtheme() {
     echo "Setting xorg theme to $1"
     if [ -e /usr/share/instantthemes ] && [ -e /usr/share/instantdotfiles ]; then
-        cat /usr/share/instantthemes/xresources/$1 >~/.Xresources
+        cat /usr/share/instantthemes/xresources/"$1" >~/.Xresources
         cat /usr/share/instantdotfiles/Xresources >>~/.Xresources
     else
         curl -s "$THEMERAW/xresources/$1" >~/.Xresources
@@ -236,3 +236,4 @@ xtheme() {
         echo "please install instantthemes and instantdotfiles"
     fi
 }
+
