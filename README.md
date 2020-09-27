@@ -15,6 +15,7 @@ source <(curl -Ls https://git.io/JerLG)
 
 Then do the following to import functions into your script
 *pb* supports the following three types of syntax
+
 ```sh
 #here are a few examples
 pb unpack # just the name if there are no other scripts in the category
@@ -38,14 +39,17 @@ These my personal scripts.
 I hold no responsibility for them being difficult to
 use or causing the end of the world
 
-If you want to contribute, feel free to send pull requests. 
+If you want to contribute, feel free to send pull requests.
 
 debugger:
+
 ```sh
 source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/setup.sh)
 ```
 
 ### Alternative sourcing oneliner
+
 ```sh
 { command -v papertest && papertest; } || source <(curl -Ls https://git.io/JerLG)
 ```
+

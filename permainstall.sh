@@ -9,12 +9,12 @@ git clone --depth=1 https://github.com/paperbenni/bash.git
 source ./bash/import.sh || exit 1
 cd || exit 1
 
-if grep -q 'workspace/bash/import.sh' ~/.bashrc
+if grep -q 'paperbashsource' ~/.bashrc
 then
     echo "already installed"
     exit 
 fi
 
-appendmarkers 'source ~/workspace/bash/import.sh' .bashrc
+echo 'source ~/workspace/bash/import.sh # paperbashsource do not change this comment'>> .bashrc
 
 echo 'offline' >~/.paperoff

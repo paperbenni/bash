@@ -4,23 +4,14 @@
 ## remove paperbash and all of its components ##
 ################################################
 
-echo "completely uninstalling pb"
+echo "completely uninstalling paperbash"
+cd || exit 1
 
-source <(curl -s https://raw.githubusercontent.com/paperbenni/bash/master/import.sh)
-pb grep/sed
-
-echo "removing papertest"
-removebetween ~/.bashrc
-
-if grep -q 'papertest' </etc/profile; then
-    sudo removebetween /etc/profile
-fi
-
-cd
-
-if ! [ -e workspace/bash/.git ]; then
+if ! [ -e workspace/bash/import.sh ]; then
     rm -rf workspace/bash
 fi
+
+sed -i '/source.*paperbashsource/d' ~/.bashrc
 
 rm .paperoff
 rm .paperdebug
