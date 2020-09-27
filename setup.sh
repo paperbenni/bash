@@ -4,7 +4,7 @@
 ## set up a development environment for paperbash ##
 ####################################################
 
-cd
+cd || exit 1
 
 if grep -qi 'papertest' <.bashrc; then
     echo "papertest already installed"

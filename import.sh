@@ -91,15 +91,15 @@ pbimport() {
             ;;
         nocache)
             pecho "disabling cache"
-            NOCACHE="true"
+            export NOCACHE="true"
             ;;
         list)
             pecho "imported packages:"
-            pecho $(grep -o '[^\n]*\\n' <<<"$PAPERLIST" | grep -o '^[^\\]*' | grep -o '[^ ]*$')
+            pecho "$(grep -o '[^\n]*\\n' <<<"$PAPERLIST" | grep -o '^[^\\]*' | grep -o '[^ ]*$')"
             ;;
         *)
             PAPERENABLE="true"
-            if [ -z "$@" ]; then
+            if [ -z "$1" ]; then
                 pecho "usage: pb bashfile"
                 return 0
             fi
@@ -119,18 +119,18 @@ pbimport() {
     fi
 
     if [ -e ~/.paperdebug ] && [ -e ~/workspace/bash ]; then
-        psource ~/workspace/bash/$PAPERPACKAGE
+        psource ~/workspace/bash/"$PAPERPACKAGE"
     elif [ -n "$OFFLINEINSTALL" ]; then
-        psource /usr/share/paperbash/$PAPERPACKAGE
+        psource /usr/share/paperbash/"$PAPERPACKAGE"
     else
         if [ -z "$TERMUX" ]; then
             curl -s "$PAPERGIT/$PAPERPACKAGE" >/tmp/papercache
             psource /tmp/papercache
             rm /tmp/papercache
         else
-            curl -s "$PAPERGIT/$PAPERPACKAGE" >$PREFIX/tmp/papercache
-            psource $PREFIX/tmp/papercache
-            rm $PREFIX/tmp/papercache
+            curl -s "$PAPERGIT/$PAPERPACKAGE" >"$PREFIX"/tmp/papercache
+            psource "$PREFIX"/tmp/papercache
+            rm "$PREFIX"/tmp/papercache
         fi
     fi
 }
@@ -175,14 +175,14 @@ fpb() {
         return 1
     fi
     pushd .
-    cd /usr/share/paperbash
+    cd /usr/share/paperbash || return 1
     pb "$(ls */* | grep '.*/.*' | fzf)"
-    popd
+    popd || return 1
 }
 
 # set package name inside function script
 pname() {
-    PAPERLIST="$PAPERLIST $(pbname $1)\n"
+    PAPERLIST="$PAPERLIST $(pbname "$1")\n"
 }
 
 psilent() {
@@ -213,13 +213,13 @@ if [ -e ~/.paperdebug ]; then
     # list all packages in pretty format
     pblsraw() {
         (
-            cd ~/workspace/bash
+            cd ~/workspace/bash || return 1
             for i in ./*; do
                 if ! [ -d "$i" ]; then
                     continue
                 fi
                 echo "${i#./}"
-                cd "$i"
+                cd "$i" || return 1
                 for sh in ./*.sh; do
                     echo "#### ${sh#./}"
                 done
@@ -232,7 +232,7 @@ if [ -e ~/.paperdebug ]; then
     # grep the repo
     pbgrep() {
         (
-            cd ~/workspace/bash
+            cd ~/workspace/bash || return 1
             git grep $@ | less
         )
     }
