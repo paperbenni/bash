@@ -2,30 +2,26 @@
 pname config/config
 
 # used for spigot options
-function confset() {
-    # File must exist, be a file, and have read and write access.
-    if ! [ -f "$1" ] || ! [ -r "$1" ] || ! [ -w "$1" ]; then
-        echo "target config file '$1' missing or inaccessible!" >&2
-        return 1
-    fi
+confset() {
+
     if [ -z "$3" ]; then
         echo "usage: confset file option value"
     fi
-    if [[ "$1" == *"$2=$3"* ]]; then
-        echo "value $2=$3 already set"
-        return 0
+
+    if grep -q "^$2" "$1"
+    then
+        sed -i "/^$2=/c $2=$3" "$1"
     else
-        echo "setting $2=$3"
+        echo "$2=$3" >> "$1"
     fi
-    NEWVALUE="$2=$3"
-    sed -i "/^$2=/c $NEWVALUE" "$1"
+
     grep "$2" <"$1"
 }
 
 # get value from format key:value without a preceding space
 # if not found return $3
 # optional delimiter $4, default :
-function confget() {
+confget() {
     # File and key required.
     { [ -z "$1" ] || [ -z "$2" ]; } && return 1
 
