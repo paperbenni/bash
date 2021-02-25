@@ -31,12 +31,14 @@ downloadimages() {
     DOMAIN="${DOMAIN2%/}"
     SINDEX="$(ls)"
 
+    echo "domain $DOMAIN sindex $SINDEX"
+
     for FMT in jpg png jpeg gif; do
         downloadformat "$FMT" "$SINDEX" "$DOMAIN"
     done
 
     rm "$SINDEX"
-    mv ./* ../
+    mv ./* ../ || return 1
     cd ..
     rm -r .imagecache
 }

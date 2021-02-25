@@ -5,21 +5,14 @@ pb dialog/dmenu
 pb wget/curl
 
 #edits an option in retroarch.cfg
+# changeconf option value
 function changeconf() {
-    if [ -z "$2" ]; then
-        echo "usage: changeconf option value"
+    if ! [ -e ~/.config/retroarch/retroarch.cfg ]; then
+        notify-send "generating config, please do not do anything with this retroarch instance"
+        timeout 5 retroarch
     fi
-    if [ -z "$3" ]; then
-        if ! [ -e ~/.config/retroarch/retroarch.cfg ]; then
-            echo "generating config"
-            timeout 5 retroarch
-        fi
-        pushd ~/.config/retroarch
-        NEWVALUE="$1 = \"$2\""
-        sed -i "/^$1 =/c $NEWVALUE" retroarch.cfg
-        popd
-    fi
-
+    NEWVALUE="$1 = \"$2\""
+    sed -i "/^$1 =/c $NEWVALUE" "$HOME"/.config/retroarch/retroarch.cfg
 }
 
 # downloads a cloudpie file from github
