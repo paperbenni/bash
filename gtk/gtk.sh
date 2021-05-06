@@ -220,6 +220,12 @@ rofitheme() {
 
 # download regular dunstrc and append color config
 dunsttheme() {
+    export DUNSTRC="$HOME/.config/dunst/dunstrc"
+    # remove previous theme
+    if grep -q instantTHEMES "$DUNSTRC"; then
+        sed '/^#.*instantTHEMES.*start/,/^#.*instantTHEMES.*end/d' -i dunstrc
+    fi
+
     echo "setting dunst theme to $1"
     [ -e ~/.config/dunst ] || mkdir -p ~/.config/dunst
     if [ -e /usr/share/instantdotfiles/dunstrc ]; then
@@ -244,4 +250,3 @@ xtheme() {
         echo "please install instantthemes and instantdotfiles"
     fi
 }
-
