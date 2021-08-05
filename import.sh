@@ -4,9 +4,6 @@
 ## paperbash importer ##
 ########################
 
-if ! [ "${SHELL##*/}" = 'bash' ] && ! [ -e ~/.paperforce ]; then
-    echo "warning: shell is not bash"
-fi
 
 if ! [ -e /tmp ] && command -v termux-setup-storage &>/dev/null; then
     echo "termux detected"
