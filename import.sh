@@ -4,7 +4,6 @@
 ## paperbash importer ##
 ########################
 
-
 if ! [ -e /tmp ] && command -v termux-setup-storage &>/dev/null; then
     echo "termux detected"
     export TERMUX="true"
@@ -31,17 +30,15 @@ else
     return 0
 fi
 
-if [ -e ~/.paperdebug ]
-then
-	pecho "debugging mode enabled"
-	if ! [ -e ~/workspace/bash ]
-	then
-		mkdir workspace
-		pushd .
-		cd ~/workspace
-		git clone --depth=10 https://github.com/paperbenni/bash
-		popd
-	fi
+if [ -e ~/.paperdebug ]; then
+    pecho "debugging mode enabled"
+    if ! [ -e ~/workspace/bash ]; then
+        mkdir workspace
+        pushd .
+        cd ~/workspace
+        git clone --depth=10 https://github.com/paperbenni/bash
+        popd
+    fi
 fi
 
 # default fetching url
@@ -145,6 +142,19 @@ psource() {
 
 # main importer function
 pb() {
+
+    if [ -z "$1" ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+        echo "Usage:
+pb [options] packagename
+
+Additional helpful commands
+    fpb     import paperbash packages from fzf menu
+    pdoc    show documentation for package
+
+"
+        return
+    fi
+
     # process multiple packages
     if [ -n "$2" ]; then
         pecho "multi import statement"
